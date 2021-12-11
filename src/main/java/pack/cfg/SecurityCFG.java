@@ -3,6 +3,7 @@ package pack.cfg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,13 +31,15 @@ public class SecurityCFG extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/first").permitAll()
-                    .antMatchers("/reg").permitAll()
-                    .antMatchers("/resources/css/{style}.css").permitAll()
-                    .antMatchers("/resources/css/{style}.png").permitAll()
-                    .antMatchers("/login").permitAll()
-                    .antMatchers("/lk").hasRole("USER")
-                    .anyRequest().authenticated()
+//                    .antMatchers("/first").permitAll()
+//                    .antMatchers("/reg").permitAll()
+//                    .antMatchers("/resources/css/{style}.css").permitAll()
+//                    .antMatchers("/resources/css/{style}.png").permitAll()
+//                    .antMatchers("/login").permitAll()
+//                    .antMatchers("/lk").hasRole("USER")
+//                    .antMatchers("/test").permitAll()
+                    .antMatchers(HttpMethod.POST, "/test").permitAll()
+                    .anyRequest().permitAll()
                 .and()
                     .formLogin(form -> form.loginPage("/login")
                                         .successForwardUrl("/lk")

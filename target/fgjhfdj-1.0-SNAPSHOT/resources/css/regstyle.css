@@ -1,6 +1,6 @@
 @font-face {
     font-family: "ManropeThin";
-    src: url("/resources/fonts/ManropeThin/ManropeThin.ttf");
+    src: url("../fonts/ManropeThin/ManropeThin.ttf");
 }
 
 .content {
