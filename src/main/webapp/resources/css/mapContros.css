@@ -8,7 +8,7 @@
     color: #ffffff;
     text-align: center !important;
     padding-top: 10px;
-    
+
 }
 .icon-minus{
     background-position:-433px -96px;
@@ -98,7 +98,8 @@ a, a:visited {
     font-family: ManropeThin;
     font-size: 20px;
     color: white;
-    margin-left: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 .my-button-selected {
     color: #333333;
@@ -110,12 +111,12 @@ a, a:visited {
 .smallMap {
     width: 70% !important;
     height: 825px !important;
-    
+
 }
 .bigmap{
     width: 70% !important;
     height: 825px !important;
-    
+
 }
 
 #map {
@@ -135,4 +136,23 @@ a, a:visited {
     color: white !important;
     font-family: ManropeThin !important;
     font-size: 20px !important;
+}
+
+.baloonFooter{
+    width: 210px;
+    height: 100px;
+}
+
+.footer1Foto{
+    width: 100px;
+    height: 100px;
+    margin-right: 5px;
+    background-color: red;
+    background-image: url(images/cinema.jpeg);
+}
+
+.footer2Foto{
+    width: 100px;
+    height: 100px;
+    background-color: red;
 }
