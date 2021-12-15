@@ -27,7 +27,7 @@ public class RestContr {
 
     @Autowired
     private ToiletService toiletService;
-
+//*//
 
     @RequestMapping(value = "test", method = RequestMethod.POST)
     public void test(HttpEntity<String> httpEntity ){
