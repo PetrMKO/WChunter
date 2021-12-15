@@ -1,11 +1,12 @@
 
 ymaps.ready(init);
 
+
 var button,
     myMap,
     coords,
     addMode = false,
-    readyToSend = false;
+    myCollection;
 
 function init() {
     const mapWrapper = document.getElementById('map');
@@ -111,63 +112,65 @@ function init() {
     myMap.controls.add(mySearchControl, { float: '20' });
 
     //Добавление точек
-    var myCollection = new ymaps.GeoObjectCollection(null, {
+    myCollection = new ymaps.GeoObjectCollection(null, {
         hasBalloon: true
     });
 
 
     //Создание запроса
-    const request = new XMLHttpRequest();
-    request.open('GET', 'points');
-    request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    request.send();
+    function addPoints(map, collection){const request = new XMLHttpRequest();
+        request.open('GET', 'points');
+        request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        request.send();
 
 
-    // request.addEventListener('load', () => {
-    //     if(request.status === 200) {
-    //         const data = JSON.parse(request.response);
-    //
-    //         console.log("succes");
-    //         console.log(data);
-    //
-    //         data.points.forEach((point) => {
-    //             console.log(point);
-    //
-    //             myCollection.add(new ymaps.Placemark([+point.Lat, +point.Long], {
-    //                     hintContent: point.name,
-    //                     balloonContentHeader: point.name,
-    //                     balloonContentBody: point.comment
-    //                     // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
-    //                     // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
-    //                     //     '<div class="footer2Foto"></div></div></div>'
-    //                 }, {
-    //                     iconLayout: 'default#image',
-    //                     iconImageHref: 'images/ToiletIcon.png',
-    //                     iconImageSize: [24, 38],
-    //                     iconImageOffset: [-12, -38]
-    //                 })
-    //             );
-    //         });
-    //     }
-    //
-    //     else{
-    //         console.log("false");
+        request.addEventListener('load', () => {
+            if(request.status === 200) {
+                const points = JSON.parse(request.response);
+
+                console.log("succes");
+                console.log(points);
+
+                points.forEach((point) => {
+                    console.log(point);
+
+                    myCollection.add(new ymaps.Placemark([+(point.latitude), +(point.longitude)], {
+                            hintContent: point.name,
+                            balloonContentHeader: point.name
+                            // balloonContentBody: point.comment
+                            // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
+                            // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
+                            //     '<div class="footer2Foto"></div></div></div>'
+                        }, {
+                            iconLayout: 'default#image',
+                            iconImageHref: 'resources/images/ToiletIcon.png',
+                            iconImageSize: [24, 38],
+                            iconImageOffset: [-12, -38]
+                        })
+                    );
+                });
+            }
+
+            else{
+                console.log("false");
+            }
+        });
+    }
+
+    addPoints(myMap, myCollection);
+
+    // $.ajax({
+    //     url: 'points',
+    //     method: 'get',
+    //     dataType: 'json',
+    //     success: function(data){
+    //         alert(data);    /* выведет "Текст" */
+    //          /* выведет "Ошибка" */
+    //     },
+    //     error: function (jqXHR, exception) {
+    //         alert('Ошибка');
     //     }
     // });
-
-
-    $.ajax({
-        url: 'points',
-        method: 'get',
-        dataType: 'json',
-        success: function(data){
-            alert(data);    /* выведет "Текст" */
-             /* выведет "Ошибка" */
-        },
-        error: function (jqXHR, exception) {
-            alert('Ошибка');
-        }
-    });
     myMap.geoObjects.add(myCollection);
 
     myMap.events.add('click', function (e) {
@@ -228,35 +231,91 @@ function init() {
         }
     });
 
+
+    // window.addEventListener('DOMContentLoaded', function() {
+    //
+    //     alert('Content loaded');
+    //     const forms = document.querySelectorAll('form');
+    //
+    //     forms.forEach(item =>{
+    //         postData(item);
+    //     });
+    //
+    //     function postData(form){
+    //         form.addEventListener('submit', (e) =>{
+    //             e.preventDefault();
+    //             // const request  = new XMLHttpRequest();
+    //             // request.open('POST', 'server.php');
+    //             //
+    //             // request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    //             const formData =  new FormData(form);
+    //
+    //             const object = {
+    //                 coords: coords
+    //             };
+    //
+    //             alert(coords);
+    //             console.log(object);
+    //             formData.forEach(function(value, key){
+    //                 object[key] = value;
+    //             });
+    //
+    //             const coordinates = {
+    //                 Lat: coords[0],
+    //                 Long: coords[1]
+    //             };
+    //
+    //
+    //
+    //             const addPoint = JSON.stringify(Object.assign(object, coordinates));
+    //
+    //             const pointAded = JSON.parse(addPoint);
+    //             console.log(addPoint);
+    //
+    //             $.ajax({
+    //                 type: "POST",
+    //                 url: "test",
+    //                 // The key needs to match your method's input parameter (case-sensitive).
+    //                 data: addPoint,
+    //                 contentType: "application/json; charset=utf-8",
+    //                 dataType: "json",
+    //                 success: function(data){
+    //                     alert(data);
+    //                     myMap.geoObjects.remove(myCollection)
+    //                     myCollection.add(new ymaps.Placemark([+(pointAded.latitude), +(pointAded.longitude)], {
+    //                             hintContent: pointAded.name,
+    //                             balloonContentHeader: pointAded.name
+    //                             // balloonContentBody: point.comment
+    //                             // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
+    //                             // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
+    //                             //     '<div class="footer2Foto"></div></div></div>'
+    //                         }, {
+    //                             iconLayout: 'default#image',
+    //                             iconImageHref: 'resources/images/ToiletIcon.png',
+    //                             iconImageSize: [24, 38],
+    //                             iconImageOffset: [-12, -38]
+    //                         })
+    //                     );
+    //                     myMap.geoObjects.add(myCollection);
+    //                 },
+    //                 error: function(errMsg) {
+    //                     alert(errMsg);
+    //                 }
+    //             });
+    //             smallMap = !smallMap
+    //             $('#sidebar').removeClass('show');
+    //             $('#sidebar').addClass('hide');
+    //             addMode = false;
+    //             myMap.balloon.close();
+    //             setTimeout(() => {
+    //                 $('#map').removeClass('smallMap');
+    //             }, 350);
+    //
+    //             setTimeout(() => {
+    //                 myMap.container.fitToViewport();
+    //             }, 650);
+    //
+    //         });
+    //     }
+    // });
 }
-
-
-
-
-
-
-
-
-
-// 'use strict';
-
-// const inputRub = document.querySelector('#rub'),
-//       inputUsd = document.querySelector('#usd');
-
-// inputRub.addEventListener('input', () => {
-//     const request = new XMLHttpRequest();
-
-//     request.open('GET', 'js/current.json');
-//     request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-//     request.send();
-
-//     request.addEventListener('load', () => {
-//         if(request.status === 200) {
-//             const data = JSON.parse(request.response);
-//             inputUsd.value = (+inputRub.value / data.current.usd).toFixed(2);
-//         }
-//         else{
-//             inputUsd.value = "что-то пошло не так";
-//         }
-//     });
-// });

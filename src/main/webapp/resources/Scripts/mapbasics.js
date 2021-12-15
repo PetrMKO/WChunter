@@ -136,47 +136,59 @@ function init() {
         });
         myMap.controls.add(mySearchControl, { float: '20' });
     //Создание запроса
-    const request = new XMLHttpRequest();
-    request.open('GET', 'points');
-    request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    request.send();
+    function addPoints(map, collection){const request = new XMLHttpRequest();
+        request.open('GET', 'points');
+        request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        request.send();
 
 
+        request.addEventListener('load', () => {
+            if(request.status === 200) {
+                const points = JSON.parse(request.response);
 
-    //Добавление точек
-    var myCollection = new ymaps.GeoObjectCollection(null, {
-        hasBalloon: true
-    });
+                console.log("succes");
+                console.log(points);
 
-    request.addEventListener('load', () => {
-        if(request.status === 200) {
-            const data = JSON.parse(request.response);
+                points.forEach((point) => {
+                    console.log(point);
 
-            console.log("succes");
-            console.log(data);
+                    myCollection.add(new ymaps.Placemark([+(point.latitude), +(point.longitude)], {
+                            hintContent: point.name,
+                            balloonContentHeader: point.name
+                            // balloonContentBody: point.comment
+                            // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
+                            // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
+                            //     '<div class="footer2Foto"></div></div></div>'
+                        }, {
+                            iconLayout: 'default#image',
+                            iconImageHref: 'resources/images/ToiletIcon.png',
+                            iconImageSize: [24, 38],
+                            iconImageOffset: [-12, -38]
+                        })
+                    );
+                });
+            }
 
-            data.points.forEach((point) => {
-                console.log(point);
+            else{
+                console.log("false");
+            }
+        });
+    }
 
-                myCollection.add(new ymaps.Placemark(point.cords, {
-                    hintContent: point.hint,
-                    baloonContent: point.baloon
-                    //balloonContent:
-                }, {
-                        iconLayout: 'default#image',
-                        iconImageHref: 'images/ToiletIcon.png',
-                        iconImageSize: [24, 38],
-                        iconImageOffset: [-12, -38]
-                    })
-                );
-            });
-        }
+    addPoints(myMap, myCollection);
 
-        else{
-            console.log("false");
-        }
-    });
-
+    // $.ajax({
+    //     url: 'points',
+    //     method: 'get',
+    //     dataType: 'json',
+    //     success: function(data){
+    //         alert(data);    /* выведет "Текст" */
+    //          /* выведет "Ошибка" */
+    //     },
+    //     error: function (jqXHR, exception) {
+    //         alert('Ошибка');
+    //     }
+    // });
     myMap.geoObjects.add(myCollection);
 
     var smallMap = true;

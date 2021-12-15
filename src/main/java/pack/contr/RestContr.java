@@ -8,7 +8,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pack.entity.Jsonpoint;
+import pack.entity.BaloonPoint;
+import pack.entity.NewJsonpoint;
+import pack.entity.ToiletEntity;
+import pack.service.ToiletService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,25 +25,31 @@ public class RestContr {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private ToiletService toiletService;
+
+
     @RequestMapping(value = "test", method = RequestMethod.POST)
     public void test(HttpEntity<String> httpEntity ){
         System.out.println(httpEntity.getBody());
         try {
-            Jsonpoint jsonpoint = objectMapper.readValue(httpEntity.getBody(),Jsonpoint.class);
+            NewJsonpoint jsonpoint = objectMapper.readValue(httpEntity.getBody(), NewJsonpoint.class);
             System.out.println(jsonpoint);
+            ToiletEntity toiletEntity = new ToiletEntity();
+            toiletEntity.setLongitude(jsonpoint.getLong());
+            toiletEntity.setLatitude(jsonpoint.getLat());
+            toiletEntity.setName(jsonpoint.getName());
+            System.out.println(toiletEntity);
+            toiletService.toiletSave(toiletEntity);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        ResponseEntity responseEntity = new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "points", produces={"application/json"}, method = RequestMethod.GET)
     @ResponseBody
-    public List<Jsonpoint> getPoints(){
-        Jsonpoint pont = new Jsonpoint("bn","05:23","04:50", 5, "huita", "dfhg", 59.95750971712556,30.31415168616821 );
-        List<Jsonpoint> list = new ArrayList<>();
-        list.add(pont);
-        return list;
+    public ArrayList<BaloonPoint> getPoints(){
+        return toiletService.baloons();
     }
 
 

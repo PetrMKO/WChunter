@@ -14,8 +14,8 @@ public class ToiletEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String lat;
-    private String Long;
+    private Double latitude;
+    private Double longitude;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "comments",
             joinColumns = @JoinColumn(name = "toilet", referencedColumnName = "ID"),
@@ -37,24 +37,11 @@ public class ToiletEntity {
     public ToiletEntity() {
     }
 
-    public void setName(String name) {
+    public ToiletEntity(String name, Double latitude, Double longitude, List<CommentEntity> comment) {
         this.name = name;
-    }
-
-    public String getLat() {
-        return lat;
-    }
-
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    public String getLong() {
-        return Long;
-    }
-
-    public void setLong(String aLong) {
-        Long = aLong;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.comment = comment;
     }
 
     public Long getId() {
@@ -69,10 +56,23 @@ public class ToiletEntity {
         return name;
     }
 
-    public ToiletEntity(java.lang.Long id, String name, String lat, String aLong) {
-        this.id = id;
+    public void setName(String name) {
         this.name = name;
-        this.lat = lat;
-        Long = aLong;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }
