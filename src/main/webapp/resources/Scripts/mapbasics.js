@@ -137,7 +137,7 @@ function init() {
         myMap.controls.add(mySearchControl, { float: '20' });
     //Создание запроса
     const request = new XMLHttpRequest();
-    request.open('GET', 'JSONS/points.json');
+    request.open('GET', 'points');
     request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     request.send();
 

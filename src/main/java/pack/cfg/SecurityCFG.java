@@ -44,7 +44,7 @@ public class SecurityCFG extends WebSecurityConfigurerAdapter {
                     .formLogin(form -> form.loginPage("/login")
                                         .successForwardUrl("/lk")
                                         .usernameParameter("login"))
-                            .logout().permitAll();
+                            .logout().permitAll().and().csrf().disable();
     }
 
     @Override

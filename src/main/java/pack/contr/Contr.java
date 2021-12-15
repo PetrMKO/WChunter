@@ -45,9 +45,6 @@ public class Contr {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object principal = auth.getPrincipal().getClass();
         UserEntity userEntity = userRepo.findByLogin(auth.getName());
-        ToiletEntity toiletEntity = new ToiletEntity("toilet");
-        toiletRepo.saveAndFlush(toiletEntity);
-        userEntity.addFavorites(toiletEntity);
         userService.save(userEntity);
         model.addAttribute("login", auth.getName());
         try {
