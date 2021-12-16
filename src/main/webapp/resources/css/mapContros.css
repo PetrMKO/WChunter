@@ -68,7 +68,7 @@
     padding: 3px;
     height: 15px;
     cursor: pointer;
-    background: url(cross.svg) 50% no-repeat;
+    background: url("/resources/css/cross.svg") 50% no-repeat;
     opacity: 0.3;
 }
 
@@ -143,13 +143,6 @@ a, a:visited {
     height: 100px;
 }
 
-.footer1Foto{
-    width: 100px;
-    height: 100px;
-    margin-right: 5px;
-    background-color: red;
-    background-image: url(images/cinema.jpeg);
-}
 
 .footer2Foto{
     width: 100px;

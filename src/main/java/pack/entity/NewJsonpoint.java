@@ -17,9 +17,9 @@ public class NewJsonpoint {
     private String type;
     @JsonProperty("comment")
     private String comment;
-    @JsonProperty("Lat")
+    @JsonProperty("latitude")
     private Double Lat;
-    @JsonProperty("Long")
+    @JsonProperty("longitude")
     private Double Long;
 
 

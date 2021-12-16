@@ -7,4 +7,6 @@ import pack.entity.ToiletEntity;
 @Repository
 public interface ToiletRepo extends JpaRepository<ToiletEntity, Long> {
 
+    ToiletEntity findAllByName(String name);
+
 }

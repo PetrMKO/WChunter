@@ -35,5 +35,8 @@ public class ToiletService {
         return baloonPoints;
     }
 
+    public ToiletEntity findByName(String name) {
+        return toiletRepo.findAllByName(name);
+    }
 
 }

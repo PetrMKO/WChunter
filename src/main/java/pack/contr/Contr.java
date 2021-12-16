@@ -45,10 +45,10 @@ public class Contr {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object principal = auth.getPrincipal().getClass();
         UserEntity userEntity = userRepo.findByLogin(auth.getName());
-        userService.save(userEntity);
         model.addAttribute("login", auth.getName());
         try {
-            model.addAttribute("toilets", userRepo.findByLogin(auth.getName()).getFavorite());
+            model.addAttribute("toilets", userEntity.getFavorite());
+            model.addAttribute("toiletsadded", userEntity.getAdded());
         }catch (Exception e){
             System.out.println("g");
         }

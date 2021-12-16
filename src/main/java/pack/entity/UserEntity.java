@@ -21,6 +21,24 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "toilet", referencedColumnName = "ID"))
     private List<ToiletEntity> favorite;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "added",
+            joinColumns = @JoinColumn(name = "users", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "toilet", referencedColumnName = "ID"))
+    private List<ToiletEntity> added;
+
+    public List<ToiletEntity> getAdded() {
+        return added;
+    }
+
+    public void addToilet(ToiletEntity toiletEntity){
+        added.add(toiletEntity);
+    }
+
+    public void setAdded(List<ToiletEntity> added) {
+        this.added = added;
+    }
+
     public List<ToiletEntity> getFavorite() {
         return favorite;
     }
@@ -31,6 +49,18 @@ public class UserEntity {
 
     public void addFavorites(ToiletEntity toiletEntity){
         favorite.add(toiletEntity);
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", favorite=" + favorite +
+                ", added=" + added +
+                '}';
     }
 
     public UserEntity() {
