@@ -2,6 +2,7 @@ package pack.entity;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -21,13 +22,13 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "toilet", referencedColumnName = "ID"))
     private List<ToiletEntity> favorite;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "added",
             joinColumns = @JoinColumn(name = "users", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "toilet", referencedColumnName = "ID"))
-    private List<ToiletEntity> added;
+    private Set<ToiletEntity> added;
 
-    public List<ToiletEntity> getAdded() {
+    public Set<ToiletEntity> getAdded() {
         return added;
     }
 
@@ -35,7 +36,7 @@ public class UserEntity {
         added.add(toiletEntity);
     }
 
-    public void setAdded(List<ToiletEntity> added) {
+    public void setAdded(Set<ToiletEntity> added) {
         this.added = added;
     }
 
@@ -58,8 +59,6 @@ public class UserEntity {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
-                ", favorite=" + favorite +
-                ", added=" + added +
                 '}';
     }
 

@@ -46,8 +46,9 @@ public class SecurityCFG extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.POST, "/test").permitAll()
                     .anyRequest().permitAll()
                 .and()
-                    .formLogin(form -> form.loginPage("/login")
-                                        .successForwardUrl("/lk")
+                    .formLogin(form -> form.loginPage("/loginka")
+                                        .defaultSuccessUrl("/lk", true)
+                                        .loginProcessingUrl("/login")
                                         .usernameParameter("login"))
                             .logout().permitAll().and().csrf().disable();
     }

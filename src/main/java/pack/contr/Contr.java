@@ -10,13 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pack.entity.ToiletEntity;
 import pack.entity.UserEntity;
 import pack.repo.ToiletRepo;
 import pack.repo.UserRepo;
 import pack.service.UserService;
-
-import java.security.Principal;
 
 
 @Controller
@@ -79,13 +76,13 @@ public class Contr {
         System.out.println(password + login +  repeat);
 
         if(!password.equals(repeat)){
-            model.addAttribute("message", "Ты че тупой ?");
+            model.addAttribute("message1", "Пароли не совпадают!");
             return "reg";
         }
 
         final UserEntity userEntity = userRepo.findByLogin(login);
         if (userEntity != null) {
-            model.addAttribute("message", "Жулик не воруй!");
+            model.addAttribute("message2", "Такой пользователь уже существует !");
             return "reg";
         }
 
@@ -93,7 +90,7 @@ public class Contr {
 //        System.out.println(userRepo.findByLogin("geg"));
         userRepo.save(new UserEntity(login, passwordEncoder.encode(password), "USER"));
 
-        return "login";
+        return "loginka";
 
     }
 

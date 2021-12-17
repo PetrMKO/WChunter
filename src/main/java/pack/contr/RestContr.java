@@ -33,30 +33,13 @@ public class RestContr {
 
     @Autowired
     private ToiletService toiletService;
-//*//
+
 
     @RequestMapping(value = "test", method = RequestMethod.POST)
     public void test(HttpEntity<String> httpEntity ){
-        System.out.println(httpEntity.getBody());
         try {
             NewJsonpoint jsonpoint = objectMapper.readValue(httpEntity.getBody(), NewJsonpoint.class);
-            System.out.println(jsonpoint);
-            ToiletEntity toiletEntity = new ToiletEntity();
-            toiletEntity.setLongitude(jsonpoint.getLong());
-            toiletEntity.setLatitude(jsonpoint.getLat());
-            toiletEntity.setName(jsonpoint.getName());
-            toiletEntity.setMark(jsonpoint.getMark());
-            toiletEntity.setDiscribe(jsonpoint.getComment());
-            toiletEntity.setTime(jsonpoint.getStartWork() + " - " + jsonpoint.getEndTime());
-            toiletEntity.setType(jsonpoint.getType());
-            System.out.println(toiletEntity);
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            Object principal = auth.getPrincipal().getClass();
-            UserEntity userEntity = userRepo.findByLogin(auth.getName());
-            System.out.println(userEntity.toString());
-            toiletService.toiletSave(toiletEntity);
-            userEntity.addToilet(toiletEntity);
-            userRepo.saveAndFlush(userEntity);
+            toiletService.toiletSave(jsonpoint);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

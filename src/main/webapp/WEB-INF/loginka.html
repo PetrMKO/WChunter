@@ -13,6 +13,7 @@
         <h1 class="title">Вход</h1>
         <form method="POST" th:action="@{/login}">
             <br>
+            <div class="error" th:if="${param.error}">Не правильный логин или пароль!</div>
             <label for="login"><input id="login" type="text" placeholder="Логин" class="rounded-element tbx" name="login"/></label>
             <br> <br> <br> <br>
             <label for="password"><input id="password" type="password" placeholder="Пароль" class="rounded-element tbx" name="password"/></label>

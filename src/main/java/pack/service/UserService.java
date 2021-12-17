@@ -17,4 +17,10 @@ public class UserService {
         userRepo.saveAndFlush(userEntity);
     }
 
+    public UserEntity findbyLogin(String login){
+        return userRepo.findByLogin(login);
+    }
+
+
+
 }
