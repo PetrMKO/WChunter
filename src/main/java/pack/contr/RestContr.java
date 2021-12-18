@@ -10,13 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import pack.entity.BaloonPoint;
-import pack.entity.NewJsonpoint;
-import pack.entity.ToiletEntity;
-import pack.entity.UserEntity;
+import pack.entity.*;
 import pack.repo.UserRepo;
 import pack.service.ToiletService;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +35,8 @@ public class RestContr {
 
     @RequestMapping(value = "test", method = RequestMethod.POST)
     public void test(HttpEntity<String> httpEntity ){
+        System.out.println(httpEntity.getBody());
+
         try {
             NewJsonpoint jsonpoint = objectMapper.readValue(httpEntity.getBody(), NewJsonpoint.class);
             toiletService.toiletSave(jsonpoint);
@@ -56,6 +56,33 @@ public class RestContr {
         return toiletService.findByName(name);
     }
 
+
+    @RequestMapping("currentpoint")
+    public ToiletEntity getCurPoint(HttpSession session){
+        String name = session.getAttribute("PointName").toString();
+        System.out.println(name);
+        if (name == null){
+            return null;
+        }
+        return toiletService.findByName(name);
+    }
+
+
+
+    @RequestMapping(value = "addcomment/{name}", method = RequestMethod.POST)
+    public HttpEntity addcomment(@PathVariable String name, HttpEntity<String> httpEntity ) {
+        System.out.println(httpEntity.getBody());
+        try {
+            CommentEntity commentEntity = objectMapper.readValue(httpEntity.getBody(), CommentEntity.class);
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            commentEntity.setUsername(auth.getName());
+            toiletService.addComment(commentEntity, name);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (JsonProcessingException e) {
+            System.out.print("КоляБ сервак упал");
+        }
+        return new ResponseEntity(HttpStatus.CONFLICT);
+    }
 
 
 }

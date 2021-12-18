@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
 	<title>Whitesquare</title>
-	<link rel="stylesheet" href="../resources/css/styles1.css" type="text/css">
+	<link rel="stylesheet" href="/resources/css/styles1.css" type="text/css">
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
 </head>
 <body>
@@ -16,7 +16,7 @@
 					<div class="fav">Избранное</div>
 					<div class="scroll"  th:unless="${#lists.isEmpty(toilets)}">
 					<ul th:each="toilet : ${toilets}">
-					<li><div class="toilets" th:text="${toilet.name}">Большая порашная</div></li>
+					<li><a class="toilets" th:text="${toilet.name}">Большая порашная</a></li>
 					</ul>
 					</div>
 				</div>
@@ -29,7 +29,7 @@
 					<div class="fav">Добавленное</div>
 					<div class="scroll" th:unless="${#lists.isEmpty(toiletsadded)}">
 						<ul th:each="toil : ${toiletsadded}">
-						<li><div class="toilets" th:text="${toil.name}">Большая порашная</div></li>
+						<li><a class="toilets" th:text="${toil.name}" th:href="'map?name=' + ${toil.name}">Большая порашная</a></li>
 						</ul>
 					</div>
 				</div>

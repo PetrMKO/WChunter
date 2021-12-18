@@ -6,10 +6,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pack.entity.BaloonPoint;
-import pack.entity.NewJsonpoint;
-import pack.entity.ToiletEntity;
-import pack.entity.UserEntity;
+import pack.entity.*;
+import pack.repo.CommentRepo;
 import pack.repo.ToiletRepo;
 
 import java.util.ArrayList;
@@ -21,6 +19,9 @@ public class ToiletService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommentRepo commentRepo;
 
     @Autowired
     private ToiletRepo toiletRepo;
@@ -37,11 +38,18 @@ public class ToiletService {
         toiletEntity.setTime(jsonpoint.getStartWork() + " - " + jsonpoint.getEndTime());
         toiletEntity.setType(jsonpoint.getType());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = auth.getPrincipal().getClass();
         UserEntity userEntity = userService.findbyLogin(auth.getName());
         userEntity.addToilet(toiletEntity);
         toiletRepo.saveAndFlush(toiletEntity);
         userService.save(userEntity);
+    }
+
+    @Transactional
+    public void addComment(CommentEntity commentEntity, String name) {
+        ToiletEntity toiletEntity = toiletRepo.findByName(name);
+        toiletEntity.addComment(commentEntity);
+        commentRepo.saveAndFlush(commentEntity);
+        toiletRepo.saveAndFlush(toiletEntity);
     }
 
 
@@ -52,7 +60,6 @@ public class ToiletService {
             BaloonPoint baloonPoint = new BaloonPoint(t.getName(),t.getLatitude(), t.getLongitude());
             baloonPoints.add(baloonPoint);
         }
-        System.out.println(baloonPoints);
         return baloonPoints;
     }
 

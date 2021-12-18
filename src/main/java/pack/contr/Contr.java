@@ -10,10 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pack.entity.UserEntity;
 import pack.repo.ToiletRepo;
 import pack.repo.UserRepo;
 import pack.service.UserService;
+
+import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -31,10 +34,7 @@ public class Contr {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
-    public String test(){
-        return "test";
-    }
+
 
 
     @GetMapping("lk")
@@ -49,17 +49,19 @@ public class Contr {
         }catch (Exception e){
             System.out.println("g");
         }
+
         return "lk";
     }
 
 
-    @GetMapping("first")
+    @GetMapping("")
     public String first(){
         return "FirstPage";
     }
 
     @GetMapping("map")
-    public String map(){
+    public String map(@RequestParam(required = false) String name , HttpSession session){
+        session.setAttribute("PointName", name);
         return "map";
     }
 

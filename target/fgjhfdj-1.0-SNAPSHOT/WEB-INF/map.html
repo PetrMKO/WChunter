@@ -17,14 +17,14 @@
 <div class="ramka">
 	<div class="Main" id="map"></div>
 
-	<div id="sidebar" class="hide">
+	<div id="sidebar" class="form_sidebar hide_bar">
 		<div class="insidebar">
-			<form action="#" id="point_form">
+			<form action="#" id="point_form" >
 				<!-- <div>
                 <input type="file" name="photo" accept="image/*" id="image">
                 <label for="image" class="labelPhoto"><div class="insideinput"></div></label>
                 </div> -->
-				<table>
+				<table class="form_table">
 					<tr>
 						<td class="kek" >Название</td>
 						<td ><input name ="name" type="text" class="NA"></td>
@@ -57,9 +57,9 @@
 		</div>
 	</div>
 
-	<div id="commentBar" class="hide">
+	<div id="commentBar" class="hide_bar">
 		<div class="insidebar">
-			<table>
+			<table class="form_table">
 				<tr>
 					<td class="kek1">Название
 						<div id = "discrName" class="discr">
@@ -95,28 +95,43 @@
 						</div>
 					</td>
 				</tr>
+				<tr>
+					<td class="kek1" >Комментарии <div data-modal class="comment_link">Оставить комментарий</div><br>
+						<div id="comment_pool">
+
+						</div>
+					</td>
+				</tr>
 			</table>
 		</div>
 	</div>
 </div>
-<!-- <div class="modal show">
-    <div class="modal__dialog">
-        <div class="modal__content">
-            <form action="#">
-                <div data-close class="modal__close">&times;</div>
-                <div class="modal__title">Мы свяжемся с вами как можно быстрее!</div>
-                <input required placeholder="Ваше имя" name="name" type="text" class="modal__input">
-                <input required placeholder="Ваш номер телефона" name="phone" type="phone" class="modal__input">
-                <button class="btn btn_dark btn_min">Перезвонить мне</button>
-            </form>
-        </div>
-    </div>
-</div> -->
+<div class="modal hide">
+	<div class="modal__dialog">
+		<div class="modal__content">
+			<div data-close class="modal__close">&times;</div>
+			<form action="#" class="comment_form">
+
+				<div class="modal__title">Оставьте комментарий об этой точке</div>
+
+				<table class="comment_table">
+					<tr class="comment_table_row">
+						<td class="comment_table_d">Оценка
+							<input name="mark" type="text" class="comment_rate" id=""><div class="rate3">/10</div></td>
+					</tr>
+					<tr class="comment_table_row">
+						<td colspan="2" class="comment_table_d">Комментарий<textarea name="comment" cols="63" rows="5" class="comment_area"></textarea></td>
+					</tr>
+				</table>
+
+				<button data-close type="submit" class="btn btn_min">Оставить комментарий</button>
+			</form>
+		</div>
+	</div>
+</div>
 
 
 </body>
 </html>
-
-
 
 
