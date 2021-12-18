@@ -11,7 +11,7 @@
 	<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=<28938bd0-8359-4a52-a727-7de7f4f661d9>" type="text/javascript"></script>
 	<!-- <link href="https://yandex.st/bootstrap/2.2.2/css/bootstrap.min.css" rel="stylesheet"> -->
 	<script src="https://yandex.st/jquery/2.2.3/jquery.min.js" type="text/javascript"></script>
-	<script src="/resources/Scripts/mapbasics.js" type="module"></script>
+	<script src="/resources/Scripts/mapbasics.js" type="text/javascript"></script>
 </head>
 <body>
 <div class="ramka">
@@ -19,7 +19,7 @@
 
 	<div id="sidebar" class="hide">
 		<div class="insidebar">
-			<form action="#" id="point_form">
+			<form action="#" id="upload-container">
 				<!-- <div>
                 <input type="file" name="photo" accept="image/*" id="image">
                 <label for="image" class="labelPhoto"><div class="insideinput"></div></label>
@@ -30,12 +30,12 @@
 						<td ><input name ="name" type="text" class="NA"></td>
 					</tr>
 					<tr>
-						<td class="kek" >Время работы</td>
-						<td><input name="startWork" type="time" class="time left"><div class="rate2">-</div><input name= "endTime" type="time" class="time"></td>
+						<td class="kek" >Адресс</td>
+						<td><div id="NA" class="NA">Укажите точку на карте</div></td>
 					</tr>
 					<tr>
-						<td class="kek" >Адресс</td>
-						<td><div id="coords" class="NA coords">Укажите точку на карте</div></td>
+						<td class="kek" >Время работы</td>
+						<td><input name="startWork" type="time" class="time left"><div class="rate2">-</div><input name= "endTime" type="time" class="time"></td>
 					</tr>
 					<tr>
 						<td class="kek" >Оценка</td>
@@ -56,48 +56,6 @@
 			</form>
 		</div>
 	</div>
-
-	<div id="commentBar" class="hide">
-		<div class="insidebar">
-			<table>
-				<tr>
-					<td class="kek1">Название
-						<div id = "discrName" class="discr">
-							afadw
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="kek1" >Время работы
-						<div id = "discrTime" class="discr">
-							asdg
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="kek1" >Оценка
-						<div id = "discrMark" class="discr">
-							awer
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="kek1" >Тип туалета
-						<div id = "discrType" class="discr">
-							qwf
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="kek1" >Описание <br>
-						<div id = "discrD" class="">
-							qwre
-						</div>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</div>
 </div>
 <!-- <div class="modal show">
     <div class="modal__dialog">
@@ -115,6 +73,7 @@
 
 
 </body>
+<script src="/resources/Scripts/Sidebar.js" type="text/javascript"></script>
 </html>
 
 

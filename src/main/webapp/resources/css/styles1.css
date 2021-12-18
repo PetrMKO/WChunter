@@ -205,7 +205,6 @@ td {
     background-color: #C4C4C4;
     font-size: 24px;
     text-align: left;
-    vertical-align: middle;
 }
 
 input {
@@ -214,7 +213,7 @@ input {
     border: unset;
 }
 
-#coords {
+.NA {
     display: block;
     width: 300px !important;
     height: 30px;
@@ -229,7 +228,7 @@ p {
 }
 .kek {
     border-radius: 7px 0 0 7px;
-    padding-left: 15px;
+    padding-left: 15px ;
 }
 .rate {
     margin-right: 5px;
@@ -358,7 +357,7 @@ p {
 
     transition: .3s opacity, .3s visibility; */
 }
-#sidebar, #commentBar{
+#sidebar{
     z-index: 1;
     width: 29%;
     background-color: white;
@@ -375,29 +374,12 @@ p {
     visibility: hidden;
 }
 
-.coordsGreen{
+.NAgreen{
     border: 3px solid #258806 !important;
     background-color: rgba(73, 214, 85, 0.315) !important;
 }
 
-.coordsRed{
+.NAred{
     border: 3px solid #880606;
     background-color: rgba(214, 89, 73, 0.219);
-}
-
-.kek1 {
-    border-radius: 7px !important;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-#discrD{
-    border-radius: 7px;
-    background-color: #FFFFFF;
-    color: #1A3CA3;
-    width: 450px;
-    height: 80px;
-    margin: 10px;
-    padding: 5px;
-    overflow-y: scroll;
 }
