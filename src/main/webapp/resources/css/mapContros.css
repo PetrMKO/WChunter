@@ -1,6 +1,6 @@
 @font-face {
     font-family: "ManropeThin";
-    src: url("/fonts/ManropeThin/ManropeThin.ttf");
+    src: url("/resources/fonts/ManropeThin/ManropeThin.ttf");
 }
 
 .icon-plus {
@@ -148,4 +148,14 @@ a, a:visited {
     width: 100px;
     height: 100px;
     background-color: red;
+}
+
+.discr{
+    float: right;
+    color: #1A3CA3;
+    border-radius: 7px;
+    background-color: white;
+    padding: 2px;
+    margin: 5px;
+    margin-right:10px;
 }
