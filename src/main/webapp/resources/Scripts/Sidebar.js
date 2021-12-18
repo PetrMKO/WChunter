@@ -1,19 +1,56 @@
 var smallMap = false;
 
+const modalTrigger = document.querySelectorAll('[data-modal]'),
+        modal = document.querySelector('.modal'),
+        modalCloseBtn = document.querySelector('[data-close]');
+
+    modalTrigger.forEach(btn => {
+        btn.addEventListener('click', openModal);
+    });
+
+    export function closeModal() {
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+        commentMode = false;
+    }
+
+    function openModal() {
+        modal.classList.add('show');
+        modal.classList.remove('hide');
+        document.body.style.overflow = 'hidden';
+        commentMode = true;
+    }
+    
+    modalCloseBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.code === "Escape" && modal.classList.contains('show')) { 
+            closeModal();
+        }
+    });
+
 export var addMode = false,
            commentMode = false;
 
 export function toggleBar(id){
     if(id === '#sidebar'){addMode = !addMode;}
-    $(id).removeClass('show');
-    $(id).addClass('hide');
+    $(id).removeClass('show_bar');
+    $(id).addClass('hide_bar');
 }
+
 export function toggleMap(map, id){
     if(id === '#sidebar'){addMode = !addMode;}
     smallMap = !smallMap;
     if (!smallMap) {                        //Свернуть
-        $(id).removeClass('show');
-        $(id).addClass('hide');
+        $(id).removeClass('show_bar');
+        $(id).addClass('hide_bar');
         $('coords').removeClass('coordsRed');
         map.balloon.close();
         setTimeout(() => {
@@ -27,8 +64,8 @@ export function toggleMap(map, id){
         $('#map').addClass('smallMap');
         $('#coords').addClass('coordsRed');
         setTimeout(() => {
-            $(id).removeClass('hide');
-            $(id).addClass('show');
+            $(id).removeClass('hide_bar');
+            $(id).addClass('show_bar');
             map.container.fitToViewport();
         }, 300);
 

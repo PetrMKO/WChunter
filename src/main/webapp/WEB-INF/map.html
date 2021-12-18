@@ -4,27 +4,27 @@
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
 	<title>Whitesquare</title>
-	<link rel="stylesheet" href="/resources/css/styles1.css" type="text/css">
-	<link rel="stylesheet" href="/resources/css/mapContros.css" type="text/css">
+	<link rel="stylesheet" href="../resources/css/styles1.css" type="text/css">
+	<link rel="stylesheet" href="../resources/css/mapContros.css" type="text/css">
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
 
 	<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=<28938bd0-8359-4a52-a727-7de7f4f661d9>" type="text/javascript"></script>
 	<!-- <link href="https://yandex.st/bootstrap/2.2.2/css/bootstrap.min.css" rel="stylesheet"> -->
 	<script src="https://yandex.st/jquery/2.2.3/jquery.min.js" type="text/javascript"></script>
-	<script src="/resources/Scripts/mapbasics.js" type="module"></script>
+	<script src="../resources/Scripts/mapbasics.js" type="module"></script>
 </head>
 <body>
 <div class="ramka">
 	<div class="Main" id="map"></div>
 
-	<div id="sidebar" class="hide">
+	<div id="sidebar" class="hide_bar">
 		<div class="insidebar">
 			<form action="#" id="point_form">
 				<!-- <div>
                 <input type="file" name="photo" accept="image/*" id="image">
                 <label for="image" class="labelPhoto"><div class="insideinput"></div></label>
                 </div> -->
-				<table>
+				<table class="form_table">
 					<tr>
 						<td class="kek" >Название</td>
 						<td ><input name ="name" type="text" class="NA"></td>
@@ -57,9 +57,9 @@
 		</div>
 	</div>
 
-	<div id="commentBar" class="hide">
+	<div id="commentBar" class="hide_bar">
 		<div class="insidebar">
-			<table>
+			<table class="form_table">
 				<tr>
 					<td class="kek1">Название
 						<div id = "discrName" class="discr">
@@ -95,23 +95,46 @@
 						</div>
 					</td>
 				</tr>
+				<tr>
+					<td class="kek1">Комментарии <div data-modal class="comment_link">Оставить комментарий</div><br>
+						<div id = "comments" class="">
+							<div id="commentName">Человек</div>:
+							<div id="commentRate">9/10</div>
+							<div class="comment_text comment_text__small">Djn nfrjq njkxjr yj d wtkjv [eqyz [p rfr jgb cfn m^ yju ujdf hj(p aram s);k a pohaf afovhaf v afviha[fo vhaf ]hafdv</div>
+						</div>
+					</td>
+				</tr>
 			</table>
 		</div>
 	</div>
 </div>
-<!-- <div class="modal show">
+<div class="modal show">
     <div class="modal__dialog">
         <div class="modal__content">
-            <form action="#">
-                <div data-close class="modal__close">&times;</div>
-                <div class="modal__title">Мы свяжемся с вами как можно быстрее!</div>
-                <input required placeholder="Ваше имя" name="name" type="text" class="modal__input">
-                <input required placeholder="Ваш номер телефона" name="phone" type="phone" class="modal__input">
-                <button class="btn btn_dark btn_min">Перезвонить мне</button>
+			<div data-close class="modal__close">&times;</div>
+            <form action="#" class="comment_form">
+                
+                <div class="modal__title">Оставьте комментарий об этой точке</div>
+
+                <table class="comment_table">
+					<tr class="comment_table_row">
+						<td class="comment_table_d" >Представьтесь
+						<input name ="name" type="text" class="comment_username"></td>
+					</tr>
+					<tr class="comment_table_row">
+						<td class="comment_table_d">Оценка
+							<input name="mark" type="text" class="comment_rate" id=""><div class="rate3">/10</div></td>
+					</tr>
+					<tr class="comment_table_row">
+						<td colspan="2" class="comment_table_d">Комментарий<textarea name="comment" cols="63" rows="5" class="comment_area"></textarea></td>
+					</tr>
+				</table>
+
+                <button data-close type="submit" class="btn btn_min">Оставить комментарий</button>
             </form>
         </div>
     </div>
-</div> -->
+</div>
 
 
 </body>

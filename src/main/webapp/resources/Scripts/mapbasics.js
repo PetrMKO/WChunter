@@ -1,4 +1,4 @@
-import {toggleMap, addMode, addPoints, updatePoints, toggleBar} from './Sidebar.js'
+import {toggleMap, addMode, addPoints, updatePoints, toggleBar, commentMode, closeModal} from './Sidebar.js'
 
 
 window.addEventListener('DOMContentLoaded', function() {
@@ -33,8 +33,8 @@ window.addEventListener('DOMContentLoaded', function() {
         );
         // Создадим пользовательский макет ползунка масштаба.
         var ZoomLayout = ymaps.templateLayoutFactory.createClass("<div class='blue' id='zoom'> " +
-            "<div id='zoom-in' class='btn'><i class='icon-plus'> + </i></div><br>" +
-            "<div id='zoom-out' class='btn'><i class='icon-minus'>   - </i></div>" +
+            "<div id='zoom-in' class='zoom_btn'><i class='icon-plus'> + </i></div><br>" +
+            "<div id='zoom-out' class='zoom_btn'><i class='icon-minus'>   - </i></div>" +
             "</div>", {
 
                 // Переопределяем методы макета, чтобы выполнять дополнительные действия
@@ -157,7 +157,7 @@ window.addEventListener('DOMContentLoaded', function() {
         myCollection.events.add('click', (e) =>{
             var target = e.get('target');
             console.log(target);
-            if(document.querySelector('#sidebar').classList.contains('show')){
+            if(document.querySelector('#sidebar').classList.contains('show_bar')){
                 toggleBar('#sidebar');
             }
 
@@ -214,14 +214,18 @@ window.addEventListener('DOMContentLoaded', function() {
 
         document.addEventListener("click", function(e) {
             if (e.target.className=="my-button__text") {
-                if(document.querySelector('#commentBar').classList.contains('show')){
-                    toggleBar('#commentBar');
-                }
+                // if(document.querySelector('#commentBar').classList.contains('show_bar')){
+                //     toggleBar('#commentBar');
+                // }
                 setTimeout(() => {
-                    toggleMap(myMap, '#sidebar');
+                    toggleMap(myMap, '#commentBar');
                     console.log(addMode);
                 }, 400);
 
+            }
+            if (e.target.classList.contains("comment_text")){ 
+                e.target.classList.toggle('comment_text__small'); 
+                e.target.classList.toggle('comment_text__normal');
             }
         });
 
@@ -233,21 +237,27 @@ window.addEventListener('DOMContentLoaded', function() {
         const inputMark = document.getElementById('input_mark');
 
         inputMark.addEventListener('input', () => {
-            if(inputMark.value > 10 || inputMark.value < 0){
-                inputMark.style.border="3px solid red";
-                validMark = false;
-            }
-            else{
-                inputMark.style.height = "27px";
-                inputMark.style.border = "3px solid green";
-                validMark = true;
+            if(addMode){
+                if(inputMark.value > 10 || inputMark.value < 0){
+                    inputMark.style.border="3px solid red";
+                    validMark = false;
+                }
+                else{
+                    inputMark.style.height = "27px";
+                    inputMark.style.border = "3px solid green";
+                    validMark = true;
+                }
             }
         });
 
-        const forms = document.querySelector("form");
+        const formTable = document.querySelector(".form_table"),
+              commentForm = document.querySelector(".comment_form");
 
-        console.log(forms);
-        postPoint(forms);
+        postPoint(formTable);
+        console.log(formTable);
+        postPoint(commentForm);
+        console.log(commentForm);
+        
 
         function postPoint(form){
             form.addEventListener('submit', (e) =>{
@@ -255,71 +265,74 @@ window.addEventListener('DOMContentLoaded', function() {
                 // const request  = new XMLHttpRequest();
                 // request.open('POST', 'server.php');
                 // request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-                if(validMark && validCoords){
-                    const formData =  new FormData(form);
+                const formData =  new FormData(form);
+                var addPoint;
+                const object = {
+                };
 
-                    const object = {
-                    };
+                formData.forEach(function(value, key){
+                    object[key] = value;
+                });
+            
+                console.log(object);
 
-                    // alert(coords);
-                    console.log(object);
+                if(addMode){
+                    if(validMark && validCoords){
 
-                    formData.forEach(function(value, key){
-                        object[key] = value;
-                    });
+                        const coordinates = {
+                            latitude: coords[0],
+                            longitude: coords[1]
+                        };
+                        addPoint = JSON.stringify(Object.assign(object, coordinates));
 
-                    const coordinates = {
-                        latitude: coords[0],
-                        longitude: coords[1]
-                    };
+                        const pointAded = JSON.parse(addPoint);
+                        console.log(addPoint);
 
-
-
-                    const addPoint = JSON.stringify(Object.assign(object, coordinates));
-
-                    const pointAded = JSON.parse(addPoint);
-                    console.log(addPoint);
-
-                    const newPoint = new ymaps.Placemark([+(pointAded.latitude), +(pointAded.longitude)], {
-                        hintContent: pointAded.name,
-                        balloonContentHeader: pointAded.name
-                        // balloonContentBody: point.comment
-                        // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
-                        // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
-                        //     '<div class="footer2Foto"></div></div></div>'
-                    }, {
-                        iconLayout: 'default#image',
-                        iconImageHref: '/resources/images/ToiletIcon.png',
-                        iconImageSize: [24, 38],
-                        iconImageOffset: [-12, -38]
-                    });
+                        const newPoint = new ymaps.Placemark([+(pointAded.latitude), +(pointAded.longitude)], {
+                            hintContent: pointAded.name,
+                            balloonContentHeader: pointAded.name
+                            // balloonContentBody: point.comment
+                            // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
+                            // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
+                            //     '<div class="footer2Foto"></div></div></div>'
+                        }, {
+                            iconLayout: 'default#image',
+                            iconImageHref: '/resources/images/ToiletIcon.png',
+                            iconImageSize: [24, 38],
+                            iconImageOffset: [-12, -38]
+                        });
 
 
-                    updatePoints(myCollection, newPoint);
-
-                    $.ajax({
-                        type: "POST",
-                        url: 'test',
-                        // The key needs to match your method's input parameter (case-sensitive).
-                        data: addPoint,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function(data){
-                            console.log("datatatatata=");
-                            console.log(data)
-                        },
-                        error: function(errMsg) {
-                            console.log(errMsg);
-
-                        }
-                    });
-                    form.reset();
-                    toggleMap(myMap, "#sidebar");
+                        updatePoints(myCollection, newPoint);
+                        form.reset();
+                        toggleMap(myMap, "#sidebar");
+                        validMark=false;
+                        validCoords= false;
+                    }
                 }
 
-                else{
-                    alert('Заполните корректно форму');
+
+                if(commentMode){
+                    closeModal();
                 }
+                $.ajax({
+                    type: "POST",
+                    url: 'test',
+                    // The key needs to match your method's input parameter (case-sensitive).
+                    data: addPoint,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(data){
+                        console.log("datatatatata=");
+                        console.log(data)
+                    },
+                    error: function(errMsg) {
+                        console.log(errMsg);
+
+                    }
+                });
+
+                
             });
         }
     }
