@@ -1,86 +1,122 @@
-window.addEventListener('DOMContentLoaded', function() {
+var smallMap = false;
 
-    alert('Content loaded');
-    const forms = document.querySelectorAll('form');
+const modalTrigger = document.querySelectorAll('[data-modal]'),
+    modal = document.querySelector('.modal'),
+    modalCloseBtn = document.querySelector('[data-close]');
 
-    forms.forEach(item =>{
-        postData(item);
-    });
+modalTrigger.forEach(btn => {
+    btn.addEventListener('click', openModal);
+});
 
-    function postData(form){
-        form.addEventListener('submit', (e) =>{
-            e.preventDefault();
-            // const request  = new XMLHttpRequest();
-            // request.open('POST', 'server.php');
-            //
-            // request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-            const formData =  new FormData(form);
+export function closeModal() {
+    modal.classList.add('hide');
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+    commentMode = false;
+}
 
-            const object = {
-            };
+function openModal() {
+    modal.classList.add('show');
+    modal.classList.remove('hide');
+    document.body.style.overflow = 'hidden';
+    commentMode = true;
+}
 
-            alert(coords);
-            console.log(object);
-            formData.forEach(function(value, key){
-                object[key] = value;
-            });
+modalCloseBtn.addEventListener('click', closeModal);
 
-            const coordinates = {
-                Lat: coords[0],
-                Long: coords[1]
-            };
-
-
-
-            const addPoint = JSON.stringify(Object.assign(object, coordinates));
-
-            const pointAded = JSON.parse(addPoint);
-            console.log(addPoint);
-
-            $.ajax({
-                type: "POST",
-                url: "test",
-                // The key needs to match your method's input parameter (case-sensitive).
-                data: addPoint,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function(data){
-                    alert(data);
-                    myMap.geoObjects.remove(myCollection)
-                    myCollection.add(new ymaps.Placemark([+(pointAded.latitude), +(pointAded.longitude)], {
-                            hintContent: pointAded.name,
-                            balloonContentHeader: pointAded.name
-                            // balloonContentBody: point.comment
-                            // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
-                            // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
-                            //     '<div class="footer2Foto"></div></div></div>'
-                        }, {
-                            iconLayout: 'default#image',
-                            iconImageHref: 'resources/images/ToiletIcon.png',
-                            iconImageSize: [24, 38],
-                            iconImageOffset: [-12, -38]
-                        })
-                    );
-                    myMap.geoObjects.add(myCollection);
-                },
-                error: function(errMsg) {
-                    alert(errMsg);
-                }
-            });
-            window.location.reload();
-            smallMap = !smallMap
-            $('#sidebar').removeClass('show');
-            $('#sidebar').addClass('hide');
-            addMode = false;
-            myMap.balloon.close();
-            setTimeout(() => {
-                $('#map').removeClass('smallMap');
-            }, 350);
-
-            setTimeout(() => {
-                myMap.container.fitToViewport();
-            }, 650);
-
-        });
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        closeModal();
     }
 });
+
+document.addEventListener('keydown', (e) => {
+    if (e.code === "Escape" && modal.classList.contains('show')) {
+        closeModal();
+    }
+});
+
+export var addMode = false,
+    commentMode = false;
+
+export function toggleBar(id){
+    if(id === '#sidebar'){addMode = !addMode;}
+    $(id).removeClass('show_bar');
+    $(id).addClass('hide_bar');
+}
+
+export function toggleMap(map, id){
+
+    smallMap = !smallMap;
+    if (!smallMap) {                        //Свернуть
+        if(id === '#sidebar'){addMode = false;}
+        document.querySelector('#comment_pool').innerHTML = '';
+        $(id).removeClass('show_bar');
+        $(id).addClass('hide_bar');
+        $('coords').removeClass('coordsRed');
+        map.balloon.close();
+        setTimeout(() => {
+            $('#map').removeClass('smallMap');
+        }, 350);
+
+        setTimeout(() => {
+            map.container.fitToViewport();
+        }, 650);
+    } else {
+        if(id === '#sidebar'){addMode = true;}//Развернуть
+        $('#map').addClass('smallMap');
+        $('#coords').addClass('coordsRed');
+        setTimeout(() => {
+            $(id).removeClass('hide_bar');
+            $(id).addClass('show_bar');
+            map.container.fitToViewport();
+        }, 300);
+
+    }
+
+}
+
+export function addPoints(map, geoCollection){
+    const request = new XMLHttpRequest();
+    request.open('GET', 'points');
+    request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    request.send();
+
+
+    request.addEventListener('load', () => {
+        if(request.status === 200) {
+            const points = JSON.parse(request.response);
+
+            console.log("succes");
+            console.log(points);
+
+            points.forEach((point) => {
+                console.log(point);
+
+                geoCollection.add(new ymaps.Placemark([+(point.latitude), +(point.longitude)], {
+                        hintContent: point.name,
+                        balloonContentHeader: point.name
+                        // balloonContentBody: point.comment
+                        // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
+                        // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
+                        //     '<div class="footer2Foto"></div></div></div>'
+                    }, {
+                        iconLayout: 'default#image',
+                        iconImageHref: '/resources/images/ToiletIcon.png',
+                        iconImageSize: [24, 38],
+                        iconImageOffset: [-12, -38]
+                    })
+                );
+            });
+        }
+
+        else{
+            console.log("false");
+        }
+    });
+    map.geoObjects.add(geoCollection);
+}
+
+export function updatePoints(geoCollection, point){
+    geoCollection.add(point);
+}
