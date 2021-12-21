@@ -87,6 +87,14 @@ public class RestContr {
         userService.saveAndFlush(userEntity);
     }
 
+    @RequestMapping(value = "deleteFavorites/{name}", method = RequestMethod.POST)
+    public void deleteFavorites(@PathVariable String name){
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = userService.findByLogin(auth.getName());
+        userEntity.deleteFav(toiletService.findByName(name));
+        userService.saveAndFlush(userEntity);
+    }
 
     @RequestMapping(value = "addcomment/{name}", method = RequestMethod.POST)
     public HttpEntity addcomment(@PathVariable String name, HttpEntity<String> httpEntity ) {

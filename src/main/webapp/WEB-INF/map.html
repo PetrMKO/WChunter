@@ -20,10 +20,10 @@
 	<div id="sidebar" class="form_sidebar hide_bar">
 		<div class="insidebar">
 			<form action="#" id="point_form" >
-				<!-- <div>
-                <input type="file" name="photo" accept="image/*" id="image">
-                <label for="image" class="labelPhoto"><div class="insideinput"></div></label>
-                </div> -->
+				<div>
+					<input type="file" name="photo" accept="image/*" id="image">
+					<div class="insideinput" id="image_input"></div>
+				</div>
 				<table class="form_table">
 					<tr>
 						<td class="kek" >Название</td>
@@ -58,7 +58,11 @@
 	</div>
 
 	<div id="commentBar" class="hide_bar">
-		<div class="insidebar">
+		<div class="insidebar" id="commentInsideBar">
+			<div class="button_layout">
+				<div class="favorite_btn top_btn" >Добавить в избранное</div>
+				<div data-claim class="claim_btn top_btn">Оставить жалобу</div>
+			</div>
 			<table class="form_table">
 				<tr>
 					<td class="kek1">Название
@@ -130,6 +134,25 @@
 	</div>
 </div>
 
+<div class="claim_modal modal hide">
+	<div class="modal__dialog">
+		<div class="modal__content">
+			<div data-close class="modal__close claim-close">&times;</div>
+			<form action="#" class="claim_form">
+
+				<div class="modal__title">Опишите что не так с этой точкой</div>
+
+				<table class="comment_table">
+					<tr class="comment_table_row">
+						<td colspan="2" class="comment_table_d">Жолуйтесь<textarea name="claim" cols="63" rows="5" class="comment_area"></textarea></td>
+					</tr>
+				</table>
+
+				<button claim-close type="submit" class="btn btn_min">Оставить комментарий</button>
+			</form>
+		</div>
+	</div>
+</div>
 
 </body>
 </html>

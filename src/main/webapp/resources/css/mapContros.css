@@ -109,15 +109,15 @@ a, a:visited {
 
 
 .smallMap {
-    width: 70% !important;
+    width: 64% !important;
     height: 825px !important;
 
 }
-.bigmap{
-    width: 70% !important;
-    height: 825px !important;
+/*.bigmap{*/
+/*    width: 70% !important;*/
+/*    height: 825px !important;*/
 
-}
+/*}*/
 
 #map {
     float:right;
@@ -175,11 +175,6 @@ a, a:visited {
     border-radius: 7px !important;
     padding-left: 15px;
     padding-right: 15px;
-
-}
-
-.kek1:last-of-type{
-
 }
 
 #discrD{
@@ -193,13 +188,14 @@ a, a:visited {
     overflow-y: scroll;
 }
 
-.one_comment {
+.one_comment{
     border-radius: 7px;
     background-color: #FFFFFF;
     color: #1A3CA3;
-    width: 400px;
+    width: 450px;
     margin: 10px;
     padding: 5px 15px;
+    overflow-y: scroll;
 }
 
 #commentName{
@@ -207,10 +203,6 @@ a, a:visited {
     display: inline-block;
 }
 
-#comment_pool{
-    max-height: 200px;
-    overflow-y: scroll;
-}
 #commentRate{
     float: right;
 }
@@ -240,6 +232,7 @@ a, a:visited {
 
 .comment_link:hover{
     color: #1A3CA3;
+    text-shadow: 0 7px 30px rgba(26, 60, 163, .7);
 }
 
 .show_bar {
@@ -253,11 +246,13 @@ a, a:visited {
 }
 #sidebar, #commentBar{
     z-index: 1;
-    width: 29%;
+    width: 35%;
     background-color: white;
     border: 2px solid #1A3CA3;
     height: 823px;
     padding-right: 11px;
+    overflow-y: scroll;
+    /*overflow: hidden;*/
 }
 
 .hide_bar {
@@ -295,7 +290,7 @@ a, a:visited {
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, .2);
     border-radius: 4px;
-    height: auto;
+    height: 420px;
     overflow-y: auto
 }
 
@@ -369,10 +364,11 @@ a, a:visited {
 
 .hide {
     display: none
+    !important;
 }
 
 .show {
-    display: block
+    display: block;
 }
 
 .comment_table{
@@ -380,7 +376,7 @@ a, a:visited {
     width: 420px;
 }
 
-.comment_username{
+.nt_username{
     width: 50%;
 }
 
@@ -437,4 +433,145 @@ a, a:visited {
 
 .comment_form {
     width: 420px !important;
+}
+
+
+
+
+
+.preview-image{
+    width: 183px;
+    height: 183px;
+    position: relative;
+    overflow: hidden;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 7px;
+    border: 2px solid #1A3CA3;
+}
+
+.preview-remove{
+    opacity: 0;
+    width:20px;
+    height:20px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-weight: bold;
+    background: rgba(19, 57, 184, 0.466);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity .22s;
+    border-top-right-radius: 7px;
+}
+
+.preview-image:hover .preview-remove{
+    opacity: 1;
+}
+
+.preview-image:hover .preview-info{
+    bottom: 0px;
+}
+
+.preview-image:hover .preview{
+    box-shadow: 0 3px 30px rgba(26, 60, 163, .5);
+}
+
+.preview-info{
+    position: absolute;
+    right: 0;
+    bottom: -30px;
+    left: 0;
+    height: 26px;
+    vertical-align: top;
+    font-size: 0.6rem;
+    font-weight: bold;
+    background: rgba(19, 57, 184, 0.466);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+    transition: bottom .22s;
+}
+
+.preview-info span{
+    width: 50%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.insideinput{
+    background-image: url(../images/photo.png);
+    background-position: center;
+    background-size:100px;
+    background-repeat: no-repeat;
+    width: 188px;
+    height: 188px;
+    background-color: #C4C4C4;
+    border-radius: 7px;
+    transition: box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.preview{
+    overflow: hidden;
+    /* border-radius: 7px; */
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    width: 188px;
+    height: 188px;
+}
+
+.insideinput:hover{
+    cursor: pointer;
+    box-shadow: 0 7px 30px rgba(26, 60, 163, .7);
+    transition: box-shadow 0.2s;
+}
+
+#image{
+    display:none;
+}
+
+.button_layout{
+    font-family: "ManropeThin";
+    font-size: 20px;
+    left: 0;
+    right: 0;
+    background-color: #C4C4C4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.4rem;
+    color: white;
+    border-radius: 7px;
+}
+
+.favorite_btn:hover{
+    color:yellow;
+    cursor: pointer;
+}
+
+.favorite_btn1{
+    color:yellow !important;
+    cursor: pointer;
+}
+
+.claim_btn{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.claim_btn:hover{
+    color: #1A3CA3;
+    text-shadow: 0 7px 30px rgba(26, 60, 163, .7);
+}
+
+.preview-image img{
+    width:180px;
+    height: 180px;
 }
