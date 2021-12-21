@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pack.entity.ComplaintEntity;
 import pack.entity.UserEntity;
+import pack.repo.ComplaintsRepo;
 import pack.repo.ToiletRepo;
 import pack.repo.UserRepo;
+import pack.service.ToiletService;
 import pack.service.UserService;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 
 @Controller
@@ -24,12 +28,13 @@ import javax.servlet.http.HttpSession;
 public class Contr {
 
     @Autowired
-    UserRepo userRepo;
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private ToiletRepo toiletRepo;
+    private ComplaintsRepo complaintsRepo;
+
+    @Autowired
+    private ToiletService toiletService;
 
     @Autowired
     private UserService userService;
@@ -41,16 +46,18 @@ public class Contr {
     public String lk(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object principal = auth.getPrincipal().getClass();
-        UserEntity userEntity = userRepo.findByLogin(auth.getName());
+        UserEntity userEntity = userService.findbyLogin(auth.getName());
         model.addAttribute("login", auth.getName());
-        try {
+        if (userEntity.getRole().equals("USER")) {
             model.addAttribute("toilets", userEntity.getFavorite());
             model.addAttribute("toiletsadded", userEntity.getAdded());
-        }catch (Exception e){
-            System.out.println("g");
+            return "lk";
         }
-
-        return "lk";
+        model.addAttribute("complaints",complaintsRepo.findAll());
+        ComplaintEntity complaint = new ComplaintEntity("fdhdfh", "dhdrherdh");
+        complaint.setToiletEntity(toiletService.findByName("point"));
+        complaintsRepo.saveAndFlush(complaint);
+        return "moderlk";
     }
 
 
@@ -82,7 +89,7 @@ public class Contr {
             return "reg";
         }
 
-        final UserEntity userEntity = userRepo.findByLogin(login);
+        final UserEntity userEntity = userService.findbyLogin(login);
         if (userEntity != null) {
             model.addAttribute("message2", "Такой пользователь уже существует !");
             return "reg";
@@ -90,7 +97,7 @@ public class Contr {
 
 //        System.out.println(userRepo.findAll());
 //        System.out.println(userRepo.findByLogin("geg"));
-        userRepo.save(new UserEntity(login, passwordEncoder.encode(password), "USER"));
+        userService.save(new UserEntity(login, passwordEncoder.encode(password), "USER"));
 
         return "loginka";
 

@@ -20,11 +20,6 @@ html, body {
     font-size: 14px;
 }
 
-.labelPhoto{
-    width: 188px !important;
-
-}
-
 @font-face {
     font-family: "ManropeThin";
     src: url("../fonts/ManropeThin/ManropeThin.ttf");
@@ -136,6 +131,22 @@ li {
     text-decoration: none;
 }
 
+.batton3{
+    border: unset;
+    border-radius: 7px;
+    margin: 0 auto;
+    margin-top: 50px;
+    width: auto;
+    display: block;
+    font-size: 35px;
+    font-family: ManropeThin;
+    color: white;
+    background-color: #C4C4C4;
+}
+
+
+
+
 .Lk {
     position: absolute;
     margin-top: 65px;
@@ -151,7 +162,7 @@ li {
 
 .insidebar {
     margin: 30px 40px;
-    width: auto;
+    width: 510px;
 }
 
 
@@ -180,16 +191,6 @@ li {
 }
 
 
-.insideinput{
-    background-image: url(../images/photo.png);
-    background-position: center;
-    background-size:100px;
-    background-repeat: no-repeat;
-    width: 188px !important;
-    height: 188px;
-    background-color: #C4C4C4;
-    border-radius: 7px;
-}
 .form_table {
     width: 500px;
     border: none;

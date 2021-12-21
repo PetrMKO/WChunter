@@ -11,10 +11,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pack.entity.*;
+import pack.repo.ComplaintsRepo;
 import pack.repo.UserRepo;
 import pack.service.ToiletService;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +25,12 @@ import java.util.List;
 @RequestMapping("")
 public class RestContr {
 
+
     @Autowired
-    private UserRepo userRepo;
+    private ComplaintsRepo complaintsRepo;
+
+    @Autowired
+    private UserRepo userService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -34,15 +40,11 @@ public class RestContr {
 
 
     @RequestMapping(value = "test", method = RequestMethod.POST)
-    public void test(HttpEntity<String> httpEntity ){
-        System.out.println(httpEntity.getBody());
-
-        try {
+    public void test(HttpEntity<String> httpEntity ) throws JsonProcessingException {
             NewJsonpoint jsonpoint = objectMapper.readValue(httpEntity.getBody(), NewJsonpoint.class);
+            System.out.println(jsonpoint.toString());
             toiletService.toiletSave(jsonpoint);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @RequestMapping(value = "points", produces={"application/json"}, method = RequestMethod.GET)
@@ -67,6 +69,23 @@ public class RestContr {
         return toiletService.findByName(name);
     }
 
+    @RequestMapping(value = "complaint/{name}", method = RequestMethod.POST)
+    public void addComplaint(@PathVariable String name,  HttpEntity<String> httpEntity){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ComplaintEntity complaintEntity = new ComplaintEntity();
+        complaintEntity.setComplain(httpEntity.getBody());
+        complaintEntity.setUsername(auth.getName());
+        complaintEntity.setToiletEntity(toiletService.findByName(name));
+        complaintsRepo.saveAndFlush(complaintEntity);
+    }
+
+    @RequestMapping(value = "addFavorites/{name}", method = RequestMethod.POST)
+    public void addFavorites(@PathVariable String name,  HttpEntity<String> httpEntity){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = userService.findByLogin(auth.getName());
+        userEntity.addFavorites(toiletService.findByName(name));
+        userService.saveAndFlush(userEntity);
+    }
 
 
     @RequestMapping(value = "addcomment/{name}", method = RequestMethod.POST)
@@ -83,6 +102,24 @@ public class RestContr {
         }
         return new ResponseEntity(HttpStatus.CONFLICT);
     }
+
+    @RequestMapping(value = "deleteComplaint/{id}")
+    public void deleteComplaint(@PathVariable Long id){
+        complaintsRepo.deleteById(id);
+    }
+
+
+    @RequestMapping(value = "deletePoint/{id}")
+    public void deletePoint(@PathVariable Long id){
+        complaintsRepo.deleteById(id);
+    }
+
+    @RequestMapping(value = "username")
+    public String getUsername(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
+
 
 
 }

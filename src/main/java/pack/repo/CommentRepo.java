@@ -7,5 +7,4 @@ import pack.entity.CommentEntity;
 @Repository
 public interface CommentRepo extends JpaRepository<CommentEntity, Long> {
 
-
 }

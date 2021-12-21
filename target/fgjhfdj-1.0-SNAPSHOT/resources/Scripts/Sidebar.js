@@ -1,43 +1,85 @@
 var smallMap = false;
 
-const modalTrigger = document.querySelectorAll('[data-modal]'),
-    modal = document.querySelector('.modal'),
-    modalCloseBtn = document.querySelector('[data-close]');
+const modalTrigger = document.querySelector('[data-modal]'),
+      claimTrigger = document.querySelector('[data-claim]'),
+      claimCloseBtn = document.querySelector('.claim-close'),
+      modalCloseBtn = document.querySelector('[data-close]'),
+      favoriteBtn = document.querySelector('.favorite_btn');
 
-modalTrigger.forEach(btn => {
-    btn.addEventListener('click', openModal);
+export var addMode = false,
+    commentMode = false,
+    claimMode = false;
+
+export const modal = document.querySelector('.modal'),
+    claim = document.querySelector('.claim_modal');
+
+
+modalTrigger.addEventListener('click', () => {
+    openModal(modal);
 });
 
-export function closeModal() {
-    modal.classList.add('hide');
-    modal.classList.remove('show');
+claimTrigger.addEventListener('click', () => {
+    console.log('ckiikk');
+    openModal(claim);
+});
+// claimTrigger.addEventListener('click', openModal());
+
+
+export function closeModal(modalT) {
+    modalT.classList.add('hide');
+    modalT.classList.remove('show');
     document.body.style.overflow = '';
-    commentMode = false;
+    if(modalT.classList.contains('claim_modal')){
+        claimMode = false;
+    }
+    else{commentMode = false;}
+
 }
 
-function openModal() {
-    modal.classList.add('show');
-    modal.classList.remove('hide');
+function openModal(modalT) {
+    modalT.classList.add('show');
+    modalT.classList.remove('hide');
     document.body.style.overflow = 'hidden';
-    commentMode = true;
+    if(modalT.classList.contains('claim_modal')){
+        claimMode = true;
+    }
+    else{commentMode = true;}
 }
 
-modalCloseBtn.addEventListener('click', closeModal);
+modalCloseBtn.addEventListener('click', () =>{
+    closeModal(modal);});
+
+claimCloseBtn.addEventListener('click', () =>{
+    closeModal(claim);});
 
 modal.addEventListener('click', (e) => {
     if (e.target === modal) {
-        closeModal();
+        // closeModal();
     }
+});
+
+favoriteBtn.addEventListener('click', () =>{
+
+    if(favoriteBtn.classList.contains('favorite_btn1')){
+        $.post(`deleteFavorites/${document.querySelector('#discrName').innerHTML}`, function(data){
+            favoriteBtn.classList.remove('favorite_btn1');
+        });
+    }
+
+    else{
+        $.post(`addFavorites/${document.querySelector('#discrName').innerHTML}`, function(data){
+            favoriteBtn.classList.add('favorite_btn1');
+        });
+    }
+
+
 });
 
 document.addEventListener('keydown', (e) => {
     if (e.code === "Escape" && modal.classList.contains('show')) {
-        closeModal();
+        // closeModal();
     }
 });
-
-export var addMode = false,
-    commentMode = false;
 
 export function toggleBar(id){
     if(id === '#sidebar'){addMode = !addMode;}
@@ -51,6 +93,7 @@ export function toggleMap(map, id){
     if (!smallMap) {                        //Свернуть
         if(id === '#sidebar'){addMode = false;}
         document.querySelector('#comment_pool').innerHTML = '';
+        document.querySelector('.comment_photo').innerHTML = '';
         $(id).removeClass('show_bar');
         $(id).addClass('hide_bar');
         $('coords').removeClass('coordsRed');

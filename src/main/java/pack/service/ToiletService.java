@@ -1,6 +1,7 @@
 package pack.service;
 
 
+import com.sun.mail.util.BASE64DecoderStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,7 +11,13 @@ import pack.entity.*;
 import pack.repo.CommentRepo;
 import pack.repo.ToiletRepo;
 
+
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -28,7 +35,7 @@ public class ToiletService {
 
 
     @Transactional
-    public void toiletSave( NewJsonpoint jsonpoint){
+    public void toiletSave( NewJsonpoint jsonpoint) {
         ToiletEntity toiletEntity = new ToiletEntity();
         toiletEntity.setLongitude(jsonpoint.getLong());
         toiletEntity.setLatitude(jsonpoint.getLat());
@@ -37,6 +44,22 @@ public class ToiletService {
         toiletEntity.setDiscribe(jsonpoint.getComment());
         toiletEntity.setTime(jsonpoint.getStartWork() + " - " + jsonpoint.getEndTime());
         toiletEntity.setType(jsonpoint.getType());
+
+        String base64Image = jsonpoint.getPhoto().split(",")[1];
+        byte[] convertByte = DatatypeConverter.parseBase64Binary(base64Image);
+        FileOutputStream img = null;
+        try {
+            img = new FileOutputStream("C:\\Users\\yranikus\\IdeaProjects\\fgjhfdj\\src\\main\\webapp\\resources\\images\\toilets\\"
+            + jsonpoint.getName() + ".jpeg");
+            img.write(convertByte);
+            img.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = userService.findbyLogin(auth.getName());
         userEntity.addToilet(toiletEntity);
@@ -66,5 +89,7 @@ public class ToiletService {
     public ToiletEntity findByName(String name) {
         return toiletRepo.findAllByName(name);
     }
+
+
 
 }

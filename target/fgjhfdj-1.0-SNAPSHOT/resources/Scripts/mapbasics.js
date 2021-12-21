@@ -1,17 +1,28 @@
-import {toggleMap, addMode, addPoints, updatePoints, toggleBar, commentMode, closeModal} from './Sidebar.js'
+import {toggleMap, addMode, addPoints, updatePoints, toggleBar, commentMode, closeModal, modal, claim, claimMode} from '/resources/Scripts/Sidebar.js';
+import {upload} from '/resources/Scripts/imageUpload.js';
 
+export var imageSrc="";
+export function addsrc(img){
+    imageSrc = img;
+}
 
 window.addEventListener('DOMContentLoaded', function() {
 
     ymaps.ready(init);
 
 
-    var button,
+    var username,
         myMap,
         coords,
         myCollection,
         validMark = false,
         validCoords = false;
+
+    $.get("username")
+        .done(function( data ) {
+            username = data;
+            data.log( "Data Loaded: " + data );
+        });
 
     function init() {
         const mapWrapper = document.getElementById('map');
@@ -130,12 +141,14 @@ window.addEventListener('DOMContentLoaded', function() {
             success: function(data) {
                 console.log(data);
                 if (data != null) {
-                    // const dd
+
                     document.querySelector('#discrD').innerHTML = data.discribe;
                     document.querySelector('#discrName').innerHTML = data.name;
                     document.querySelector('#discrTime').innerHTML = data.time;
                     document.querySelector('#discrMark').innerHTML = data.mark + "/10";
                     document.querySelector('#discrType').innerHTML = data.type;
+
+
 
                     center[0] = data.latitude;
                     center[1] = data.longitude;
@@ -150,7 +163,6 @@ window.addEventListener('DOMContentLoaded', function() {
                     setTimeout(()=>{
                         myMap.panTo(center, {duration: 1000, });
                     }, 500);
-
                 }
             },
             error(errMsg){
@@ -184,6 +196,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
         addPoints(myMap, myCollection);
 
+        const photoDiv = document.createElement('div');
+        photoDiv.classList.add('comment_photo');
         myCollection.events.add('click', (e) =>{
             var target = e.get('target');
             console.log(target);
@@ -197,6 +211,11 @@ window.addEventListener('DOMContentLoaded', function() {
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function(data) {
+
+                    photoDiv.insertAdjacentHTML('afterbegin', `
+                        <img class="preview-image" src='/resources/images/toilets/${data.name}.jpeg' alt="Вот как-то так"/>
+                    `);
+
                     console.log(data);
                     // const ddd = data
                     document.querySelector('#discrD').innerHTML = data.discribe;
@@ -212,7 +231,7 @@ window.addEventListener('DOMContentLoaded', function() {
                                           `<div id="commentRate">${obj.mark}/10</div>`+
                                           `<div class="comment_text comment_text__small">${obj.comment}</div></div>`);
                     }
-
+                    document.querySelector('#commentInsideBar').insertAdjacentElement('afterbegin', photoDiv);
                 }
             });
 
@@ -272,7 +291,10 @@ window.addEventListener('DOMContentLoaded', function() {
         });
 
 
-
+        upload('#image', '#image_input', {
+            multi: false,
+            accept: ['.png', '.jpg', '.jpeg', '.gif']
+        });
 
         // alert('Content loaded');
 
@@ -293,13 +315,15 @@ window.addEventListener('DOMContentLoaded', function() {
         });
 
         const formTable = document.querySelector("#point_form"),
-            commentForm = document.querySelector(".comment_form");
+            commentForm = document.querySelector(".comment_form"),
+            claimForm = document.querySelector(".claim_form");
 
         postPoint(formTable);
         console.log(formTable);
         postPoint(commentForm);
         console.log(commentForm);
-
+        postPoint(claimForm);
+        console.log(claimForm);
 
         function postPoint(form){
             form.addEventListener('submit', (e) =>{
@@ -309,9 +333,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 // request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
                 const formData =  new FormData(form);
                 var add, url;
-                const object = {
-                };
-
+                const object = {};
                 formData.forEach(function(value, key){
                     object[key] = value;
                 });
@@ -324,9 +346,11 @@ window.addEventListener('DOMContentLoaded', function() {
 
                         const coordinates = {
                             latitude: coords[0],
-                            longitude: coords[1]
+                            longitude: coords[1],
+                            img: imageSrc
                         };
 
+                        delete object.photo
                         add = JSON.stringify(Object.assign(object, coordinates));
 
                         const pointAded = JSON.parse(add);
@@ -351,14 +375,34 @@ window.addEventListener('DOMContentLoaded', function() {
                         toggleMap(myMap, "#sidebar");
                         validMark=false;
                         validCoords= false;
+
+                        document.getElementById("point_form").reset();
+                        document.getElementById("image_input").classList.remove("hide");
+                        document.querySelector(".preview").innerHTML="";
+                        document.querySelector(".preview").classList.add("hide");
                     }
                 }
 
 
-                if(commentMode) {
-                    closeModal();
+                else if(commentMode) {
+                    closeModal(modal);
                     add = JSON.stringify(object);
+                    console.log(add);
                     url = `addcomment/${document.querySelector('#discrName').innerHTML}`;
+
+                    console.log(username, object.mark, object.comment);
+                    $('#comment_pool').append('<div id = `comments${}` class="one_comment">'+
+                        `<div id="commentName">${username}</div>:`+
+                        `<div id="commentRate">${object.mark}/10</div>`+
+                        `<div class="comment_text comment_text__small">${object.comment}</div></div>`);
+                }
+
+                else if(claimMode){
+                    closeModal(claim);
+
+                    add = object.claim;
+                    console.log(add);
+                    url = `complaint/${document.querySelector('#discrName').innerHTML}`;
                 }
 
                 $.ajax({
@@ -373,16 +417,12 @@ window.addEventListener('DOMContentLoaded', function() {
                         console.log(data)
                     },
                     error: function(errMsg) {
-                        console.log(errMsg);
-
+                        console.log(errMsg)
                     }
+
                 });
             });
             form.reset();
         }
     }
-
-    window.addEventListener('beforeunload', ()=>{
-        window.location.href = 'map.html'
-    }, false)
 });

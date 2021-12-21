@@ -24,6 +24,9 @@
 					<div class="batton" th:text="${login}">Nickname</div>
 					<div class="batton2"><a href="map">Карта</a></div>
 					<div class="batton2"><a>Сменить пароль</a></div>
+					<form th:action="@{/logout}" method="post">
+						<input class="batton3" type="submit" value="Выход">
+					</form>
 				</div>
 				<div class="block">
 					<div class="fav">Добавленное</div>

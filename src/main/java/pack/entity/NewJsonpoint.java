@@ -21,9 +21,19 @@ public class NewJsonpoint {
     private Double Lat;
     @JsonProperty("longitude")
     private Double Long;
+    @JsonProperty("img")
+    private String Photo;
 
 
-    public NewJsonpoint(String name, String startWork, String endTime, int mark, String type, String comment, Double lat, Double Long) {
+    public String getPhoto() {
+        return Photo;
+    }
+
+    public void setPhoto(String photo) {
+        Photo = photo;
+    }
+
+    public NewJsonpoint(String name, String startWork, String endTime, int mark, String type, String comment, Double lat, Double Long, String img) {
         this.name = name;
         this.startWork = startWork;
         this.endTime = endTime;
@@ -32,10 +42,14 @@ public class NewJsonpoint {
         this.comment = comment;
         this.Lat = lat;
         this.Long = Long;
+        this.Photo = img;
     }
 
     public NewJsonpoint() {
     }
+
+
+
 
     public String getName() {
         return name;
@@ -101,9 +115,10 @@ public class NewJsonpoint {
         Long = aLong;
     }
 
+
     @Override
     public String toString() {
-        return "Jsonpoint{" +
+        return "NewJsonpoint{" +
                 "name='" + name + '\'' +
                 ", startWork='" + startWork + '\'' +
                 ", endTime='" + endTime + '\'' +
@@ -112,6 +127,7 @@ public class NewJsonpoint {
                 ", comment='" + comment + '\'' +
                 ", Lat=" + Lat +
                 ", Long=" + Long +
+                ", Photo='" + Photo + '\'' +
                 '}';
     }
 }

@@ -36,6 +36,11 @@ public class UserEntity {
         added.add(toiletEntity);
     }
 
+
+    public void deleteFav(ToiletEntity toiletEntity){
+        this.favorite.remove(toiletEntity);
+    }
+
     public void setAdded(Set<ToiletEntity> added) {
         this.added = added;
     }

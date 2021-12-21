@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "toilet")
@@ -19,6 +20,8 @@ public class ToiletEntity {
     private Double longitude;
     private String type;
     private String time;
+    @Transient
+    private String img;
     private int mark;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "comments",
@@ -26,9 +29,13 @@ public class ToiletEntity {
             inverseJoinColumns = @JoinColumn(name = "comment", referencedColumnName = "ID"))
     private List<CommentEntity> comment;
 
+
+
+
     public List<CommentEntity> getComment() {
         return comment;
     }
+
 
     public void setComment(List<CommentEntity> comment) {
         this.comment = comment;
@@ -41,6 +48,7 @@ public class ToiletEntity {
     public ToiletEntity() {
     }
 
+
     public ToiletEntity(String name, String discribe, Double latitude, Double longitude, List<CommentEntity> comment, int mark, String type, String time) {
         this.name = name;
         this.discribe = discribe;
@@ -51,6 +59,16 @@ public class ToiletEntity {
         this.type = type;
         this.time = time;
     }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+
 
     public String getTime() {
         return time;
