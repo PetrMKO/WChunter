@@ -58,7 +58,7 @@
 
 
 .third {
-    background-color: rgb(26, 61, 163);
+    background-color: #1A3CA3;
 }
 
 
@@ -72,7 +72,7 @@ a {
 }
 
 .btn:active {
-    background-color: darkblue;
+    background-color: #1A3CA3;
 }
 
 

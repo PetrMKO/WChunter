@@ -1,6 +1,6 @@
 .ramka {
     width: auto;
-    height: 825px;
+    height: 100%;
     background: #FFFFFF;
 }
 
@@ -167,12 +167,6 @@ li {
 }
 
 
-.insidebar {
-    margin: 30px 40px;
-    width: 510px;
-}
-
-
 #upload-container label {
     font-weight: bold;
 }
@@ -198,24 +192,6 @@ li {
 }
 
 
-.form_table {
-    width: 500px;
-    border: none;
-    border-radius: 7px;
-    color: white;
-    font-family: ManropeThin;
-    border-spacing: 0px 20px ;
-}
-
-td {
-    height: 40px;
-    border-radius: 0 7px 7px 0;
-    background-color: #C4C4C4;
-    font-size: 24px;
-    text-align: left;
-    vertical-align: middle;
-}
-
 input {
     border-radius: 7px;
     margin-top: 0;
@@ -235,19 +211,7 @@ p {
     margin: 0;
     display: block;
 }
-.kek {
-    border-radius: 7px 0 0 7px;
-    padding-left: 15px;
-}
-.rate {
-    margin-right: 5px;
-    float: left;
-    height: 30px;
-    width: 90px;
-    display: block;
-    margin-top: 5px;
-    margin-left: 60px;
-}
+
 
 .time {
     margin-top: 5px;
@@ -257,25 +221,15 @@ p {
     box-sizing: border-box;
 }
 
-.left{
-    margin-left: 60px;
-}
-
 .rate2 {
     margin: 0 20px;
     float: left;
 }
 
-.tr {
-    height: 50px;
-}
 
-
-.discription{
+#comment_com .discription{
     border-radius: 7px;
-    margin: 5px;
-    display: block;
-    resize: none;
+    width: 375px;
 }
 
 .send {

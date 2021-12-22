@@ -14,99 +14,93 @@
 	<script src="/resources/Scripts/mapbasics.js" type="module"></script>
 </head>
 <body>
-<div class="ramka">
+<div class="ramka" >
 	<div class="Main" id="map"></div>
 
 	<div id="sidebar" class="form_sidebar hide_bar">
 		<div class="insidebar">
-			<form action="#" id="point_form" >
+			<div class="insidebar_close">&times;</div>
+			<form action="#" id="point_form">
 				<div>
 					<input type="file" name="photo" accept="image/*" id="image">
 					<div class="insideinput" id="image_input"></div>
 				</div>
-				<table class="form_table">
-					<tr>
-						<td class="kek" >Название</td>
-						<td ><input name ="name" type="text" class="NA"></td>
-					</tr>
-					<tr>
-						<td class="kek" >Время работы</td>
-						<td><input name="startWork" type="time" class="time left"><div class="rate2">-</div><input name= "endTime" type="time" class="time"></td>
-					</tr>
-					<tr>
-						<td class="kek" >Адресс</td>
-						<td><div id="coords" class="NA coords">Укажите точку на карте</div></td>
-					</tr>
-					<tr>
-						<td class="kek" >Оценка</td>
-						<td>
-							<input name="mark" type="text" class="rate" id="input_mark" ><div class="rate2">/10</div>
-						</td>
-					</tr>
-					<tr>
-						<td class="kek" >Тип туалета</th>
-						<td ><input name="type" type="text" class="NA" ></td>
-					</tr>
-					<tr>
-						<td colspan="2" ><textarea name="comment" cols="63" rows="5" class="discription"></textarea></p>
-							<p></td>
-					</tr>
-				</table>
-				<input type="submit" class="send" value="Добавить">
+
+				<div class="form_table" id="name_input_row">
+
+					<div class="form_table_row">
+						<div class="kek" >Название</div><input name ="name" type="text" class="name_input">
+					</div>
+					<div class="form_table_row">
+						<div class="kek" >Время работы</div><div><input name="startWork" type="time" class="time left"><div class="rate2">-</div><input name= "endTime" type="time" class="time"></div>
+					</div>
+
+					<div class="form_table_row">
+						<div class="kek" >Адресс</div><div id="coords" class="NA coords">Укажите точку на карте</div>
+					</div>
+					<div class="form_table_row" id="kek_input_mark">
+						<div class="kek" id="kek_type">Оценка</div>
+						<div><input name="mark" type="text" class="rate" id="input_mark" ><div class="rate2">/10</div></div>
+
+					</div>
+					<div class="form_table_row">
+						<div class="kek">Тип туалета</div><input name="type" type="text" class="name_input">
+					</div>
+					<div class="form_table_row boxrow" id="add_comment_row">
+						<div>Описание</div>
+						<textarea name="comment" rows="3" class="discription"></textarea>
+					</div>
+
+					<input type="submit" class="send" value="Добавить">
+				</div>
+
 			</form>
 		</div>
 	</div>
 
 	<div id="commentBar" class="hide_bar">
 		<div class="insidebar" id="commentInsideBar">
+			<div class="commentbar_close">&times;</div>
+			<div class="comment_photo">
+			</div>
 			<div class="button_layout">
 				<div class="favorite_btn top_btn" >Добавить в избранное</div>
 				<div data-claim class="claim_btn top_btn">Оставить жалобу</div>
 			</div>
-			<table class="form_table">
-				<tr>
-					<td class="kek1">Название
-						<div id = "discrName" class="discr">
-							afadw
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="kek1" >Время работы
-						<div id = "discrTime" class="discr">
-							asdg
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="kek1" >Оценка
-						<div id = "discrMark" class="discr">
-							awer
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="kek1" >Тип туалета
-						<div id = "discrType" class="discr">
-							qwf
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="kek1" >Описание <br>
-						<div id = "discrD" class="">
-							qwre
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td class="kek1" >Комментарии <div data-modal class="comment_link">Оставить комментарий</div><br>
-						<div id="comment_pool">
+			<div class="form_table">
+				<div class="form_table_row">Название
+					<div id = "discrName" class="discr">
+						afadw
+					</div>
+				</div>
 
-						</div>
-					</td>
-				</tr>
-			</table>
+				<div class="form_table_row">Время работы
+					<div id = "discrTime" class="discr">
+						asdg
+					</div>
+				</div>
+
+				<div class="form_table_row">Оценка
+					<div id = "discrMark" class="discr">
+						awer
+					</div>
+				</div>
+				<div class="form_table_row">Тип туалета
+					<div id = "discrType" class="discr">
+						qwf
+					</div>
+				</div>
+				<div class="form_table_row" id="comment_discr">Описание <br>
+					<div id = "discrD" class="">
+						qwre
+					</div>
+				</div>
+				<div class="form_table_row boxrow">Комментарии <div data-modal class="comment_link">Оставить комментарий</div><br>
+					<div id="comment_pool">
+
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -118,15 +112,16 @@
 
 				<div class="modal__title">Оставьте комментарий об этой точке</div>
 
-				<table class="comment_table">
-					<tr class="comment_table_row">
-						<td class="comment_table_d">Оценка
-							<input name="mark" type="text" class="comment_rate" id=""><div class="rate3">/10</div></td>
-					</tr>
-					<tr class="comment_table_row">
-						<td colspan="2" class="comment_table_d">Комментарий<textarea name="comment" cols="63" rows="5" class="comment_area"></textarea></td>
-					</tr>
-				</table>
+				<div class="comment_table">
+					<div class="form_table_row boxrow">
+						<div class="kek">Оценка</div>
+						<div><input name="mark" type="text" class="rate"><div class="rate2">/10</div></div>
+					</div>
+					<div class="form_table_row boxrow" id="comment_com">
+						<div>Комментарий</div>
+						<textarea name="comment" rows="5" class="discription"></textarea>
+					</div>
+				</div>
 
 				<button data-close type="submit" class="btn btn_min">Оставить комментарий</button>
 			</form>
@@ -142,13 +137,12 @@
 
 				<div class="modal__title">Опишите что не так с этой точкой</div>
 
-				<table class="comment_table">
-					<tr class="comment_table_row">
-						<td colspan="2" class="comment_table_d">Жолуйтесь<textarea name="claim" cols="63" rows="5" class="comment_area"></textarea></td>
-					</tr>
-				</table>
+				<div class="form_table_row boxrow" id="">
+					<div>Жалуйтесь</div>
+					<textarea name="claim" rows="5" class="discription"></textarea>
+				</div>
 
-				<button claim-close type="submit" class="btn btn_min">Оставить комментарий</button>
+				<button claim-close type="submit" class="btn btn_min">Оправить жалобу</button>
 			</form>
 		</div>
 	</div>

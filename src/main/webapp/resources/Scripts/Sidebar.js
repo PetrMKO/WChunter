@@ -61,8 +61,21 @@ modal.addEventListener('click', (e) => {
 favoriteBtn.addEventListener('click', () =>{
 
     if(favoriteBtn.classList.contains('favorite_btn1')){
-        $.post(`deleteFavorites/${document.querySelector('#discrName').innerHTML}`, function(data){
-            favoriteBtn.classList.remove('favorite_btn1');
+
+        $.ajax({
+            type: "POST",
+            url: `deleteFavorites/${document.querySelector('#discrName').innerHTML}`,
+            // The key needs to match your method's input parameter (case-sensitive).
+            data: '',
+            success: function(data){
+
+                console.log(data);
+            },
+            error: function(errMsg) {
+                favoriteBtn.classList.remove('favorite_btn1');
+                console.log(errMsg);
+            }
+
         });
     }
 
@@ -81,8 +94,17 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+export function nameError(){
+    const nameBusy = document.createElement('div');
+    nameBusy.classList.add('busy_block');
+    nameBusy.innerText = 'Занято, братан';
+    document.querySelector('#name_input_row').insertAdjacentElement('beforebegin', nameBusy);
+    console.log('Вроде добавилось');
+}
+
 export function toggleBar(id){
     if(id === '#sidebar'){addMode = !addMode;}
+    if(id === '#commentBar'){commentMode = !commentMode;}
     $(id).removeClass('show_bar');
     $(id).addClass('hide_bar');
 }
