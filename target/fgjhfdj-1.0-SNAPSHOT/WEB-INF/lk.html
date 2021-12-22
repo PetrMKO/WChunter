@@ -16,7 +16,7 @@
 					<div class="fav">Избранное</div>
 					<div class="scroll"  th:unless="${#lists.isEmpty(toilets)}">
 					<ul th:each="toilet : ${toilets}">
-					<li><a class="toilets" th:text="${toilet.name}">Большая порашная</a></li>
+					<li><a class="toilets" th:text="${toilet.name}" th:href="'map?name=' + ${toilet.name}">Большая порашная</a></li>
 					</ul>
 					</div>
 				</div>
