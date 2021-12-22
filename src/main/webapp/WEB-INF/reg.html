@@ -13,14 +13,14 @@
             <br>
             <div class="error" th:if="${message2} != null" th:text="${message2}">Такой пользователь уже существует !</div>
             <input id="tbx_login" type="text" placeholder="Логин" class="rounded-element tbx" name="login"/>
-            <br> <br> <br> <br>
+            <br> <br> <br>
             <div class="error" th:if="${message1} != null" th:text="${message1}">Пароли не совпадают!</div>
             <input id="tbx_mail" type="password" placeholder="Пароль" class="rounded-element tbx" name="password"/>
-            <br> <br> <br> <br>
+            <br> <br> <br>
             <input id="tbx_pass" type="password" placeholder="Пароль" class="rounded-element tbx" name="repeat"/>
-            <br> <br> <br> <br>
+            <br> <br> <br>
             <input id="btn_send" type="submit" value="Зарегистрироваться" class="rounded-element btn">
-            <br> <br> <br> <br>
+            <br> <br> <br>
         </form>
     </div>
 </body>

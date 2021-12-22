@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html xmlns:th="http://thymeleaf.org">
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -14,27 +14,30 @@
 		<div class="zalobi">
 			<div class="listz">Список жалоб</div>
 			<div class="okno">
-				<ul>
+				<ul th:each="comp : ${complaints}">
 					<li class="zaloba">
 						<div class="accept">
-							<img class="photo">
-							<form>
+							<img class="photo" th:src="'/resources/images/toilets/' + ${comp.toiletEntity.name} + '.jpeg'">
+							<form th:action="@{/complaints(id=${comp.id},action='delPoint',pointId=${comp.toiletEntity.id})}" method="post">
 								<div class="abtn d" ><input class="abtn d" type="submit" value="Удалить точку"></div>
 							</form>
-							<form>
+							<form th:action="@{/complaints(id=${comp.id},action='del',pointId=${comp.toiletEntity.id})}" method="post">
 								<div class="abtn a"><input class="abtn a" type="submit" value="Проигнорировать"></div>
 							</form>
 						</div>
 						<div class="text">
 							<div class="zagolovok">Текст жалобы</div>
-							<div class="opisanie"></div>
+							<div class="opisanie">
+								<div class="punkt" th:text="${comp.complain}">Название:</div>
+								<div class="punkt" th:text="'Жалобу оставил: ' + ${comp.username}">Название:</div>
+							</div>
 						</div>
 						<div class="text">
 							<div class="zagolovok">Описание туалета</div>
 							<div class="opisanie">
-								<div class="punkt">Название:</div>
-								<div class="punkt">Оценка:</div>
-								<div class="punkt">Описание:</div>
+								<div class="punkt" th:text="'Название: ' + ${comp.toiletEntity.name}">Название:</div>
+								<div class="punkt" th:text="'Оценка: ' + ${comp.toiletEntity.mark}">Оценка:</div>
+								<div class="punkt" th:text="'Описание: ' + ${comp.toiletEntity.discribe}">Описание:</div>
 							</div>
 						</div>
 					</li>
@@ -45,7 +48,7 @@
 			<div class="batton">Nickname</div>
 			<div class="batton2"><a href="map">Карта</a></div>
 			<div class="batton2"><a>Сменить пароль</a></div>
-			<form action="/logout" method="post">
+			<form th:action="@{/logout}" method="post">
 				<input class="batton3" type="submit" value="Выход">
 			</form>
 		</div>

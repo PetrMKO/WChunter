@@ -45,7 +45,6 @@ public class Contr {
     @GetMapping("lk")
     public String lk(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = auth.getPrincipal().getClass();
         UserEntity userEntity = userService.findbyLogin(auth.getName());
         model.addAttribute("login", auth.getName());
         if (userEntity.getRole().equals("USER")) {
@@ -54,11 +53,32 @@ public class Contr {
             return "lk";
         }
         model.addAttribute("complaints",complaintsRepo.findAll());
-        ComplaintEntity complaint = new ComplaintEntity("fdhdfh", "dhdrherdh");
-        complaint.setToiletEntity(toiletService.findByName("point"));
-        complaintsRepo.saveAndFlush(complaint);
         return "moderlk";
     }
+
+    @PostMapping("complaints")
+    public String complaintsLk(@RequestParam(required = false) Long id, @RequestParam(required = false) String action,
+                               @RequestParam(required = false) Long pointId, Model model){
+        if (action != null) {
+            if (action.equals("del")) {
+                complaintsRepo.deleteById(id);
+            }
+            if (action.equals("delPoint")) {
+                complaintsRepo.deleteById(id);
+                toiletService.deletePoint(pointId);
+            }
+        }
+        System.out.println(action);
+        System.out.println(id);
+        System.out.println(pointId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = userService.findbyLogin(auth.getName());
+        model.addAttribute("login", auth.getName());
+        model.addAttribute("complaints",complaintsRepo.findAll());
+        return "redirect:lk";
+
+    }
+
 
 
     @GetMapping("")
@@ -95,8 +115,6 @@ public class Contr {
             return "reg";
         }
 
-//        System.out.println(userRepo.findAll());
-//        System.out.println(userRepo.findByLogin("geg"));
         userService.save(new UserEntity(login, passwordEncoder.encode(password), "USER"));
 
         return "loginka";

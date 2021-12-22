@@ -48,13 +48,16 @@ public class ToiletService {
         String base64Image = jsonpoint.getPhoto().split(",")[1];
         byte[] convertByte = DatatypeConverter.parseBase64Binary(base64Image);
         FileOutputStream img = null;
+        FileOutputStream imgCopy = null;
         try {
-            img = new FileOutputStream("C:\\Users\\yranikus\\IdeaProjects\\fgjhfdj\\src\\main\\webapp\\resources\\images\\toilets\\"
+            img = new FileOutputStream("D:\\tomcat\\apache-tomcat-9.0.54\\webapps\\ROOT\\resources\\images\\toilets\\"
             + jsonpoint.getName() + ".jpeg");
             img.write(convertByte);
             img.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            imgCopy = new FileOutputStream("C:\\Users\\yranikus\\IdeaProjects\\fgjhfdj\\src\\main\\webapp\\resources\\images\\toilets\\"
+                    + jsonpoint.getName() + ".jpeg");
+            imgCopy.write(convertByte);
+            imgCopy.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -90,6 +93,9 @@ public class ToiletService {
         return toiletRepo.findAllByName(name);
     }
 
+    public void deletePoint(Long id){
+        toiletRepo.deleteById(id);
+    }
 
 
 }

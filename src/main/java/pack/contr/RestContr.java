@@ -40,11 +40,18 @@ public class RestContr {
 
 
     @RequestMapping(value = "test", method = RequestMethod.POST)
-    public void test(HttpEntity<String> httpEntity ) throws JsonProcessingException {
+    @ResponseBody
+    public ResponseEntity test(HttpEntity<String> httpEntity ) throws JsonProcessingException {
+        System.out.println(httpEntity.getBody());
             NewJsonpoint jsonpoint = objectMapper.readValue(httpEntity.getBody(), NewJsonpoint.class);
-            System.out.println(jsonpoint.toString());
+
+            ToiletEntity toiletEntity = toiletService.findByName(jsonpoint.getName());
+            if (toiletEntity != null) {
+                return ResponseEntity.status(400).body("");
+            }
             toiletService.toiletSave(jsonpoint);
 
+            return ResponseEntity.status(200).body("");
     }
 
     @RequestMapping(value = "points", produces={"application/json"}, method = RequestMethod.GET)
@@ -89,7 +96,7 @@ public class RestContr {
 
     @RequestMapping(value = "deleteFavorites/{name}", method = RequestMethod.POST)
     public void deleteFavorites(@PathVariable String name){
-
+        System.out.println(name);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = userService.findByLogin(auth.getName());
         userEntity.deleteFav(toiletService.findByName(name));
@@ -98,7 +105,6 @@ public class RestContr {
 
     @RequestMapping(value = "addcomment/{name}", method = RequestMethod.POST)
     public HttpEntity addcomment(@PathVariable String name, HttpEntity<String> httpEntity ) {
-        System.out.println(httpEntity.getBody());
         try {
             CommentEntity commentEntity = objectMapper.readValue(httpEntity.getBody(), CommentEntity.class);
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -111,16 +117,6 @@ public class RestContr {
         return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping(value = "deleteComplaint/{id}")
-    public void deleteComplaint(@PathVariable Long id){
-        complaintsRepo.deleteById(id);
-    }
-
-
-    @RequestMapping(value = "deletePoint/{id}")
-    public void deletePoint(@PathVariable Long id){
-        complaintsRepo.deleteById(id);
-    }
 
     @RequestMapping(value = "username")
     public String getUsername(){

@@ -33,7 +33,6 @@
     margin-top: 10px;
     line-height: 14px;
     vertical-align: text-bottom;
-    /* background-image: url(../images/glyphicons-halflings1.png); */
     background-repeat: no-repeat;
 }
 
@@ -45,7 +44,6 @@
     line-height: 20px;
     color: #333;
     text-align: center;
-    /* text-shadow: 0 1px 1px rgb(255 255 255 / 75%); */
     vertical-align: center;
     cursor: pointer;
     border-radius: 4px;
@@ -59,17 +57,6 @@
     border-radius: 3px;
     max-width: 250px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.closeButton {
-    flex-basis: 15px;
-    flex-grow: 0;
-    flex-shrink: 0;
-    padding: 3px;
-    height: 15px;
-    cursor: pointer;
-    background: url("/resources/css/cross.svg") 50% no-repeat;
-    opacity: 0.3;
 }
 
 .content {
@@ -109,21 +96,16 @@ a, a:visited {
 
 
 .smallMap {
-    width: 64% !important;
+    width: 69% !important;
     height: 825px !important;
 
 }
-/*.bigmap{*/
-/*    width: 70% !important;*/
-/*    height: 825px !important;*/
-
-/*}*/
 
 #map {
     float:right;
     width: 100%;
     transition: 0.3s;
-    height: 825px;
+    height: 100%;
     margin: 0;
     padding: 0;
     background-color:#ccc;
@@ -138,27 +120,7 @@ a, a:visited {
     font-size: 20px !important;
 }
 
-.baloonFooter{
-    width: 210px;
-    height: 100px;
-}
 
-
-.footer2Foto{
-    width: 100px;
-    height: 100px;
-    background-color: red;
-}
-
-.discr{
-    float: right;
-    color: #1A3CA3;
-    border-radius: 7px;
-    background-color: white;
-    padding: 2px;
-    margin: 5px;
-    margin-right:10px;
-}
 
 
 .coordsGreen{
@@ -175,13 +137,14 @@ a, a:visited {
     border-radius: 7px !important;
     padding-left: 15px;
     padding-right: 15px;
+
 }
 
 #discrD{
     border-radius: 7px;
     background-color: #FFFFFF;
     color: #1A3CA3;
-    width: 450px;
+    width: auto;
     height: 80px;
     margin: 10px;
     padding: 5px;
@@ -192,7 +155,7 @@ a, a:visited {
     border-radius: 7px;
     background-color: #FFFFFF;
     color: #1A3CA3;
-    width: 450px;
+    width: auto;
     margin: 10px;
     padding: 5px 15px;
     overflow-y: scroll;
@@ -244,15 +207,29 @@ a, a:visited {
 
     transition: .3s opacity, .3s visibility; */
 }
+
+.insidebar {
+    position: relative;
+    margin: 30px auto;
+    width: 450px;
+    color: white;
+    font-family: ManropeThin;
+    font-size: 24px;
+}
+
 #sidebar, #commentBar{
     z-index: 1;
-    width: 35%;
+    width: 30%;
     background-color: white;
     border: 2px solid #1A3CA3;
     height: 823px;
     padding-right: 11px;
     overflow-y: scroll;
     /*overflow: hidden;*/
+}
+
+#point_form{
+    width: 450px;
 }
 
 .hide_bar {
@@ -290,7 +267,7 @@ a, a:visited {
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, .2);
     border-radius: 4px;
-    height: 420px;
+    height: auto;
     overflow-y: auto
 }
 
@@ -311,20 +288,6 @@ a, a:visited {
     text-align: center;
     font-size: 22px;
     text-transform: uppercase
-}
-
-.modal__input {
-    display: block;
-    margin: 20px auto 20px auto;
-    width: 280px;
-    height: 50px;
-    background: #fff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, .2);
-    border: none;
-    font-size: 18px;
-    text-align: center;
-    padding: 0 20px;
-    outline: 0
 }
 
 .modal .btn {
@@ -386,14 +349,15 @@ a, a:visited {
     width: 400px;
     padding: 10px;
     border-radius: 7px !important;
-    vertical-align: bottom;
     margin-bottom: 10px;
 }
 
-.comment_table_d input{
+.form_table_row input{
     border: 2px solid #1A3CA3;
     border-radius: 7px;
     height: 27px;
+    font-family: ManropeThin;
+    color:#1A3CA3;
 }
 
 .comment_area:focus, input:focus{
@@ -416,6 +380,8 @@ a, a:visited {
 
 
 .comment_table_row {
+    font-size: 24px;
+    background-color: #C4C4C4;;
     width: 420px;
 }
 
@@ -435,12 +401,86 @@ a, a:visited {
     width: 420px !important;
 }
 
+.form_table {
+    background-color: white;
+    width: 450px;
+    border: none;
+    border-radius: 7px;
+    color: white;
+    font-family: 'ManropeThin';
+    margin-top: 10px;
+}
 
+.form_table_row{
+    position: relative;
+    padding: 5px;
+    height: auto;
+    border-radius: 7px;
+    background-color: #C4C4C4;
+    font-size: 24px;
+    text-align: left;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 15px;
+}
 
+.name_input{
+    height: 24px;
+    width: 100%;
+    margin-left: 40px
+}
 
+.rate {
+    margin-right: 5px;
+    float: left;
+    height: 24px;
+    width: 35px;
+    display: inline;
+}
+
+#comment_discr{
+    display: block ;
+}
+
+#comment_com{
+    display: block;
+}
+#input_mark{
+    margin-top:2px;
+}
+
+#kek_type{
+    position: absolute;
+    left: 15px;
+    vertical-align: middle;
+}
+
+#kek_input_mark{
+    justify-content:center;
+}
+
+.kek {
+    white-space: nowrap;
+}
+
+.discr{
+    float: right;
+    color: #1A3CA3;
+    border-radius: 7px;
+    background-color: white;
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 5px;
+    margin-right: 10%;
+}
 
 .preview-image{
-    width: 100%;
+    width: 183px;
     height: 183px;
     position: relative;
     overflow: hidden;
@@ -574,4 +614,37 @@ a, a:visited {
 .preview-image img{
     width:180px;
     height: 180px;
+}
+
+textarea{
+    font-family: "ManropeThin";
+    font-size: 20px;
+    color:#1A3CA3;
+    outline: none;
+    border-radius: 7px;
+    margin: 5px;
+    resize:none;
+}
+
+textarea:focus{
+    box-shadow: 0 7px 30px rgba(26, 60, 163, .5)
+}
+
+#add_comment_row{
+    display: block;
+}
+.discription{
+    width: 96%;
+}
+
+.boxrow{
+    display: block !important;
+}
+.busy_block{
+    border-radius: 3px;
+    border: 1px solid red;
+    float: right;
+    margin-right: 60px;
+    color: red;
+    font-size: 24px;
 }

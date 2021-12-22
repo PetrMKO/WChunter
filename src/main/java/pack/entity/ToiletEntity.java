@@ -22,6 +22,8 @@ public class ToiletEntity {
     private String time;
     @Transient
     private String img;
+    @Transient
+    private boolean isFavorite;
     private int mark;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "comments",

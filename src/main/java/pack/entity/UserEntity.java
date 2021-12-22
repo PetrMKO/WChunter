@@ -1,6 +1,8 @@
 package pack.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,7 +40,13 @@ public class UserEntity {
 
 
     public void deleteFav(ToiletEntity toiletEntity){
-        this.favorite.remove(toiletEntity);
+        int i = -1;
+        for (ToiletEntity t : favorite){
+            if (t.getId().equals(toiletEntity.getId())){
+                i = favorite.indexOf(t);
+            }
+        }
+        if (i > -1) favorite.remove(i);
     }
 
     public void setAdded(Set<ToiletEntity> added) {
@@ -49,7 +57,7 @@ public class UserEntity {
         return favorite;
     }
 
-    public void setFavorite(List<ToiletEntity> favorite) {
+    public void setFavorite(ArrayList<ToiletEntity> favorite) {
         this.favorite = favorite;
     }
 

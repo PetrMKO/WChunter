@@ -10,6 +10,7 @@ import pack.entity.UserEntity;
 public interface UserRepo extends JpaRepository<UserEntity, Long> {
 
     UserEntity findByLogin(String login);
+    
 
 
 }

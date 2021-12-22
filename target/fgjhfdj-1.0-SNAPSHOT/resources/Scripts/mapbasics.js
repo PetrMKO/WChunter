@@ -1,4 +1,4 @@
-import {toggleMap, addMode, addPoints, updatePoints, toggleBar, commentMode, closeModal, modal, claim, claimMode} from '/resources/Scripts/Sidebar.js';
+import {toggleMap, addMode, addPoints, updatePoints, toggleBar, commentMode, closeModal, modal, claim, claimMode, nameError} from '/resources/Scripts/Sidebar.js';
 import {upload} from '/resources/Scripts/imageUpload.js';
 
 export var imageSrc="";
@@ -7,6 +7,14 @@ export function addsrc(img){
 }
 
 window.addEventListener('DOMContentLoaded', function() {
+
+    function setHeiHeight() {
+        $('.ramka').css({
+            height: $(window).height() + 'px'
+        });
+    }
+    setHeiHeight();
+    $(window).resize( setHeiHeight );
 
     ymaps.ready(init);
 
@@ -21,11 +29,11 @@ window.addEventListener('DOMContentLoaded', function() {
     $.get("username")
         .done(function( data ) {
             username = data;
-            data.log( "Data Loaded: " + data );
+            console.log( "Data Loaded: " + data );
         });
 
     function init() {
-        const mapWrapper = document.getElementById('map');
+        var geolocation = ymaps.geolocation;
         myMap = new ymaps.Map('map', {
                 center: [59.951235204009016,30.304518020247105],
                 zoom: 16,
@@ -35,12 +43,29 @@ window.addEventListener('DOMContentLoaded', function() {
                 // Зададим ограниченную область прямоугольником,
                 // примерно описывающим Санкт-Петербург.
                 balloonMaxWidth: 200,
-                restrictMapArea: [
-                    [59.838,29.511],
-                    [60.056,30.829]
-                ]
-            }
+                restrictMapArea: [[59.79989555713461, 29.583574397792205],[60.109484912314834,30.655513866175998]]
+            },
+        geolocation.get({
+            provider: 'yandex',
+            mapStateAutoApply: true
+        }).then(function (result) {
+            // Красным цветом пометим положение, вычисленное через ip.
+            result.geoObjects.options.set('preset', 'islands#redCircleIcon');
+            result.geoObjects.get(0).properties.set({
+                balloonContentBody: 'Мое местоположение'
+            });
+            myMap.geoObjects.add(result.geoObjects);
+        }),
 
+        geolocation.get({
+            provider: 'browser',
+            mapStateAutoApply: true
+        }).then(function (result) {
+            // Синим цветом пометим положение, полученное через браузер.
+            // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
+            result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+            myMap.geoObjects.add(result.geoObjects);
+        })
         );
         // Создадим пользовательский макет ползунка масштаба.
         var ZoomLayout = ymaps.templateLayoutFactory.createClass("<div class='blue' id='zoom'> " +
@@ -189,7 +214,6 @@ window.addEventListener('DOMContentLoaded', function() {
         });
         myMap.controls.add(mySearchControl, { float: '20' });
 
-        //Добавление точек
         myCollection = new ymaps.GeoObjectCollection(null, {
             hasBalloon: false
         });
@@ -198,46 +222,75 @@ window.addEventListener('DOMContentLoaded', function() {
 
         const photoDiv = document.createElement('div');
         photoDiv.classList.add('comment_photo');
-        myCollection.events.add('click', (e) =>{
-            var target = e.get('target');
+
+        document.querySelector('.insidebar_close').addEventListener('click', () =>{
+            toggleMap(myMap, 'insidebar');
+        });
+
+        document.querySelector('.commentbar_close').addEventListener('click', () =>{
+            toggleMap(myMap, 'comentBar');
+        });
+
+        myCollection.events.add('click', (e) => {
+            const target = e.get('target');
+            const bar = document.querySelector("#commentBar");
+            const namepoint = document.querySelector('#discrName').innerHTML;
+            console.log(namepoint)
+            console.log(bar);
+            console.log(target.properties._data.hintContent);
             console.log(target);
+            function getinfo(){
+                $.ajax({
+                    url: `point/${target.properties._data.hintContent}`,
+                    type: 'GET',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        photoDiv.insertAdjacentHTML('afterbegin', `
+                                <img class="preview-image" src='/resources/images/toilets/${data.name}.jpeg' alt="Вот как-то так"/>
+                            `);
+
+                        console.log(data);
+                        document.querySelector('#discrD').innerHTML = data.discribe;
+                        document.querySelector('#discrName').innerHTML = data.name;
+                        document.querySelector('#discrTime').innerHTML = data.time;
+                        document.querySelector('#discrMark').innerHTML = data.mark + "/10";
+                        document.querySelector('#discrType').innerHTML = data.type;
+                        console.log(data.comment);
+                        for (let obj of data.comment) {
+                            console.log(obj.username, obj.mark, obj.comment);
+                            $('#comment_pool').append('<div id = `comments${}` class="one_comment">' +
+                                `<div id="commentName">${obj.username}</div>:` +
+                                `<div id="commentRate">${obj.mark}/10</div>` +
+                                `<div class="comment_text comment_text__small">${obj.comment}</div></div>`);
+                        }
+                        document.querySelector('#commentInsideBar').insertAdjacentElement('afterbegin', photoDiv);
+                    }
+                });
+            }
+
+
             if(document.querySelector('#sidebar').classList.contains('show_bar')){
                 toggleBar('#sidebar');
             }
 
-            $.ajax({
-                url: `point/${target.properties._data.hintContent}`,
-                type: 'GET',
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function(data) {
-
-                    photoDiv.insertAdjacentHTML('afterbegin', `
-                        <img class="preview-image" src='/resources/images/toilets/${data.name}.jpeg' alt="Вот как-то так"/>
-                    `);
-
-                    console.log(data);
-                    // const ddd = data
-                    document.querySelector('#discrD').innerHTML = data.discribe;
-                    document.querySelector('#discrName').innerHTML = data.name;
-                    document.querySelector('#discrTime').innerHTML = data.time;
-                    document.querySelector('#discrMark').innerHTML = data.mark + "/10";
-                    document.querySelector('#discrType').innerHTML = data.type;
-                    console.log(data.comment);
-                    for(let obj of data.comment){
-                        console.log(obj.username, obj.mark, obj.comment);
-                        $('#comment_pool').append('<div id = `comments${}` class="one_comment">'+
-                                          `<div id="commentName">${obj.username}</div>:`+
-                                          `<div id="commentRate">${obj.mark}/10</div>`+
-                                          `<div class="comment_text comment_text__small">${obj.comment}</div></div>`);
-                    }
-                    document.querySelector('#commentInsideBar').insertAdjacentElement('afterbegin', photoDiv);
-                }
-            });
-
-            setTimeout(() => {
+            if(document.getElementById('commentBar').classList.contains('hide_bar') && !commentMode){
+                console.log(1);
+                getinfo();
                 toggleMap(myMap, '#commentBar');
-            }, 400);
+            }
+
+            else if(target.properties._data.hintContent === namepoint && commentMode && document.querySelector('#commentBar').classList.contains('show_bar')){
+                console.log(2);
+                toggleMap(myMap, '#commentBar');
+            }
+
+            else if(target.properties._data.hintContent !== namepoint && commentMode && document.querySelector('#commentBar').classList.contains('show_bar')){
+                console.log(3);
+                toggleBar('#commentBar');
+                getinfo();
+                toggleBar('#commentBar');
+            }
         });
 
 
@@ -252,6 +305,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
             if (!myMap.balloon.isOpen() && addMode) {
                 coords = e.get('coords');
+                console.log(coords);
                 myMap.balloon.open(coords, {
                     contentHeader:'Событие!',
                     contentBody:'<p>Точка с координатами:</p><p>' + [
@@ -273,14 +327,19 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
         document.addEventListener("click", function(e) {
-            if (e.target.className=="my-button__text") {
+            if (e.target.className==="my-button__text") {
                 if(document.querySelector('#commentBar').classList.contains('show_bar')){
                     toggleBar('#commentBar');
+                    setTimeout(() => {
+                        toggleMap(myMap, '#sidebar');
+                        console.log(addMode);
+                    }, 400);
                 }
-                setTimeout(() => {
+                else{
                     toggleMap(myMap, '#sidebar');
                     console.log(addMode);
-                }, 400);
+                }
+
 
             }
             if (e.target.classList.contains("comment_text")){
@@ -325,8 +384,19 @@ window.addEventListener('DOMContentLoaded', function() {
         postPoint(claimForm);
         console.log(claimForm);
 
+        function newAddPoint(point){
+            updatePoints(myCollection, point);
+            toggleMap(myMap, "#sidebar");
+            validMark=false;
+            validCoords= false;
+
+            document.querySelector("#point_form").reset();
+            // document.getElementById("image_input").classList.remove("hide");
+        }
+
         function postPoint(form){
             form.addEventListener('submit', (e) =>{
+                let newPoint;
                 e.preventDefault();
                 // const request  = new XMLHttpRequest();
                 // request.open('POST', 'server.php');
@@ -338,12 +408,11 @@ window.addEventListener('DOMContentLoaded', function() {
                     object[key] = value;
                 });
 
-                console.log(object);
+                // console.log(object);
 
                 if(addMode){
                     url='test'
                     if(validMark && validCoords){
-
                         const coordinates = {
                             latitude: coords[0],
                             longitude: coords[1],
@@ -356,7 +425,7 @@ window.addEventListener('DOMContentLoaded', function() {
                         const pointAded = JSON.parse(add);
                         console.log(pointAded);
 
-                        const newPoint = new ymaps.Placemark([+(pointAded.latitude), +(pointAded.longitude)], {
+                        newPoint = new ymaps.Placemark([+(pointAded.latitude), +(pointAded.longitude)], {
                             hintContent: pointAded.name,
                             balloonContentHeader: pointAded.name
                             // balloonContentBody: point.comment
@@ -370,16 +439,8 @@ window.addEventListener('DOMContentLoaded', function() {
                             iconImageOffset: [-12, -38]
                         });
 
-
-                        updatePoints(myCollection, newPoint);
-                        toggleMap(myMap, "#sidebar");
-                        validMark=false;
-                        validCoords= false;
-
-                        document.getElementById("point_form").reset();
-                        document.getElementById("image_input").classList.remove("hide");
-                        document.querySelector(".preview").innerHTML="";
-                        document.querySelector(".preview").classList.add("hide");
+                        // document.querySelector(".preview").innerHTML="";
+                        // document.querySelector(".preview").classList.add("hide");
                     }
                 }
 
@@ -413,16 +474,22 @@ window.addEventListener('DOMContentLoaded', function() {
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function(data){
-                        console.log("datatatatata=");
-                        console.log(data)
+
+                        console.log(newPoint);
                     },
                     error: function(errMsg) {
-                        console.log(errMsg)
+                       if(errMsg.status === 200){
+                           newAddPoint(newPoint);
+                       }
+                       else if(errMsg.status === 400){
+                           nameError();
+                       }
                     }
 
                 });
+                form.reset();
             });
-            form.reset();
+
         }
     }
 });
