@@ -1,0 +1,43 @@
+<!doctype html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<title>Whitesquare</title>
+	<link rel="stylesheet" href="/resources/css/styles1.css" type="text/css">
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
+</head>
+<body>
+	<div class="ramka">
+		<div class="Main">
+			<p class="Lk">Личный кабинет.</p>
+			<div class="bigblock">
+				<div class="block">
+					<div class="fav">Избранное</div>
+					<div class="scroll"  th:unless="${#lists.isEmpty(toilets)}">
+					<ul th:each="toilet : ${toilets}">
+					<li><a class="toilets" th:text="${toilet.name}" th:href="'mapka?name=' + ${toilet.name}">Большая порашная</a></li>
+					</ul>
+					</div>
+				</div>
+				<div class="littliblock">
+					<div class="batton" th:text="${login}">Nickname</div>
+					<div class="batton2"><a href="map">Карта</a></div>
+					<div class="batton2"><a>Сменить пароль</a></div>
+					<form th:action="@{/logout}" method="post">
+						<input class="batton3" type="submit" value="Выход">
+					</form>
+				</div>
+				<div class="block">
+					<div class="fav">Добавленное</div>
+					<div class="scroll" th:unless="${#lists.isEmpty(toiletsadded)}">
+						<ul th:each="toil : ${toiletsadded}">
+						<li><a class="toilets" th:text="${toil.name}" th:href="'mapka?name=' + ${toil.name}">Большая порашная</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

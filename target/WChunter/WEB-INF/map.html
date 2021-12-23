@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<title>Whitesquare</title>
+	<link rel="stylesheet" href="/resources/css/styles1.css" type="text/css">
+	<link rel="stylesheet" href="/resources/css/mapContros.css" type="text/css">
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
+
+	<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=<28938bd0-8359-4a52-a727-7de7f4f661d9>" type="text/javascript"></script>
+	<!-- <link href="https://yandex.st/bootstrap/2.2.2/css/bootstrap.min.css" rel="stylesheet"> -->
+	<script src="https://yandex.st/jquery/2.2.3/jquery.min.js" type="text/javascript"></script>
+	<script src="/resources/Scripts/mapbasics.js" type="module"></script>
+</head>
+<body>
+<div class="ramka" >
+	<div class="Main" id="map"></div>
+
+	<div id="sidebar" class="form_sidebar hide_bar">
+		<div class="insidebar">
+			<div class="insidebar_close">&times;</div>
+			<form action="#" id="point_form">
+				<div>
+					<input type="file" name="photo" accept="image/*" id="image">
+					<div class="insideinput" id="image_input"></div>
+				</div>
+
+				<div class="form_table" id="name_input_row">
+
+					<div class="form_table_row">
+						<div class="kek" >Название</div><input name ="name" type="text" class="name_input">
+					</div>
+					<div class="form_table_row">
+						<div class="kek" >Время работы</div><div><input name="startWork" type="time" class="time left"><div class="rate2">-</div><input name= "endTime" type="time" class="time"></div>
+					</div>
+
+					<div class="form_table_row">
+						<div class="kek" >Адресс</div><div id="coords" class="NA coords">Укажите точку на карте</div>
+					</div>
+					<div class="form_table_row" id="kek_input_mark">
+						<div class="kek" id="kek_type">Оценка</div>
+						<div><input name="mark" type="text" class="rate" id="input_mark" ><div class="rate2">/10</div></div>
+
+					</div>
+					<div class="form_table_row">
+						<div class="kek">Тип туалета</div><input name="type" type="text" class="name_input">
+					</div>
+					<div class="form_table_row boxrow" id="add_comment_row">
+						<div>Описание</div>
+						<textarea name="comment" rows="3" class="discription"></textarea>
+					</div>
+
+					<input type="submit" class="send" value="Добавить">
+				</div>
+
+			</form>
+		</div>
+	</div>
+
+	<div id="commentBar" class="hide_bar">
+		<div class="insidebar" id="commentInsideBar">
+			<div class="commentbar_close">&times;</div>
+			<div class="comment_photo">
+			</div>
+			<div class="button_layout">
+				<div class="favorite_btn top_btn" >Добавить в избранное</div>
+				<div data-claim class="claim_btn top_btn">Оставить жалобу</div>
+			</div>
+			<div class="form_table">
+				<div class="form_table_row">Название
+					<div id = "discrName" class="discr">
+						afadw
+					</div>
+				</div>
+
+				<div class="form_table_row">Время работы
+					<div id = "discrTime" class="discr">
+						asdg
+					</div>
+				</div>
+
+				<div class="form_table_row">Оценка
+					<div id = "discrMark" class="discr">
+						awer
+					</div>
+				</div>
+				<div class="form_table_row">Тип туалета
+					<div id = "discrType" class="discr">
+						qwf
+					</div>
+				</div>
+				<div class="form_table_row" id="comment_discr">Описание <br>
+					<div id = "discrD" class="">
+						qwre
+					</div>
+				</div>
+				<div class="form_table_row boxrow">Комментарии <div data-modal class="comment_link">Оставить комментарий</div><br>
+					<div id="comment_pool">
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal hide">
+	<div class="modal__dialog">
+		<div class="modal__content">
+			<div data-close class="modal__close">&times;</div>
+			<form action="#" class="comment_form">
+
+				<div class="modal__title">Оставьте комментарий об этой точке</div>
+
+				<div class="comment_table">
+					<div class="form_table_row boxrow">
+						<div class="kek">Оценка</div>
+						<div><input name="mark" type="text" class="rate"><div class="rate2">/10</div></div>
+					</div>
+					<div class="form_table_row boxrow" id="comment_com">
+						<div>Комментарий</div>
+						<textarea name="comment" rows="5" class="discription"></textarea>
+					</div>
+				</div>
+
+				<button data-close type="submit" class="btn btn_min">Оставить комментарий</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="claim_modal modal hide">
+	<div class="modal__dialog">
+		<div class="modal__content">
+			<div data-close class="modal__close claim-close">&times;</div>
+			<form action="#" class="claim_form">
+
+				<div class="modal__title">Опишите что не так с этой точкой</div>
+
+				<div class="form_table_row boxrow" id="">
+					<div>Жалуйтесь</div>
+					<textarea name="claim" rows="5" class="discription"></textarea>
+				</div>
+
+				<button claim-close type="submit" class="btn btn_min">Оправить жалобу</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
+
+
