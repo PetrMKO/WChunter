@@ -74,6 +74,14 @@ public class Config implements WebMvcConfigurer {
     }
 
     @Bean
+    public ThymeleafViewResolver viewResolver(final SpringTemplateEngine templateEngine){
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(templateEngine);
+        viewResolver.setCharacterEncoding("UTF-8");
+        return viewResolver;
+    }
+
+    @Bean
     public SpringTemplateEngine templateEngine(final SpringResourceTemplateResolver templateResolver) {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
@@ -81,13 +89,7 @@ public class Config implements WebMvcConfigurer {
         return  templateEngine;
     }
 
-    @Bean
-    public ThymeleafViewResolver viewResolver(final SpringTemplateEngine templateEngine){
-        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-        viewResolver.setTemplateEngine(templateEngine);
-        viewResolver.setCharacterEncoding("UTF-8");
-        return viewResolver;
-    }
+
 
 
 }
