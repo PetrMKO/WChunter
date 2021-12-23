@@ -222,7 +222,7 @@ a, a:visited {
     width: 30%;
     background-color: white;
     border: 2px solid #1A3CA3;
-    height: 823px;
+    height: 821px;
     padding-right: 11px;
     overflow-y: scroll;
     /*overflow: hidden;*/
@@ -601,6 +601,11 @@ a, a:visited {
     cursor: pointer;
 }
 
+.favorite_btn1:hover{
+    color:red !important;
+    text-shadow: 0 7px 30px rgba(26, 60, 163, .7);
+}
+
 .claim_btn{
     cursor: pointer;
     text-decoration: underline;
@@ -641,10 +646,36 @@ textarea:focus{
     display: block !important;
 }
 .busy_block{
+    position: absolute;
+    right: 0;
+    top: 140px;
     border-radius: 3px;
     border: 1px solid red;
     float: right;
     margin-right: 60px;
     color: red;
     font-size: 24px;
+}
+
+.insidebar_close, .commentbar_close{
+    color: #1A3CA3;
+    font-weight: bold;
+    font-size: 50px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+}
+
+.insidebar_close:hover, commentbar_close:hover{
+    text-shadow: 2px 2px 20px rgba(26, 60, 163, .5);
+}
+
+.ymaps-2-1-79-float-button{
+    font-family: "ManropeThin" !important;
+    color: white !important;
+    background-color: #1A3CA3 !important;
+}
+.ymaps-2-1-79-float-button-text{
+    font-size: 20px !important;
 }

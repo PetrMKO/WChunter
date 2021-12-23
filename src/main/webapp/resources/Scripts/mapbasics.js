@@ -33,11 +33,14 @@ window.addEventListener('DOMContentLoaded', function() {
         });
 
     function init() {
+        const photoDiv = document.createElement('div');
+        photoDiv.classList.add('comment_photo');
+
         var geolocation = ymaps.geolocation;
         myMap = new ymaps.Map('map', {
                 center: [59.951235204009016,30.304518020247105],
                 zoom: 16,
-                controls: []
+                controls: ['routeButtonControl']
             },
             {
                 // Зададим ограниченную область прямоугольником,
@@ -158,6 +161,11 @@ window.addEventListener('DOMContentLoaded', function() {
 
         var center=[];
 
+        var control = myMap.controls.get('routeButtonControl');
+
+        // Зададим координаты пункта отправления с помощью геолокации.
+        control.routePanel.geolocate('from');
+
         $.ajax({
             url: 'currentpoint',
             type: 'GET',
@@ -166,17 +174,28 @@ window.addEventListener('DOMContentLoaded', function() {
             success: function(data) {
                 console.log(data);
                 if (data != null) {
-
+                    document.querySelector('.favorite_btn').innerHTML="Добавить в избранное";
+                    console.log(document.querySelector('.favorite_btn'));
+                    document.querySelector('.favorite_btn').classList.remove('favorite_btn1');
+                    photoDiv.innerHTML = "";
+                    document.querySelector('#comment_pool').innerHTML = "";
+                    photoDiv.insertAdjacentHTML('afterbegin', `
+                                <img class="preview-image" src='/resources/images/toilets/${data.name}.jpeg' alt="Вот как-то так"/>
+                            `);
+                    document.querySelector('#commentInsideBar').insertAdjacentElement('afterbegin', photoDiv);
                     document.querySelector('#discrD').innerHTML = data.discribe;
                     document.querySelector('#discrName').innerHTML = data.name;
                     document.querySelector('#discrTime').innerHTML = data.time;
                     document.querySelector('#discrMark').innerHTML = data.mark + "/10";
                     document.querySelector('#discrType').innerHTML = data.type;
 
+                    console.log(data.favorite);
 
+                    if(data.favorite){
+                        document.querySelector('.favorite_btn').classList.add('favorite_btn1');
+                        document.querySelector('.favorite_btn').innerHTML="Удалить из избранного";
+                    }
 
-                    center[0] = data.latitude;
-                    center[1] = data.longitude;
                     console.log(center);
                     for (let obj of data.comment) {
                         $('#comment_pool').append('<div id = `comments${}` class="one_comment">' +
@@ -184,6 +203,9 @@ window.addEventListener('DOMContentLoaded', function() {
                             `<div id="commentRate">${obj.mark}/10</div>` +
                             `<div class="comment_text comment_text__small">${obj.comment}</div></div>`);
                     }
+
+                    center[0] = data.latitude;
+                    center[1] = data.longitude;
                     toggleMap(myMap, '#commentBar');
                     setTimeout(()=>{
                         myMap.panTo(center, {duration: 1000, });
@@ -220,25 +242,20 @@ window.addEventListener('DOMContentLoaded', function() {
 
         addPoints(myMap, myCollection);
 
-        const photoDiv = document.createElement('div');
-        photoDiv.classList.add('comment_photo');
-
         document.querySelector('.insidebar_close').addEventListener('click', () =>{
-            toggleMap(myMap, 'insidebar');
+            toggleMap(myMap, '#sidebar');
         });
 
         document.querySelector('.commentbar_close').addEventListener('click', () =>{
-            toggleMap(myMap, 'comentBar');
+            toggleMap(myMap, '#commentBar');
         });
 
         myCollection.events.add('click', (e) => {
             const target = e.get('target');
             const bar = document.querySelector("#commentBar");
             const namepoint = document.querySelector('#discrName').innerHTML;
-            console.log(namepoint)
-            console.log(bar);
-            console.log(target.properties._data.hintContent);
-            console.log(target);
+            console.log(document.querySelector('#sidebar'));
+
             function getinfo(){
                 $.ajax({
                     url: `point/${target.properties._data.hintContent}`,
@@ -246,13 +263,17 @@ window.addEventListener('DOMContentLoaded', function() {
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (data) {
+                        document.querySelector('.favorite_btn').innerHTML="Добавить в избранное";
+                        document.querySelector('.favorite_btn').classList.remove('favorite_btn1');
+                        photoDiv.innerHTML = "";
+                        document.querySelector('#comment_pool').innerHTML = "";
                         photoDiv.insertAdjacentHTML('afterbegin', `
                                 <img class="preview-image" src='/resources/images/toilets/${data.name}.jpeg' alt="Вот как-то так"/>
                             `);
 
                         console.log(data);
                         document.querySelector('#discrD').innerHTML = data.discribe;
-                        document.querySelector('#discrName').innerHTML = data.name;
+                        document.querySelector('#discrName').innerHTML = target.properties._data.hintContent;
                         document.querySelector('#discrTime').innerHTML = data.time;
                         document.querySelector('#discrMark').innerHTML = data.mark + "/10";
                         document.querySelector('#discrType').innerHTML = data.type;
@@ -265,22 +286,47 @@ window.addEventListener('DOMContentLoaded', function() {
                                 `<div class="comment_text comment_text__small">${obj.comment}</div></div>`);
                         }
                         document.querySelector('#commentInsideBar').insertAdjacentElement('afterbegin', photoDiv);
+
+                        console.log(data.favorite);
+                        if(data.favorite){
+                            document.querySelector('.favorite_btn').classList.add('favorite_btn1');
+                            document.querySelector('.favorite_btn').innerHTML="Удалить из избранного";
+                        }
+                    },
+                    error: function (){
+                        document.querySelector('#discrName').innerHTML = target.properties._data.hintContent;
+                        document.querySelector('#discrD').innerHTML = target.properties._data.balloonContentHeader;
                     }
                 });
             }
 
+            console.log(namepoint);
+            console.log(bar);
+            console.log(target);
+            console.log(target.properties._data.hintContent);
 
-            if(document.querySelector('#sidebar').classList.contains('show_bar')){
-                toggleBar('#sidebar');
-            }
 
-            if(document.getElementById('commentBar').classList.contains('hide_bar') && !commentMode){
-                console.log(1);
+
+
+
+            if(bar.classList.contains('hide_bar') && !commentMode && document.querySelector('#sidebar').classList.contains('hide_bar')){
+                console.log(1.2);
                 getinfo();
                 toggleMap(myMap, '#commentBar');
+                console.log(commentMode);
+            }
+            else if(addMode){
+                toggleBar('#sidebar');
+                setTimeout(() => {
+                    console.log(1.1);
+                    getinfo();
+                    toggleBar('#commentBar');
+                    console.log(commentMode);
+                }, 300);
             }
 
-            else if(target.properties._data.hintContent === namepoint && commentMode){
+
+            else if(bar.classList.contains('show_bar') && target.properties._data.hintContent === namepoint && commentMode){
                 console.log(2);
                 toggleMap(myMap, '#commentBar');
             }
@@ -289,7 +335,11 @@ window.addEventListener('DOMContentLoaded', function() {
                 console.log(3);
                 toggleBar('#commentBar');
                 getinfo();
-                toggleBar('#commentBar');
+                setTimeout(() => {
+                    console.log('развернуть');
+                    toggleBar('#commentBar');
+                }, 300);
+
             }
         });
 
@@ -331,7 +381,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 if(document.querySelector('#commentBar').classList.contains('show_bar')){
                     toggleBar('#commentBar');
                     setTimeout(() => {
-                        toggleMap(myMap, '#sidebar');
+                        toggleBar('#sidebar');
                         console.log(addMode);
                     }, 400);
                 }
