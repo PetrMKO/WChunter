@@ -70,7 +70,13 @@ public class ToiletEntity {
         this.img = img;
     }
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
 
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
 
     public String getTime() {
         return time;

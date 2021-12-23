@@ -1,10 +1,10 @@
 var smallMap = false;
 
 const modalTrigger = document.querySelector('[data-modal]'),
-      claimTrigger = document.querySelector('[data-claim]'),
-      claimCloseBtn = document.querySelector('.claim-close'),
-      modalCloseBtn = document.querySelector('[data-close]'),
-      favoriteBtn = document.querySelector('.favorite_btn');
+    claimTrigger = document.querySelector('[data-claim]'),
+    claimCloseBtn = document.querySelector('.claim-close'),
+    modalCloseBtn = document.querySelector('[data-close]'),
+    favoriteBtn = document.querySelector('.favorite_btn');
 
 export var addMode = false,
     commentMode = false,
@@ -61,27 +61,16 @@ modal.addEventListener('click', (e) => {
 favoriteBtn.addEventListener('click', () =>{
 
     if(favoriteBtn.classList.contains('favorite_btn1')){
-
-        $.ajax({
-            type: "POST",
-            url: `deleteFavorites/${document.querySelector('#discrName').innerHTML}`,
-            // The key needs to match your method's input parameter (case-sensitive).
-            data: '',
-            success: function(data){
-
-                console.log(data);
-            },
-            error: function(errMsg) {
-                favoriteBtn.classList.remove('favorite_btn1');
-                console.log(errMsg);
-            }
-
+        $.post(`deleteFavorites/${document.querySelector('#discrName').innerHTML}`, function(data){
+            favoriteBtn.classList.remove('favorite_btn1');
+            favoriteBtn.innerHTML="Добавить в избранное";
         });
     }
 
     else{
         $.post(`addFavorites/${document.querySelector('#discrName').innerHTML}`, function(data){
             favoriteBtn.classList.add('favorite_btn1');
+            favoriteBtn.innerHTML="Удалить из избранного";
         });
     }
 
@@ -103,10 +92,15 @@ export function nameError(){
 }
 
 export function toggleBar(id){
-    if(id === '#sidebar'){addMode = !addMode;}
-    if(id === '#commentBar'){commentMode = !commentMode;}
-    $(id).removeClass('show_bar');
-    $(id).addClass('hide_bar');
+    if(id === '#sidebar'){
+        addMode = !addMode;
+    }
+    if(id === '#commentBar') {
+        commentMode = !commentMode;
+    }
+
+    $(id).toggleClass('show_bar');
+    $(id).toggleClass('hide_bar');
 }
 
 export function toggleMap(map, id){
@@ -114,6 +108,7 @@ export function toggleMap(map, id){
     smallMap = !smallMap;
     if (!smallMap) {                        //Свернуть
         if(id === '#sidebar'){addMode = false;}
+        if(id === '#commentBar'){commentMode = false;}
         document.querySelector('#comment_pool').innerHTML = '';
         document.querySelector('.comment_photo').innerHTML = '';
         $(id).removeClass('show_bar');
@@ -129,6 +124,7 @@ export function toggleMap(map, id){
         }, 650);
     } else {
         if(id === '#sidebar'){addMode = true;}//Развернуть
+        if(id === '#commentBar'){commentMode = true;}
         $('#map').addClass('smallMap');
         $('#coords').addClass('coordsRed');
         setTimeout(() => {
@@ -176,7 +172,28 @@ export function addPoints(map, geoCollection){
         }
 
         else{
-            console.log("false");
+            // geoCollection.add(new ymaps.Placemark([+(59.956683974370954), +(30.31076360001178)], {
+            //         hintContent: "Толкан в итмо",
+            //         balloonContentHeader: "Толкан в итмо"
+            //     }, {
+            //         iconLayout: 'default#image',
+            //         iconImageHref: '../resources/images/ToiletIcon.png',
+            //         iconImageSize: [24, 38],
+            //         iconImageOffset: [-12, -38]
+            //     })
+            // );
+            //
+            // geoCollection.add(new ymaps.Placemark([+(59.95679833465624), +(30.311575081266778)], {
+            //         hintContent: "Толкан в теремке",
+            //         balloonContentHeader: "Толкан в теремке"
+            //     }, {
+            //         iconLayout: 'default#image',
+            //         iconImageHref: '../resources/images/ToiletIcon.png',
+            //         iconImageSize: [24, 38],
+            //         iconImageOffset: [-12, -38]
+            //     })
+            // );
+            console.log(request.status);
         }
     });
     map.geoObjects.add(geoCollection);

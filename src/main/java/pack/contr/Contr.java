@@ -87,10 +87,16 @@ public class Contr {
     }
 
     @GetMapping("map")
-    public String map(@RequestParam(required = false) String name , HttpSession session){
-        session.setAttribute("PointName", name);
+    public String map(){
         return "map";
     }
+
+    @GetMapping("mapka")
+    public String mapka(@RequestParam(required = false) String name , HttpSession session){
+        session.setAttribute("PointName", name);
+        return "redirect:map";
+    }
+
 
 
     @GetMapping("reg")

@@ -16,7 +16,7 @@
 					<div class="fav">Избранное</div>
 					<div class="scroll"  th:unless="${#lists.isEmpty(toilets)}">
 					<ul th:each="toilet : ${toilets}">
-					<li><a class="toilets" th:text="${toilet.name}" th:href="'map?name=' + ${toilet.name}">Большая порашная</a></li>
+					<li><a class="toilets" th:text="${toilet.name}" th:href="'mapka?name=' + ${toilet.name}">Большая порашная</a></li>
 					</ul>
 					</div>
 				</div>
@@ -32,7 +32,7 @@
 					<div class="fav">Добавленное</div>
 					<div class="scroll" th:unless="${#lists.isEmpty(toiletsadded)}">
 						<ul th:each="toil : ${toiletsadded}">
-						<li><a class="toilets" th:text="${toil.name}" th:href="'map?name=' + ${toil.name}">Большая порашная</a></li>
+						<li><a class="toilets" th:text="${toil.name}" th:href="'mapka?name=' + ${toil.name}">Большая порашная</a></li>
 						</ul>
 					</div>
 				</div>

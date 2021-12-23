@@ -62,18 +62,26 @@ public class RestContr {
 
     @RequestMapping("point/{name}")
     public ToiletEntity getPoint(@PathVariable String name){
-        return toiletService.findByName(name);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = userService.findByLogin(auth.getName());
+        ToiletEntity toiletEntity = toiletService.findByName(name);
+        toiletEntity.setFavorite(userEntity.isFavorite(toiletEntity));
+        return toiletEntity;
     }
 
 
     @RequestMapping("currentpoint")
     public ToiletEntity getCurPoint(HttpSession session){
         String name = session.getAttribute("PointName").toString();
-        System.out.println(name);
         if (name == null){
             return null;
         }
-        return toiletService.findByName(name);
+        session.removeAttribute("PointName");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = userService.findByLogin(auth.getName());
+        ToiletEntity toiletEntity = toiletService.findByName(name);
+        toiletEntity.setFavorite(userEntity.isFavorite(toiletEntity));
+        return toiletEntity;
     }
 
     @RequestMapping(value = "complaint/{name}", method = RequestMethod.POST)

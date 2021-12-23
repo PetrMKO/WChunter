@@ -1,5 +1,8 @@
 package pack.entity;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,6 +50,15 @@ public class UserEntity {
             }
         }
         if (i > -1) favorite.remove(i);
+    }
+
+    public boolean isFavorite(ToiletEntity toiletEntity){
+        for (ToiletEntity t : favorite){
+            if (t.getName().equals(toiletEntity.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setAdded(Set<ToiletEntity> added) {
