@@ -48,27 +48,28 @@ window.addEventListener('DOMContentLoaded', function() {
             //     balloonMaxWidth: 200,
             //     restrictMapArea: [[59.79989555713461, 29.583574397792205],[60.109484912314834,30.655513866175998]]
             // },
+        // geolocation.get({
+        //     provider: 'yandex',
+        //     mapStateAutoApply: true
+        // }).then(function (result) {
+        //     // Красным цветом пометим положение, вычисленное через ip.
+        //     result.geoObjects.options.set('preset', 'islands#redCircleIcon');
+        //     result.geoObjects.get(0).properties.set({
+        //         balloonContentBody: 'Мое местоположение'
+        //     });
+        //     myMap.geoObjects.add(result.geoObjects);
+        // }),
         geolocation.get({
-            provider: 'yandex',
-            mapStateAutoApply: true
-        }).then(function (result) {
-            // Красным цветом пометим положение, вычисленное через ip.
-            result.geoObjects.options.set('preset', 'islands#redCircleIcon');
-            result.geoObjects.get(0).properties.set({
-                balloonContentBody: 'Мое местоположение'
-            });
-            myMap.geoObjects.add(result.geoObjects);
-        }),
+                provider: 'browser'
+                // mapStateAutoApply: true
+            }).then(function (result) {
+                // Синим цветом пометим положение, полученное через браузер.
+                // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
+                result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
 
-        geolocation.get({
-            provider: 'browser',
-            mapStateAutoApply: true
-        }).then(function (result) {
-            // Синим цветом пометим положение, полученное через браузер.
-            // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
-            result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
-            myMap.geoObjects.add(result.geoObjects);
-        })
+                myMap.geoObjects.add(result.geoObjects);
+                console.log(myMap.geoObjects)
+            })
         );
         // Создадим пользовательский макет ползунка масштаба.
         var ZoomLayout = ymaps.templateLayoutFactory.createClass("<div class='blue' id='zoom'> " +
@@ -136,14 +137,14 @@ window.addEventListener('DOMContentLoaded', function() {
                 }
             }),
 
-            ButtonLayout = ymaps.templateLayoutFactory.createClass([
+            LKButtonLayout = ymaps.templateLayoutFactory.createClass([
                 '<a style="display:block" href="lk">'+
                 '<div title="{{ data.title }}" class="my-button"',
                 '{% if state.size == "small" %}my-button_small{% endif %}',
                 '{% if state.size == "medium" %}my-button_medium{% endif %}',
                 '{% if state.size == "large" %}my-button_large{% endif %}',
                 '{% if state.selected %} my-button-selected{% endif %}">',
-                '<span class="my-button__text" id="my-button__text">{{ data.content }}</span>',
+                '<span class="my-LK-button__text">{{ data.content }}</span>',
                 '</div></a>'
             ].join('')),
 
@@ -153,7 +154,7 @@ window.addEventListener('DOMContentLoaded', function() {
                     title: "Личный кабинет"
                 },
                 options: {
-                    layout: ButtonLayout,
+                    layout: LKButtonLayout,
                     float: "right"
                 }
             });
