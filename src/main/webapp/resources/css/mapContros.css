@@ -81,7 +81,7 @@ a, a:visited {
     -moz-user-select: none;
     user-select: none;
 }
-.my-button__text {
+.my-button__text, .my-LK-button__text {
     font-family: ManropeThin;
     font-size: 20px;
     color: white;
@@ -678,4 +678,15 @@ textarea:focus{
 }
 .ymaps-2-1-79-float-button-text{
     font-size: 20px !important;
+}
+
+.run_button_div{
+    color: #c922bb;
+    padding: 5px !important;
+    border-radius: 5px !important;
+    border: 1px solid #c922bb;
+    position: absolute;
+    right: 10px;
+    top: 70px;
+    cursor: pointer;
 }

@@ -59,17 +59,7 @@ window.addEventListener('DOMContentLoaded', function() {
         //     });
         //     myMap.geoObjects.add(result.geoObjects);
         // }),
-        geolocation.get({
-                provider: 'browser'
-                // mapStateAutoApply: true
-            }).then(function (result) {
-                // Синим цветом пометим положение, полученное через браузер.
-                // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
-                result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
 
-                myMap.geoObjects.add(result.geoObjects);
-                console.log(result.geoObjects._boundsAggregator._geoBounds[0]);
-            })
         );
         // Создадим пользовательский макет ползунка масштаба.
         var ZoomLayout = ymaps.templateLayoutFactory.createClass("<div class='blue' id='zoom'> " +
@@ -159,13 +149,36 @@ window.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
+        geolocation.get({
+            provider: 'browser'
+            // mapStateAutoApply: true
+        }).then(function (result) {
+            // Синим цветом пометим положение, полученное через браузер.
+            // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
+            result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+
+            var geolocmark = new ymaps.Placemark(result.geoObjects._boundsAggregator._geoBounds[0], {
+                hintContent: 'Тут не надо'
+                // balloonContentHeader: point.name
+                // balloonContentBody: point.comment
+                // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
+                // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
+                //     '<div class="footer2Foto"></div></div></div>'
+            }, {
+                iconLayout: 'default#image',
+                iconImageHref: '/resources/images/geolocation_mark.png',
+                iconImageSize: [24, 38],
+                iconImageOffset: [-12, -38]
+            });
+            myMap.geoObjects.add(placemark);
+            console.log(result.geoObjects._boundsAggregator._geoBounds[0]);
+        })
 
         var center=[];
 
-        var control = myMap.controls.get('routeButtonControl');
 
-        // Зададим координаты пункта отправления с помощью геолокации.
-        control.routePanel.geolocate('from');
+
+
 
         $.ajax({
             url: 'currentpoint',
@@ -181,7 +194,7 @@ window.addEventListener('DOMContentLoaded', function() {
                     photoDiv.innerHTML = "";
                     document.querySelector('#comment_pool').innerHTML = "";
                     photoDiv.insertAdjacentHTML('afterbegin', `
-                                <img class="preview-image" src='/resources/images/toilets/${data.name}.jpeg' alt="Вот как-то так"/>
+                                <img class="preview-image" src='${data.img}' alt="Вот как-то так"/>
                             `);
                     document.querySelector('#commentInsideBar').insertAdjacentElement('afterbegin', photoDiv);
                     document.querySelector('#discrD').innerHTML = data.discribe;
@@ -251,6 +264,8 @@ window.addEventListener('DOMContentLoaded', function() {
             toggleMap(myMap, '#commentBar');
         });
 
+        let currentLatitude, currentLongitude;
+
         myCollection.events.add('click', (e) => {
             const target = e.get('target');
             const bar = document.querySelector("#commentBar");
@@ -264,12 +279,14 @@ window.addEventListener('DOMContentLoaded', function() {
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (data) {
+                        currentLatitude = data.latitude;
+                        currentLongitude = data.longitude;
                         document.querySelector('.favorite_btn').innerHTML="Добавить в избранное";
                         document.querySelector('.favorite_btn').classList.remove('favorite_btn1');
                         photoDiv.innerHTML = "";
                         document.querySelector('#comment_pool').innerHTML = "";
                         photoDiv.insertAdjacentHTML('afterbegin', `
-                                <img class="preview-image" src='/resources/images/toilets/${data.name}.jpeg' alt="Вот как-то так"/>
+                                <img class="preview-image" src='${data.img}' alt="Вот как-то так"/>
                             `);
 
                         console.log(data);
@@ -294,9 +311,10 @@ window.addEventListener('DOMContentLoaded', function() {
                             document.querySelector('.favorite_btn').innerHTML="Удалить из избранного";
                         }
                     },
-                    error: function (){
+                    error: function (errMsg){
                         document.querySelector('#discrName').innerHTML = target.properties._data.hintContent;
                         document.querySelector('#discrD').innerHTML = target.properties._data.balloonContentHeader;
+                        console.log(errMsg);
                     }
                 });
             }
@@ -344,6 +362,21 @@ window.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        var control = myMap.controls.get('routeButtonControl');
+
+        const runButton = document.querySelector('.run_button_div');
+        console.log('Бежим');
+        runButton.addEventListener('click', ()=>{
+            console.log('Побежали')
+            // Зададим координаты пункта отправления с помощью геолокации.
+            control.routePanel.geolocate('from');
+            control.routePanel.state.set({
+                // Адрес начальной точки.
+                // Адрес конечной точки.
+                to: [currentLatitude, currentLongitude]
+            });
+        });
+
 
 
 
@@ -378,7 +411,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
         document.addEventListener("click", function(e) {
-            if (e.target.className==="my-button__text") {
+            if (e.target.className === "my-button__text") {
                 if(document.querySelector('#commentBar').classList.contains('show_bar')){
                     toggleBar('#commentBar');
                     setTimeout(() => {
