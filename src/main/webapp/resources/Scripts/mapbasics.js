@@ -518,7 +518,6 @@ window.addEventListener('DOMContentLoaded', function() {
                             img: imageSrc
                         };
 
-                        preview.innerHTML = "";
                         delete object.photo
                         add = JSON.stringify(Object.assign(object, coordinates));
 
@@ -540,7 +539,7 @@ window.addEventListener('DOMContentLoaded', function() {
                         });
 
                         // document.querySelector(".preview").innerHTML="";
-                        // document.querySelector(".preview").classList.add("hide");
+                        document.querySelector(".preview").classList.add("hide");
                     }
                 }
 
