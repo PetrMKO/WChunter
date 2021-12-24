@@ -477,6 +477,9 @@ window.addEventListener('DOMContentLoaded', function() {
             commentForm = document.querySelector(".comment_form"),
             claimForm = document.querySelector(".claim_form");
 
+        const input = document.querySelector('#image');
+        const openButton = document.querySelector('#image_input');
+
         postPoint(formTable);
         console.log(formTable);
         postPoint(commentForm);
@@ -538,13 +541,14 @@ window.addEventListener('DOMContentLoaded', function() {
                             iconImageOffset: [-12, -38]
                         });
 
-                        // document.querySelector(".preview").innerHTML="";
-                        document.querySelector(".preview").classList.add("hide");
+                        preview.innerHTML = "";
+                        preview.classList.add('hide');
+                        openButton.classList.remove('hide');
+                        input.value = "";
                     }
                 }
 
                 else if(claimMode){
-                    alert();
                     add = object.claim;
                     console.log(add);
                     url = `complaint/${document.querySelector('#discrName').innerHTML}`;
