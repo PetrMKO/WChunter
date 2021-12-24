@@ -40,14 +40,14 @@ window.addEventListener('DOMContentLoaded', function() {
         myMap = new ymaps.Map('map', {
                 center: [59.951235204009016,30.304518020247105],
                 zoom: 16,
-                controls: ['routeButtonControl']
+                controls: ['routeButtonControl', 'geolocationControl']
             },
-            {
-                // Зададим ограниченную область прямоугольником,
-                // примерно описывающим Санкт-Петербург.
-                balloonMaxWidth: 200,
-                restrictMapArea: [[59.79989555713461, 29.583574397792205],[60.109484912314834,30.655513866175998]]
-            },
+            // {
+            //     // Зададим ограниченную область прямоугольником,
+            //     // примерно описывающим Санкт-Петербург.
+            //     balloonMaxWidth: 200,
+            //     restrictMapArea: [[59.79989555713461, 29.583574397792205],[60.109484912314834,30.655513866175998]]
+            // },
         geolocation.get({
             provider: 'yandex',
             mapStateAutoApply: true
