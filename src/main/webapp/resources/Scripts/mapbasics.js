@@ -1,5 +1,18 @@
-import {toggleMap, addMode, addPoints, updatePoints, toggleBar, commentMode, closeModal, modal, claim, claimMode, nameError} from '/resources/Scripts/Sidebar.js';
-import {upload} from '/resources/Scripts/imageUpload.js';
+import {
+    toggleMap,
+    addMode,
+    addPoints,
+    updatePoints,
+    toggleBar,
+    commentMode,
+    closeModal,
+    modal,
+    claim,
+    claimMode,
+    nameError,
+    comment_modal_mode
+} from '/resources/Scripts/Sidebar.js';
+import {upload, preview} from '/resources/Scripts/imageUpload.js';
 
 export var imageSrc="";
 export function addsrc(img){
@@ -171,7 +184,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 iconImageOffset: [-12, -38]
             });
             myMap.geoObjects.add(placemark);
-            console.log(result.geoObjects._boundsAggregator._geoBounds[0]);
+            // console.log(result.geoObjects._boundsAggregator._geoBounds[0]);
         })
 
         var center=[];
@@ -189,7 +202,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 console.log(data);
                 if (data != null) {
                     document.querySelector('.favorite_btn').innerHTML="Добавить в избранное";
-                    console.log(document.querySelector('.favorite_btn'));
+                    // console.log(document.querySelector('.favorite_btn'));
                     document.querySelector('.favorite_btn').classList.remove('favorite_btn1');
                     photoDiv.innerHTML = "";
                     document.querySelector('#comment_pool').innerHTML = "";
@@ -203,14 +216,14 @@ window.addEventListener('DOMContentLoaded', function() {
                     document.querySelector('#discrMark').innerHTML = data.mark + "/10";
                     document.querySelector('#discrType').innerHTML = data.type;
 
-                    console.log(data.favorite);
+                    // console.log(data.favorite);
 
                     if(data.favorite){
                         document.querySelector('.favorite_btn').classList.add('favorite_btn1');
                         document.querySelector('.favorite_btn').innerHTML="Удалить из избранного";
                     }
 
-                    console.log(center);
+                    // console.log(center);
                     if(data.comment.length != 0){
                         for (let obj of data.comment) {
                             $('#comment_pool').append('<div id = `comments${}` class="one_comment">' +
@@ -323,43 +336,43 @@ window.addEventListener('DOMContentLoaded', function() {
                 });
             }
 
-            console.log(namepoint);
-            console.log(bar);
-            console.log(target);
-            console.log(target.properties._data.hintContent);
+            // console.log(namepoint);
+            // console.log(bar);
+            // console.log(target);
+            // console.log(target.properties._data.hintContent);
 
 
 
 
 
             if(bar.classList.contains('hide_bar') && !commentMode && document.querySelector('#sidebar').classList.contains('hide_bar')){
-                console.log(1.2);
+                // console.log(1.2);
                 getinfo();
                 toggleMap(myMap, '#commentBar');
-                console.log(commentMode);
+                // console.log(commentMode);
             }
             else if(addMode){
                 toggleBar('#sidebar');
                 setTimeout(() => {
-                    console.log(1.1);
+                    // console.log(1.1);
                     getinfo();
                     toggleBar('#commentBar');
-                    console.log(commentMode);
+                    // console.log(commentMode);
                 }, 300);
             }
 
 
             else if(bar.classList.contains('show_bar') && target.properties._data.hintContent === namepoint && commentMode){
-                console.log(2);
+                // console.log(2);
                 toggleMap(myMap, '#commentBar');
             }
 
             else if(target.properties._data.hintContent !== namepoint && commentMode && document.querySelector('#commentBar').classList.contains('show_bar')){
-                console.log(3);
+                // console.log(3);
                 toggleBar('#commentBar');
                 getinfo();
                 setTimeout(() => {
-                    console.log('развернуть');
+                    // console.log('развернуть');
                     toggleBar('#commentBar');
                 }, 300);
 
@@ -369,16 +382,15 @@ window.addEventListener('DOMContentLoaded', function() {
         var control = myMap.controls.get('routeButtonControl');
 
         const runButton = document.querySelector('.run_button_div');
-        console.log('Бежим');
         runButton.addEventListener('click', ()=>{
             console.log('Побежали')
             // Зададим координаты пункта отправления с помощью геолокации.
             control.routePanel.geolocate('from');
             control.routePanel.state.set({
-                // Адрес начальной точки.
                 // Адрес конечной точки.
                 to: [currentLatitude, currentLongitude]
             });
+            control.state.set('expanded', true);
         });
 
 
@@ -420,12 +432,12 @@ window.addEventListener('DOMContentLoaded', function() {
                     toggleBar('#commentBar');
                     setTimeout(() => {
                         toggleBar('#sidebar');
-                        console.log(addMode);
+                        // console.log(addMode);
                     }, 400);
                 }
                 else{
                     toggleMap(myMap, '#sidebar');
-                    console.log(addMode);
+                    // console.log(addMode);
                 }
 
 
@@ -497,7 +509,6 @@ window.addEventListener('DOMContentLoaded', function() {
                 });
 
                 // console.log(object);
-
                 if(addMode){
                     url='test'
                     if(validMark && validCoords){
@@ -507,6 +518,7 @@ window.addEventListener('DOMContentLoaded', function() {
                             img: imageSrc
                         };
 
+                        preview.innerHTML = "";
                         delete object.photo
                         add = JSON.stringify(Object.assign(object, coordinates));
 
@@ -532,26 +544,23 @@ window.addEventListener('DOMContentLoaded', function() {
                     }
                 }
 
+                else if(claimMode){
+                    alert();
+                    add = object.claim;
+                    console.log(add);
+                    url = `complaint/${document.querySelector('#discrName').innerHTML}`;
+                    closeModal(claim);
+                }
 
-                else if(commentMode) {
+                else if(comment_modal_mode) {
                     closeModal(modal);
                     add = JSON.stringify(object);
-                    console.log(add);
                     url = `addcomment/${document.querySelector('#discrName').innerHTML}`;
-
                     console.log(username, object.mark, object.comment);
                     $('#comment_pool').append('<div id = `comments${}` class="one_comment">'+
                         `<div id="commentName">${username}</div>:`+
                         `<div id="commentRate">${object.mark}/10</div>`+
                         `<div class="comment_text comment_text__small">${object.comment}</div></div>`);
-                }
-
-                else if(claimMode){
-                    closeModal(claim);
-
-                    add = object.claim;
-                    console.log(add);
-                    url = `complaint/${document.querySelector('#discrName').innerHTML}`;
                 }
 
                 $.ajax({
@@ -572,6 +581,7 @@ window.addEventListener('DOMContentLoaded', function() {
                        else if(errMsg.status === 400){
                            nameError();
                        }
+                       console.log(errMsg)
                     }
 
                 });

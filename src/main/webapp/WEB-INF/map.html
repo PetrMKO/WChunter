@@ -66,7 +66,7 @@
 			</div>
 			<div class="button_layout">
 				<div class="favorite_btn top_btn" >Добавить в избранное</div>
-				<div data-claim class="claim_btn top_btn">Оставить жалобу</div>
+				<div class="claim_btn top_btn" id="claim">Оставить жалобу</div>
 			</div>
 			<div class="form_table">
 				<div class="form_table_row">Название
@@ -105,7 +105,7 @@
 		</div>
 	</div>
 </div>
-<div class="modal hide">
+<div class="modal hide comment_modal">
 	<div class="modal__dialog">
 		<div class="modal__content">
 			<div data-close class="modal__close">&times;</div>
@@ -114,11 +114,11 @@
 				<div class="modal__title">Оставьте комментарий об этой точке</div>
 
 				<div class="comment_table">
-					<div class="form_table_row boxrow">
+					<div class="form_table_row">
 						<div class="kek">Оценка</div>
 						<div><input name="mark" type="text" class="rate"><div class="rate2">/10</div></div>
 					</div>
-					<div class="form_table_row boxrow" id="comment_com">
+					<div class="form_table_row" id="comment_com">
 						<div>Комментарий</div>
 						<textarea name="comment" rows="5" class="discription"></textarea>
 					</div>
@@ -130,10 +130,10 @@
 	</div>
 </div>
 
-<div class="claim_modal modal hide">
+<div class="modal hide claim_modal" id="claim_modal">
 	<div class="modal__dialog">
 		<div class="modal__content">
-			<div data-close class="modal__close claim-close">&times;</div>
+			<div class="modal__close claim-close">&times;</div>
 			<form action="#" class="claim_form">
 
 				<div class="modal__title">Опишите что не так с этой точкой</div>
@@ -143,7 +143,7 @@
 					<textarea name="claim" rows="5" class="discription"></textarea>
 				</div>
 
-				<button  type="submit" class="btn btn_min claim-close">Оправить жалобу</button>
+				<button  type="submit" class="btn btn_min">Оправить жалобу</button>
 			</form>
 		</div>
 	</div>

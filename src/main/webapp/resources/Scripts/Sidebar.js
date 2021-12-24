@@ -1,17 +1,22 @@
 var smallMap = false;
 
 const modalTrigger = document.querySelector('[data-modal]'),
-    claimTrigger = document.querySelector('[data-claim]'),
+    claimTrigger = document.querySelector('#claim'),
     claimCloseBtn = document.querySelector('.claim-close'),
     modalCloseBtn = document.querySelector('[data-close]'),
     favoriteBtn = document.querySelector('.favorite_btn');
 
+    console.log(claimTrigger);
+
 export var addMode = false,
     commentMode = false,
-    claimMode = false;
+    claimMode = false,
+    comment_modal_mode=false;
 
-export const modal = document.querySelector('.modal'),
-    claim = document.querySelector('.claim_modal');
+export const modal = document.querySelector('.comment_modal'),
+             claim = document.querySelector('#claim_modal');
+
+            console.log(claim);
 
 
 modalTrigger.addEventListener('click', () => {
@@ -19,7 +24,7 @@ modalTrigger.addEventListener('click', () => {
 });
 
 claimTrigger.addEventListener('click', () => {
-    console.log('ckiikk');
+    console.log('cliikk');
     openModal(claim);
 });
 // claimTrigger.addEventListener('click', openModal());
@@ -30,10 +35,12 @@ export function closeModal(modalT) {
     modalT.classList.remove('show');
     document.body.style.overflow = '';
     if(modalT.classList.contains('claim_modal')){
-        claimMode = true;
+        claimMode = false;
     }
-    else if(modalT.classList.contains('claim_modal')){
-        commentMode = true;
+
+
+    else if(modalT.classList.contains('comment_modal')){
+        comment_modal_mode = false;
     }
 
 }
@@ -45,8 +52,8 @@ function openModal(modalT) {
     if(modalT.classList.contains('claim_modal')){
         claimMode = true;
     }
-    else if(modalT.classList.contains('claim_modal')){
-        commentMode = true;
+    else if(modalT.classList.contains('comment_modal')){
+        comment_modal_mode = true;
     }
 }
 
