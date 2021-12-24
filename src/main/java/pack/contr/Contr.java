@@ -62,10 +62,9 @@ public class Contr {
             return "lk";
         }
         List<ComplaintEntity> complaintEntities = complaintsRepo.findAll();
-        List<ToiletIMGEntity> images = imgRepo.findAll();
         for (int i = 0; i < complaintEntities.size() ; i++ ){
             ToiletEntity toiletEntity = complaintEntities.get(i).getToiletEntity();
-            toiletEntity.setImg("data:image/jpeg;base64," + DatatypeConverter.printBase64Binary(images.get(Math.toIntExact(toiletEntity.getId()) - 1).getImage()));
+            toiletEntity.setImg("data:image/jpeg;base64," + DatatypeConverter.printBase64Binary(imgRepo.findById(toiletEntity.getId()).get().getImage()));
         }
         model.addAttribute("complaints", complaintEntities);
         return "moderlk";
