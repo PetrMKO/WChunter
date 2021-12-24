@@ -211,12 +211,15 @@ window.addEventListener('DOMContentLoaded', function() {
                     }
 
                     console.log(center);
-                    for (let obj of data.comment) {
-                        $('#comment_pool').append('<div id = `comments${}` class="one_comment">' +
-                            `<div id="commentName">${obj.username}</div>:` +
-                            `<div id="commentRate">${obj.mark}/10</div>` +
-                            `<div class="comment_text comment_text__small">${obj.comment}</div></div>`);
+                    if(data.comment.length != 0){
+                        for (let obj of data.comment) {
+                            $('#comment_pool').append('<div id = `comments${}` class="one_comment">' +
+                                `<div id="commentName">${obj.username}</div>:` +
+                                `<div id="commentRate">${obj.mark}/10</div>` +
+                                `<div class="comment_text comment_text__small">${obj.comment}</div></div>`);
+                        }
                     }
+
 
                     center[0] = data.latitude;
                     center[1] = data.longitude;
@@ -296,12 +299,13 @@ window.addEventListener('DOMContentLoaded', function() {
                         document.querySelector('#discrMark').innerHTML = data.mark + "/10";
                         document.querySelector('#discrType').innerHTML = data.type;
                         console.log(data.comment);
-                        for (let obj of data.comment) {
-                            console.log(obj.username, obj.mark, obj.comment);
-                            $('#comment_pool').append('<div id = `comments${}` class="one_comment">' +
-                                `<div id="commentName">${obj.username}</div>:` +
-                                `<div id="commentRate">${obj.mark}/10</div>` +
-                                `<div class="comment_text comment_text__small">${obj.comment}</div></div>`);
+                        if(data.comment.length != 0){
+                            for (let obj of data.comment) {
+                                $('#comment_pool').append('<div id = `comments${}` class="one_comment">' +
+                                    `<div id="commentName">${obj.username}</div>:` +
+                                    `<div id="commentRate">${obj.mark}/10</div>` +
+                                    `<div class="comment_text comment_text__small">${obj.comment}</div></div>`);
+                            }
                         }
                         document.querySelector('#commentInsideBar').insertAdjacentElement('afterbegin', photoDiv);
 
