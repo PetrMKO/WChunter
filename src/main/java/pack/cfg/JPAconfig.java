@@ -27,27 +27,27 @@ public class JPAconfig {
 
 
 
-//    @Bean
-//    public DataSource dataSource() {
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName("org.postgresql.Driver");
-//        dataSource.setPassword("1234");
-//        dataSource.setUrl("jdbc:postgresql://localhost:5432/ToiletDB");
-//        dataSource.setUsername("postgres");
-//        return dataSource;
-//    }
-
-
-
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setPassword("f5a314180c3d422e01c8b11ab1cad7d08d1d634ee41b67cf9972844d76dc3681");
-        dataSource.setUrl("jdbc:postgresql://ec2-18-235-235-165.compute-1.amazonaws.com:5432/d9m7abkvis7irf");
-        dataSource.setUsername("pypbvxjvszeoyf");
+        dataSource.setPassword("1234");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/ToiletDB");
+        dataSource.setUsername("postgres");
         return dataSource;
     }
+
+
+
+//    @Bean
+//    public DataSource dataSource() {
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//        dataSource.setDriverClassName("org.postgresql.Driver");
+//        dataSource.setPassword("f5a314180c3d422e01c8b11ab1cad7d08d1d634ee41b67cf9972844d76dc3681");
+//        dataSource.setUrl("jdbc:postgresql://ec2-18-235-235-165.compute-1.amazonaws.com:5432/d9m7abkvis7irf");
+//        dataSource.setUsername("pypbvxjvszeoyf");
+//        return dataSource;
+//    }
 
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
@@ -58,7 +58,7 @@ public class JPAconfig {
     public Properties properties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
-        properties.put("hibernate.hbm2ddl.auto", "create-drop");
+        properties.put("hibernate.hbm2ddl.auto", "create");
         return properties;
     }
 

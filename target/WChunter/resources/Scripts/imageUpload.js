@@ -1,9 +1,9 @@
 import {addsrc} from '/resources/Scripts/mapbasics.js';
+export const preview = document.createElement('div');
 export function upload(selector, butttonSelector, options = {}){
 
     const input = document.querySelector(selector);
     const openButton = document.querySelector(butttonSelector);
-    const preview = document.createElement('div');
 
     if(options.multi){
         input.setAttribute('multiple', true);
@@ -39,7 +39,7 @@ export function upload(selector, butttonSelector, options = {}){
             addsrc(src);
             preview.insertAdjacentHTML('afterbegin', `
                     <div class="preview-image" style="background-image: url('${src}');">
-                        <div class="preview-remove" ">&times;</div>
+                        <div class="preview-remove">&times;</div>
                    
                         <div class="preview-info">
                             <span>${files[0].name}</span>

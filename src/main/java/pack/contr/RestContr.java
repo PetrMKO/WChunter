@@ -80,16 +80,16 @@ public class RestContr {
 
     @RequestMapping("currentpoint")
     public ToiletEntity getCurPoint(HttpSession session){
-        String name = session.getAttribute("PointName").toString();
-        if (name == null){
+        if (session.getAttribute("PointName") == null){
             return null;
         }
+        String name = session.getAttribute("PointName").toString();
         session.removeAttribute("PointName");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = userService.findByLogin(auth.getName());
         ToiletEntity toiletEntity = toiletService.findByName(name);
         toiletEntity.setFavorite(userEntity.isFavorite(toiletEntity));
-        ToiletIMGEntity toiletIMGEntity = imgRepo.getById(toiletEntity.getId());
+        ToiletIMGEntity toiletIMGEntity = imgRepo.findById(toiletEntity.getId()).get();
         toiletEntity.setImg("data:image/jpeg;base64," + DatatypeConverter.printBase64Binary(toiletIMGEntity.getImage()));
         return toiletEntity;
     }

@@ -108,6 +108,7 @@ public class Contr {
 
     @GetMapping("mapka")
     public String mapka(@RequestParam(required = false) String name , HttpSession session){
+        System.out.println(name);
         session.setAttribute("PointName", name);
         return "redirect:map";
     }
