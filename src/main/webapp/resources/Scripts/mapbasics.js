@@ -68,7 +68,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
 
                 myMap.geoObjects.add(result.geoObjects);
-                console.log(myMap.geoObjects._boundsAggregator._geoBounds[0]);
+                console.log(result.geoObjects._boundsAggregator._geoBounds[0]);
             })
         );
         // Создадим пользовательский макет ползунка масштаба.
