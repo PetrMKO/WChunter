@@ -51,6 +51,8 @@ public class ToiletEntity {
     }
 
 
+
+
     public ToiletEntity(String name, String discribe, Double latitude, Double longitude, List<CommentEntity> comment, int mark, String type, String time) {
         this.name = name;
         this.discribe = discribe;

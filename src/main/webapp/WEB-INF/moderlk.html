@@ -17,7 +17,7 @@
 				<ul th:each="comp : ${complaints}">
 					<li class="zaloba">
 						<div class="accept">
-							<img class="photo" th:src="'/resources/images/toilets/' + ${comp.toiletEntity.name} + '.jpeg'">
+							<img class="photo" th:src="${comp.toiletEntity.img}">
 							<form th:action="@{/complaints(id=${comp.id},action='delPoint',pointId=${comp.toiletEntity.id})}" method="post">
 								<div class="abtn d" ><input class="abtn d" type="submit" value="Удалить точку"></div>
 							</form>

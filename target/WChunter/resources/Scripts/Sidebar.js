@@ -30,9 +30,11 @@ export function closeModal(modalT) {
     modalT.classList.remove('show');
     document.body.style.overflow = '';
     if(modalT.classList.contains('claim_modal')){
-        claimMode = false;
+        claimMode = true;
     }
-    else{commentMode = false;}
+    else if(modalT.classList.contains('claim_modal')){
+        commentMode = true;
+    }
 
 }
 
@@ -43,7 +45,9 @@ function openModal(modalT) {
     if(modalT.classList.contains('claim_modal')){
         claimMode = true;
     }
-    else{commentMode = true;}
+    else if(modalT.classList.contains('claim_modal')){
+        commentMode = true;
+    }
 }
 
 modalCloseBtn.addEventListener('click', () =>{

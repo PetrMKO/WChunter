@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pack.entity.*;
 import pack.repo.CommentRepo;
+import pack.repo.ImageRepo;
 import pack.repo.ToiletRepo;
 
 
@@ -31,6 +32,10 @@ public class ToiletService {
     private CommentRepo commentRepo;
 
     @Autowired
+    private ImageRepo imageRepo;
+
+
+    @Autowired
     private ToiletRepo toiletRepo;
 
 
@@ -47,21 +52,28 @@ public class ToiletService {
 
         String base64Image = jsonpoint.getPhoto().split(",")[1];
         byte[] convertByte = DatatypeConverter.parseBase64Binary(base64Image);
-        FileOutputStream img = null;
-        FileOutputStream imgCopy = null;
-        try {
-            img = new FileOutputStream("D:\\tomcat\\apache-tomcat-9.0.54\\webapps\\ROOT\\resources\\images\\toilets\\"
-            + jsonpoint.getName() + ".jpeg");
-            img.write(convertByte);
-            img.close();
-            imgCopy = new FileOutputStream("C:\\Users\\yranikus\\IdeaProjects\\fgjhfdj\\src\\main\\webapp\\resources\\images\\toilets\\"
-                    + jsonpoint.getName() + ".jpeg");
-            imgCopy.write(convertByte);
-            imgCopy.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        ToiletIMGEntity toiletIMGEntity = new ToiletIMGEntity();
+        toiletIMGEntity.setImage(convertByte);
+        imageRepo.saveAndFlush(toiletIMGEntity);
+//        FileOutputStream img = null;
+//        FileOutputStream imgCopy = null;
+//        try {
+//            img = new FileOutputStream("D:\\tomcat\\apache-tomcat-9.0.54\\webapps\\ROOT\\resources\\images\\toilets\\"
+//            + jsonpoint.getName() + ".jpeg");
+//            img.write(convertByte);
+//            img.close();
+//            imgCopy = new FileOutputStream("C:\\Users\\yranikus\\IdeaProjects\\fgjhfdj\\src\\main\\webapp\\resources\\images\\toilets\\"
+//                    + jsonpoint.getName() + ".jpeg");
+//            imgCopy.write(convertByte);
+//            imgCopy.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        ToiletIMGEntity toiletIMGEntity1 = imageRepo.getOne(1L);
+//        String s2 = Base64.getEncoder().encodeToString(toiletIMGEntity1.getImage());
+//        String s = DatatypeConverter.printBase64Binary(toiletIMGEntity1.getImage());
+//        System.out.println("\n\n\n\n\n\n");
+//        System.out.println(s);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = userService.findbyLogin(auth.getName());

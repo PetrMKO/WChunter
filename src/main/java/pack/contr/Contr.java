@@ -12,20 +12,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pack.entity.ComplaintEntity;
+import pack.entity.ToiletEntity;
+import pack.entity.ToiletIMGEntity;
 import pack.entity.UserEntity;
 import pack.repo.ComplaintsRepo;
+import pack.repo.ImageRepo;
 import pack.repo.ToiletRepo;
 import pack.repo.UserRepo;
 import pack.service.ToiletService;
 import pack.service.UserService;
 
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.DatatypeConverter;
 import java.security.Principal;
+import java.util.List;
 
 
 @Controller
 @RequestMapping("/")
 public class Contr {
+
+
+    @Autowired
+    private ImageRepo imgRepo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -52,7 +61,13 @@ public class Contr {
             model.addAttribute("toiletsadded", userEntity.getAdded());
             return "lk";
         }
-        model.addAttribute("complaints",complaintsRepo.findAll());
+        List<ComplaintEntity> complaintEntities = complaintsRepo.findAll();
+        List<ToiletIMGEntity> images = imgRepo.findAll();
+        for (int i = 0; i < complaintEntities.size() ; i++ ){
+            ToiletEntity toiletEntity = complaintEntities.get(i).getToiletEntity();
+            toiletEntity.setImg("data:image/jpeg;base64," + DatatypeConverter.printBase64Binary(images.get(Math.toIntExact(toiletEntity.getId()) - 1).getImage()));
+        }
+        model.addAttribute("complaints", complaintEntities);
         return "moderlk";
     }
 

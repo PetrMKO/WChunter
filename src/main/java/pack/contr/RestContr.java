@@ -12,10 +12,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pack.entity.*;
 import pack.repo.ComplaintsRepo;
+import pack.repo.ImageRepo;
 import pack.repo.UserRepo;
 import pack.service.ToiletService;
 
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,10 @@ import java.util.List;
 @RestController
 @RequestMapping("")
 public class RestContr {
+
+
+    @Autowired
+    private ImageRepo imgRepo;
 
 
     @Autowired
@@ -66,6 +72,8 @@ public class RestContr {
         UserEntity userEntity = userService.findByLogin(auth.getName());
         ToiletEntity toiletEntity = toiletService.findByName(name);
         toiletEntity.setFavorite(userEntity.isFavorite(toiletEntity));
+        ToiletIMGEntity toiletIMGEntity = imgRepo.findById(toiletEntity.getId()).get();
+        toiletEntity.setImg("data:image/jpeg;base64," + DatatypeConverter.printBase64Binary(toiletIMGEntity.getImage()));
         return toiletEntity;
     }
 
@@ -81,6 +89,8 @@ public class RestContr {
         UserEntity userEntity = userService.findByLogin(auth.getName());
         ToiletEntity toiletEntity = toiletService.findByName(name);
         toiletEntity.setFavorite(userEntity.isFavorite(toiletEntity));
+        ToiletIMGEntity toiletIMGEntity = imgRepo.getById(toiletEntity.getId());
+        toiletEntity.setImg("data:image/jpeg;base64," + DatatypeConverter.printBase64Binary(toiletIMGEntity.getImage()));
         return toiletEntity;
     }
 
