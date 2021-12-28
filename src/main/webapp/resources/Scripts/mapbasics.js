@@ -29,6 +29,10 @@ window.addEventListener('DOMContentLoaded', function() {
     setHeiHeight();
     $(window).resize( setHeiHeight );
 
+    
+    ymaps.ready(init);
+    
+    
     var username,
         role,
         myMap,
@@ -51,7 +55,6 @@ window.addEventListener('DOMContentLoaded', function() {
     //[ROLE_USER]
     //[ROLE_MODERATOR]
     //[ROLE_ANONYMOUS]
-    ymaps.ready(init);
 
     function init() {
         const photoDiv = document.createElement('div');
