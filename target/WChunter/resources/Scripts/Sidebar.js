@@ -6,8 +6,6 @@ const modalTrigger = document.querySelector('[data-modal]'),
     modalCloseBtn = document.querySelector('[data-close]'),
     favoriteBtn = document.querySelector('.favorite_btn');
 
-    console.log(claimTrigger);
-
 export var addMode = false,
     commentMode = false,
     claimMode = false,
@@ -15,9 +13,6 @@ export var addMode = false,
 
 export const modal = document.querySelector('.comment_modal'),
              claim = document.querySelector('#claim_modal');
-
-            console.log(claim);
-
 
 modalTrigger.addEventListener('click', () => {
     openModal(modal);
@@ -159,12 +154,17 @@ export function addPoints(map, geoCollection){
         if(request.status === 200) {
             const points = JSON.parse(request.response);
 
-            console.log("succes");
             console.log(points);
 
             points.forEach((point) => {
                 console.log(point);
-
+                let imageURL = '/resources/images/ToiletIcon.png';
+                if(point.mark < 4){
+                    imageURL = '/resources/images/ToiletIconPoop.png';
+                }
+                else if( point.mark > 8) {
+                    imageURL = '/resources/images/ToiletIconGold.png';
+                }
                 geoCollection.add(new ymaps.Placemark([+(point.latitude), +(point.longitude)], {
                         hintContent: point.name,
                         balloonContentHeader: point.name
@@ -174,7 +174,7 @@ export function addPoints(map, geoCollection){
                         //     '<div class="footer2Foto"></div></div></div>'
                     }, {
                         iconLayout: 'default#image',
-                        iconImageHref: '/resources/images/ToiletIcon.png',
+                        iconImageHref: imageURL,
                         iconImageSize: [24, 38],
                         iconImageOffset: [-12, -38]
                     })

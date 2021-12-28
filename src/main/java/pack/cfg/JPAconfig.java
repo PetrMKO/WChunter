@@ -58,7 +58,7 @@ public class JPAconfig {
     public Properties properties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
-        properties.put("hibernate.hbm2ddl.auto", "create");
+        properties.put("hibernate.hbm2ddl.auto", "validate");
         return properties;
     }
 

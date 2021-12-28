@@ -665,6 +665,8 @@ textarea:focus{
     right: 0;
     top: 0;
     cursor: pointer;
+    height: 26px !important;
+    overflow: visible;
 }
 
 .insidebar_close:hover, commentbar_close:hover{

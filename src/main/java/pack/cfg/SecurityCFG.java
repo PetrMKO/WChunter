@@ -37,7 +37,7 @@ public class SecurityCFG extends WebSecurityConfigurerAdapter {
                     .antMatchers("/resources/css/{style}.png").permitAll()
                     .antMatchers("/resources/**").permitAll()
                     .antMatchers("/test").permitAll()
-                    .antMatchers("/map").hasAnyRole("MODERATOR","USER")
+                    .antMatchers("/map").permitAll()
                     .antMatchers("/points").permitAll()
                     .antMatchers("/point/**").permitAll()
                     .antMatchers("/login").permitAll()

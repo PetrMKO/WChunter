@@ -54,6 +54,7 @@ public class Contr {
     @GetMapping("lk")
     public String lk(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getAuthorities().toString());
         UserEntity userEntity = userService.findbyLogin(auth.getName());
         model.addAttribute("login", auth.getName());
         if (userEntity.getRole().equals("USER")) {
@@ -72,8 +73,8 @@ public class Contr {
 
     @PostMapping("complaints")
     public String complaintsLk(@RequestParam(required = false) Long id, @RequestParam(required = false) String action,
-                               @RequestParam(required = false) String username,
-                               @RequestParam(required = false) Long pointId, Model model){
+                               @RequestParam(required = false) Long pointId,
+                               @RequestParam(required = false) String username, Model model){
         if (action != null) {
             if (action.equals("del")) {
                 complaintsRepo.deleteById(id);

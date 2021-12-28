@@ -29,10 +29,8 @@ window.addEventListener('DOMContentLoaded', function() {
     setHeiHeight();
     $(window).resize( setHeiHeight );
 
-    ymaps.ready(init);
-
-
     var username,
+        role,
         myMap,
         coords,
         myCollection,
@@ -41,9 +39,19 @@ window.addEventListener('DOMContentLoaded', function() {
 
     $.get("username")
         .done(function( data ) {
-            username = data;
-            console.log( "Data Loaded: " + data );
+            username = data.login;
+            role = data.role;
+            console.log( "Data Loaded: ");
+            console.log(username);
+            console.log(role);
         });
+
+    console.log($('.button_layout'));
+
+    //[ROLE_USER]
+    //[ROLE_MODERATOR]
+    //[ROLE_ANONYMOUS]
+    ymaps.ready(init);
 
     function init() {
         const photoDiv = document.createElement('div');
@@ -117,7 +125,7 @@ window.addEventListener('DOMContentLoaded', function() {
             }),
             zoomControl = new ymaps.control.ZoomControl({options: {layout: ZoomLayout,
                     position:{right: 0,
-                        top: 890/2 -120
+                        top: ($(window).height()/2)-136 + 'px'
                     }}}),
             ButtonLayout = ymaps.templateLayoutFactory.createClass([
                 '<div title="{{ data.title }}" class="my-button"',
@@ -248,7 +256,17 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
         myMap.controls.add(zoomControl);
-        myMap.controls.add(button);
+        if(role !== '[ROLE_ANONYMOUS]'){
+            myMap.controls.add(button);
+        }
+
+        if(role === '[ROLE_ANONYMOUS]'){
+            console.log('anon')
+            // document.querySelector('.button_layout').innerHTML='';
+            document.querySelector('.button_layout').classList.add('hide');
+            document.querySelector('.comment_link').innerHTML='';
+        }
+
         myMap.controls.add(LKbutton);
         var mySearchControl = new ymaps.control.SearchControl({
             options: {
@@ -481,11 +499,8 @@ window.addEventListener('DOMContentLoaded', function() {
         const openButton = document.querySelector('#image_input');
 
         postPoint(formTable);
-        console.log(formTable);
         postPoint(commentForm);
-        console.log(commentForm);
         postPoint(claimForm);
-        console.log(claimForm);
 
         function newAddPoint(point){
             updatePoints(myCollection, point);
@@ -526,7 +541,13 @@ window.addEventListener('DOMContentLoaded', function() {
 
                         const pointAded = JSON.parse(add);
                         console.log(pointAded);
-
+                        let imageURL = '/resources/images/ToiletIcon.png';
+                        if(object.mark < 4){
+                            imageURL = '/resources/images/ToiletIconPoop.png';
+                        }
+                        else if(object.mark > 8) {
+                            imageURL = '/resources/images/ToiletIconGold.png';
+                        }
                         newPoint = new ymaps.Placemark([+(pointAded.latitude), +(pointAded.longitude)], {
                             hintContent: pointAded.name,
                             balloonContentHeader: pointAded.name
@@ -536,7 +557,7 @@ window.addEventListener('DOMContentLoaded', function() {
                             //     '<div class="footer2Foto"></div></div></div>'
                         }, {
                             iconLayout: 'default#image',
-                            iconImageHref: '/resources/images/ToiletIcon.png',
+                            iconImageHref: imageURL,
                             iconImageSize: [24, 38],
                             iconImageOffset: [-12, -38]
                         });
