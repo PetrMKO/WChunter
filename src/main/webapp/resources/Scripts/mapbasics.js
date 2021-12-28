@@ -191,7 +191,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
         var center=[];
 
-        control.routePanel.state.set({
+        var routeControle = myMap.controls.get('routePanelControl');
+        routeControle.routePanel.state.set({
          // Список всех настроек см. в справочнике.
          // Тип маршрутизации, который будет использоваться по умолчанию.
             type: "pedestrian", // пешком
