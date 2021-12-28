@@ -72,6 +72,7 @@ public class Contr {
 
     @PostMapping("complaints")
     public String complaintsLk(@RequestParam(required = false) Long id, @RequestParam(required = false) String action,
+                               @RequestParam(required = false) String username,
                                @RequestParam(required = false) Long pointId, Model model){
         if (action != null) {
             if (action.equals("del")) {
@@ -79,7 +80,7 @@ public class Contr {
             }
             if (action.equals("delPoint")) {
                 complaintsRepo.deleteById(id);
-                toiletService.deletePoint(pointId);
+                toiletService.deletePoint(pointId, username);
             }
         }
         System.out.println(action);

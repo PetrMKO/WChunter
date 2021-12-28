@@ -1,7 +1,6 @@
 package pack.service;
 
 
-import com.sun.mail.util.BASE64DecoderStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,12 +12,8 @@ import pack.repo.ImageRepo;
 import pack.repo.ToiletRepo;
 
 
-import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
-import java.awt.image.BufferedImage;
-import java.io.*;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -106,7 +101,12 @@ public class ToiletService {
     }
 
     @Transactional
-    public void deletePoint(Long id){
+    public void deletePoint(Long id, String username){
+        UserEntity userEntity = userService.findbyLogin(username);
+        ToiletEntity toiletEntity = toiletRepo.findById(id).get();
+        userEntity.deleteFav(toiletEntity);
+        userEntity.deleteAdd(toiletEntity);
+        userService.save(userEntity);
         toiletRepo.deleteById(id);
     }
 
