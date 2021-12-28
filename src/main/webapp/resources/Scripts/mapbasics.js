@@ -41,15 +41,6 @@ window.addEventListener('DOMContentLoaded', function() {
         validMark = false,
         validCoords = false;
 
-    $.get("username")
-        .done(function( data ) {
-            username = data.login;
-            role = data.role;
-            console.log( "Data Loaded: ");
-            console.log(username);
-            console.log(role);
-        });
-
     console.log($('.button_layout'));
 
     //[ROLE_USER]
@@ -200,7 +191,43 @@ window.addEventListener('DOMContentLoaded', function() {
 
         var center=[];
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        $.get("username")
+        .done(function( data ) {
+            username = data.login;
+            role = data.role;
+        
+        if(role !== '[ROLE_ANONYMOUS]'){
+            myMap.controls.add(button);
+        }
 
+        if(role === '[ROLE_ANONYMOUS]'){
+            console.log('anon')
+            // document.querySelector('.button_layout').innerHTML='';
+            document.querySelector('.button_layout').classList.add('hide');
+            document.querySelector('.comment_link').innerHTML='';
+        }
+            console.log( "Data Loaded: ");
+            console.log(username);
+            console.log(role);
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
 
 
@@ -259,16 +286,6 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
         myMap.controls.add(zoomControl);
-        if(role !== '[ROLE_ANONYMOUS]'){
-            myMap.controls.add(button);
-        }
-
-        if(role === '[ROLE_ANONYMOUS]'){
-            console.log('anon')
-            // document.querySelector('.button_layout').innerHTML='';
-            document.querySelector('.button_layout').classList.add('hide');
-            document.querySelector('.comment_link').innerHTML='';
-        }
 
         myMap.controls.add(LKbutton);
         var mySearchControl = new ymaps.control.SearchControl({
