@@ -95,7 +95,7 @@ public class ToiletService {
         List<ToiletEntity> toiletEntities = toiletRepo.findAll();
         ArrayList<BaloonPoint> baloonPoints = new ArrayList<>();
         for (ToiletEntity t : toiletEntities){
-            BaloonPoint baloonPoint = new BaloonPoint(t.getName(),t.getLatitude(), t.getLongitude());
+            BaloonPoint baloonPoint = new BaloonPoint(t.getName(),t.getLatitude(), t.getLongitude(), t.getMark());
             baloonPoints.add(baloonPoint);
         }
         return baloonPoints;
@@ -105,6 +105,7 @@ public class ToiletService {
         return toiletRepo.findAllByName(name);
     }
 
+    @Transactional
     public void deletePoint(Long id){
         toiletRepo.deleteById(id);
     }

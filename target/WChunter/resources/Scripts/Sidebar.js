@@ -37,6 +37,8 @@ export function closeModal(modalT) {
     if(modalT.classList.contains('claim_modal')){
         claimMode = false;
     }
+
+
     else if(modalT.classList.contains('comment_modal')){
         comment_modal_mode = false;
     }

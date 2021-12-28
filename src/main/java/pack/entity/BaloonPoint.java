@@ -10,11 +10,22 @@ public class BaloonPoint {
     private Double latitude;
     @JsonProperty("longitude")
     private Double longitude;
+    @JsonProperty("mark")
+    private int mark;
 
-    public BaloonPoint(String name, Double latitude, Double longitude) {
+    public BaloonPoint(String name, Double latitude, Double longitude, int mark) {
+        this.mark = mark;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public int getMark() {
+        return mark;
+    }
+
+    public void setMark(int mark) {
+        this.mark = mark;
     }
 
     public String getName() {
