@@ -9,7 +9,8 @@ const modalTrigger = document.querySelector('[data-modal]'),
 export var addMode = false,
     commentMode = false,
     claimMode = false,
-    comment_modal_mode=false;
+    comment_modal_mode=false,
+    coordsArr;
 
 export const modal = document.querySelector('.comment_modal'),
              claim = document.querySelector('#claim_modal');
@@ -149,6 +150,18 @@ export function toggleMap(map, id){
 
 }
 
+function getcoords(array){
+    var pointsArray = array.toArray(),
+        coordsArr = [];
+
+    console.log(pointsArray);
+
+    pointsArray.sort((a, b) => b.blime - a.blime);
+
+    return pointsArray;
+
+}
+
 export function addPoints(map, geoCollection){
     const request = new XMLHttpRequest();
     request.open('GET', 'points');
@@ -165,7 +178,7 @@ export function addPoints(map, geoCollection){
 
             console.log(points);
             // points.sort((a, b) => b.mark - a.mark || getLenthToUser(geolat, geolong, +b.latitude, +b.longitude) - getLenthToUser(geolat, geolong, +a.latitude, +a.longitude));
-            // console.log(points);
+            coordsArr = getcoords(points);
 
             points.forEach((point) => {
                 console.log(point);
@@ -231,15 +244,6 @@ export function createMultiRoute(geoCollection, lat, long){
     var pointsArray = geoCollection.toArray(),
         coordsArr = [];
 
-    console.log(pointsArray);
-
-    pointsArray.sort((a, b) => b.properties._data.balloonContentBody - a.properties._data.balloonContentBody);
-
-    console.log(pointsArray);
-
-    pointsArray.forEach( element => {
-        console.log(element.geometry._coordinates);
-        coordsArr.push(element.geometry._coordinates);
-    });
+    console.log(coordsArr);
 
 }
