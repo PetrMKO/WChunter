@@ -232,7 +232,9 @@ export function createMultiRoute(geoCollection, lat, long){
     var pointsArray = geoCollection.toArray(),
         coordsArr;
 
-    pointsArray.array.sort((a, b) => b.mark - a.mark);
+    console.log(pointsArray);
+
+    // pointsArray.sort((a, b) => b.mark - a.mark);
     console.log(pointsArray);
     pointsArray.forEach( element => {
 
