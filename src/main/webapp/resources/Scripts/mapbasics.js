@@ -207,7 +207,7 @@ window.addEventListener('DOMContentLoaded', function() {
             toEnabled: true
         });
 
-
+        console.log(control.routePanel.events);
         //control.routePanel.state.set({
          // Список всех настроек см. в справочнике.
          // Тип маршрутизации, который будет использоваться по умолчанию.
