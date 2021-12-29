@@ -182,7 +182,7 @@ export function addPoints(map, geoCollection){
             console.log(points);
             // points.sort((a, b) => b.mark - a.mark || getLenthToUser(geolat, geolong, +b.latitude, +b.longitude) - getLenthToUser(geolat, geolong, +a.latitude, +a.longitude));
             coordsArr = getcoords(points);
-            console.log(cooordsArr);
+            console.log(coordsArr);
             points.forEach((point) => {
                 console.log(point);
                 let imageURL = '/resources/images/ToiletIcon.png';
