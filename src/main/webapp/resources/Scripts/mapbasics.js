@@ -320,9 +320,9 @@ window.addEventListener('DOMContentLoaded', function() {
         });
 
         geolocation = ymaps.geolocation;
-        addPoints(myMap, myCollection);
+        addPoints(myMap, myCollection).then(createMultiRoute(myCollection, geolocation.latitude, geolocation.longitude));
 
-        createMultiRoute(myCollection, geolocation.latitude, geolocation.longitude);
+        
 
         document.querySelector('.insidebar_close').addEventListener('click', () =>{
             toggleMap(myMap, '#sidebar');
