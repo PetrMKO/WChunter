@@ -187,12 +187,13 @@ window.addEventListener('DOMContentLoaded', function() {
             });
             myMap.geoObjects.add(placemark);
             // console.log(result.geoObjects._boundsAggregator._geoBounds[0]);
-        })
+        });
 
         var center=[];
 
         
         
+        console.log('маршруты');
         var control = myMap.controls.get('routePanelControl');
         console.log(control);
         //control.routePanel.state.set({
