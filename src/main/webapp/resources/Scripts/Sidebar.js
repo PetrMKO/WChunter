@@ -52,6 +52,12 @@ function openModal(modalT) {
     }
 }
 
+function getLenthToUser(geolat, geolong, lat, long){
+    var x = geolat-lat;
+    var y = geolong-long;
+    return Math.sqrt((x**2) + (y**2));
+}
+
 modalCloseBtn.addEventListener('click', () =>{
     closeModal(modal);});
 
@@ -154,8 +160,12 @@ export function addPoints(map, geoCollection){
         if(request.status === 200) {
             const points = JSON.parse(request.response);
 
+            var geolocation = ymaps.geolocation,
+                geolat = geolocation.latitude,
+                geolong = gelocation.longitude;
+
             console.log(points);
-            points.sort((a, b) => a.mark - b.mark);
+            points.sort((a, b) => b.mark - a.mark || getLenthToUser(geolat, geolong, +b.latitude, +b.longitude) - getLenthToUser(geolat, geolong, +a.latitude, +a.longitude));
             console.log(points);
 
             points.forEach((point) => {
