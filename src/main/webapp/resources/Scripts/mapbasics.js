@@ -322,9 +322,6 @@ window.addEventListener('DOMContentLoaded', function() {
         addPoints(myMap, myCollection);
 
 
-        createMultiRoute(myCollection);
-
-
 
         document.querySelector('.insidebar_close').addEventListener('click', () =>{
             toggleMap(myMap, '#sidebar');
