@@ -234,9 +234,12 @@ export function createMultiRoute(geoCollection, lat, long){
 
     console.log(pointsArray);
 
-    // pointsArray.sort((a, b) => b.mark - a.mark);
+    pointsArray.sort((a, b) => b.properties._data.balloonContentBody - a.properties._data.balloonContentBody);
     console.log(pointsArray);
     pointsArray.forEach( element => {
-
+        console.log(element.geometry._coordinates);
+        coordsArr.push(element.geometry._coordinates);
     });
+
+    console.log(coordsArr);
 }
