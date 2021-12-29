@@ -149,7 +149,7 @@ export function toggleMap(map, id){
 
 }
 
-export function addPoints(map, geoCollection, lat, long){
+export function addPoints(map, geoCollection){
     const request = new XMLHttpRequest();
     request.open('GET', 'points');
     request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
@@ -160,12 +160,12 @@ export function addPoints(map, geoCollection, lat, long){
         if(request.status === 200) {
             const points = JSON.parse(request.response);
 
-            var geolat = lat,
-                geolong = long;
+            // var geolat = lat,
+            //     geolong = long;
 
             console.log(points);
-            points.sort((a, b) => b.mark - a.mark || getLenthToUser(geolat, geolong, +b.latitude, +b.longitude) - getLenthToUser(geolat, geolong, +a.latitude, +a.longitude));
-            console.log(points);
+            // points.sort((a, b) => b.mark - a.mark || getLenthToUser(geolat, geolong, +b.latitude, +b.longitude) - getLenthToUser(geolat, geolong, +a.latitude, +a.longitude));
+            // console.log(points);
 
             points.forEach((point) => {
                 console.log(point);
