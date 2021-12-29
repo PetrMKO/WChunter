@@ -319,7 +319,8 @@ window.addEventListener('DOMContentLoaded', function() {
             hasBalloon: false
         });
 
-        addPoints(myMap, myCollection);
+        geolocation = ymaps.geolocation;
+        addPoints(myMap, myCollection, geolocation.latitude, geolocation.longitude);
 
 
 
