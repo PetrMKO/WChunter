@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pack.entity.*;
 import pack.repo.CommentRepo;
+import pack.repo.ComplaintsRepo;
 import pack.repo.ImageRepo;
 import pack.repo.ToiletRepo;
 
@@ -19,6 +20,9 @@ import java.util.List;
 @Service
 public class ToiletService {
 
+
+    @Autowired
+    private ComplaintsRepo complaintsRepo;
 
     @Autowired
     private UserService userService;
@@ -91,6 +95,7 @@ public class ToiletService {
         ArrayList<BaloonPoint> baloonPoints = new ArrayList<>();
         for (ToiletEntity t : toiletEntities){
             BaloonPoint baloonPoint = new BaloonPoint(t.getName(),t.getLatitude(), t.getLongitude(), t.getMark());
+            baloonPoint.setBlime(complaintsRepo.countAllByToiletEntity(t));
             baloonPoints.add(baloonPoint);
         }
         return baloonPoints;

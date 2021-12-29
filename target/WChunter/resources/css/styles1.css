@@ -12,7 +12,10 @@
     box-sizing: border-box;
 }
 
-
+li:hover {
+    border: 1px solid black;
+    box-shadow: 0 0 10px black;
+}
 
 a {
     text-decoration: none;
@@ -151,7 +154,9 @@ li {
     background-color: #C4C4C4;
 }
 
-
+.batton2:hover, .batton3:hover {
+    background-color: #1A3CA3;
+}
 
 
 .Lk {

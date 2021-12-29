@@ -52,6 +52,12 @@ function openModal(modalT) {
     }
 }
 
+function getLenthToUser(geolat, geolong, lat, long){
+    var x = geolat-lat;
+    var y = geolong-long;
+    return Math.sqrt((x**2) + (y**2));
+}
+
 modalCloseBtn.addEventListener('click', () =>{
     closeModal(modal);});
 
@@ -143,7 +149,8 @@ export function toggleMap(map, id){
 
 }
 
-export function addPoints(map, geoCollection){
+export let coordsArr;
+export function addPoints(map, geoCollection, geolat, geolong){
     const request = new XMLHttpRequest();
     request.open('GET', 'points');
     request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
@@ -154,10 +161,18 @@ export function addPoints(map, geoCollection){
         if(request.status === 200) {
             const points = JSON.parse(request.response);
 
+            // var geolat = lat,
+            //     geolong = long;
+
             console.log(points);
+            coordsArr = []
+            points.sort((a, b) => b.mark - a.mark);
+            // console.log(points);
 
             points.forEach((point) => {
+
                 console.log(point);
+                coordsArr.push([+(point.latitude), +(point.longitude)]);
                 let imageURL = '/resources/images/ToiletIcon.png';
                 if(point.mark < 4){
                     imageURL = '/resources/images/ToiletIconPoop.png';
@@ -167,8 +182,8 @@ export function addPoints(map, geoCollection){
                 }
                 geoCollection.add(new ymaps.Placemark([+(point.latitude), +(point.longitude)], {
                         hintContent: point.name,
-                        balloonContentHeader: point.name
-                        // balloonContentBody: point.comment
+                        balloonContentHeader: point.name,
+                        balloonContentBody: point.mark
                         // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
                         // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
                         //     '<div class="footer2Foto"></div></div></div>'
@@ -180,6 +195,10 @@ export function addPoints(map, geoCollection){
                     })
                 );
             });
+
+            console.log(geoCollection);
+            console.log(coordsArr)
+            // createMultiRoute(geoCollection);
         }
 
         else{
@@ -212,4 +231,18 @@ export function addPoints(map, geoCollection){
 
 export function updatePoints(geoCollection, point){
     geoCollection.add(point);
+}
+
+export function createMultiRoute(array){
+    console.log(array);
+    var multiRoute = new ymaps.multiRouter.MultiRoute({
+        referencePoints: array,
+        params: {
+            //Тип маршрутизации - пешеходная маршрутизация.
+            routingMode: 'pedestrian'
+        }
+    }, {
+        // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
+        boundsAutoApply: true
+    });
 }
