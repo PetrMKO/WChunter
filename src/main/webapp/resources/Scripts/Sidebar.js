@@ -193,7 +193,6 @@ export function addPoints(map, geoCollection){
             });
 
             console.log(geoCollection);
-            createMultiRoute(geoCollection);
         }
 
         else{
@@ -243,5 +242,4 @@ export function createMultiRoute(geoCollection, lat, long){
         coordsArr.push(element.geometry._coordinates);
     });
 
-    console.log(coordsArr);
 }
