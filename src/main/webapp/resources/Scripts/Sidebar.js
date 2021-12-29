@@ -237,18 +237,6 @@ export function addPoints(map, geoCollection){
         }
     });
     map.geoObjects.add(geoCollection);
-    let multiRoute = new ymaps.multiRouter.MultiRoute({
-        referencePoints: coordsArr,
-        params: {
-            //Тип маршрутизации - пешеходная маршрутизация.
-            routingMode: 'pedestrian'
-        }
-    }, {
-        // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
-        boundsAutoApply: true
-    });
-
-    return(multiRoute);
 }
 
 export function updatePoints(geoCollection, point){

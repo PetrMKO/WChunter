@@ -319,9 +319,9 @@ window.addEventListener('DOMContentLoaded', function() {
             hasBalloon: false
         });
 
-        geolocation = ymaps.geolocation;
-        let multiRoute = addPoints(myMap, myCollection);
-        myMap.geoObjects.add(multiRoute);
+        // geolocation = ymaps.geolocation;
+        addPoints(myMap, myCollection);
+        // myMap.geoObjects.add(multiRoute);
         // createMultiRoute(myCollection, geolocation.latitude, geolocation.longitude);
 
         
