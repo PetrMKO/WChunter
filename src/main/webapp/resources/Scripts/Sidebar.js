@@ -230,12 +230,14 @@ export function updatePoints(geoCollection, point){
 
 export function createMultiRoute(geoCollection, lat, long){
     var pointsArray = geoCollection.toArray(),
-        coordsArr;
+        coordsArr = [];
 
     console.log(pointsArray);
 
     pointsArray.sort((a, b) => b.properties._data.balloonContentBody - a.properties._data.balloonContentBody);
+
     console.log(pointsArray);
+
     pointsArray.forEach( element => {
         console.log(element.geometry._coordinates);
         coordsArr.push(element.geometry._coordinates);
