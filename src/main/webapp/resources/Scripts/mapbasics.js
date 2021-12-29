@@ -320,7 +320,7 @@ window.addEventListener('DOMContentLoaded', function() {
         });
 
         geolocation = ymaps.geolocation;
-        addPoints(myMap, myCollection)
+        addPoints(myMap, myCollection);
         createMultiRoute(myCollection, geolocation.latitude, geolocation.longitude);
 
         
