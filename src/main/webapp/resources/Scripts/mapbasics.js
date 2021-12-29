@@ -14,7 +14,6 @@ import {
     createMultiRoute, coordsArr
 } from '/resources/Scripts/Sidebar.js';
 import {upload, preview} from '/resources/Scripts/imageUpload.js';
-import { coordsArr } from './Sidebar';
 
 export var imageSrc="";
 export function addsrc(img){
@@ -322,7 +321,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
         geolocation = ymaps.geolocation;
         addPoints(myMap, myCollection);
-        console.log(coordsArr)
+        console.log(coordsArr);
         createMultiRoute(myCollection, geolocation.latitude, geolocation.longitude);
 
         
