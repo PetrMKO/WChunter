@@ -192,7 +192,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
         var center=[];
 
-        console
+        console.log(geolocmark);
         console.log('маршруты 2.1');
         var control = myMap.controls.get('routeButtonControl');
 
