@@ -26,7 +26,7 @@ import java.util.Properties;
 public class JPAconfig {
 
 
-
+//
 //    @Bean
 //    public DataSource dataSource() {
 //        DriverManagerDataSource dataSource = new DriverManagerDataSource();

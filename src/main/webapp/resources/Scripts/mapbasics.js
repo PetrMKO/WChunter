@@ -11,7 +11,8 @@ import {
     claimMode,
     nameError,
     comment_modal_mode,
-    createMultiRoute
+    createMultiRoute,
+    coordsArr
 } from '/resources/Scripts/Sidebar.js';
 import {upload, preview} from '/resources/Scripts/imageUpload.js';
 

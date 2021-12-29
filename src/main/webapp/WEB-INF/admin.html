@@ -1,35 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/resources/css/" type="text/css">
+    <link rel="stylesheet" href="/resources/css/admin.css" type="text/css">
     <title>Админимтратор</title>
 </head>
 <body>
     <div class="title">Личный кабинет</div>
     <div class="user-list-block">
         <div class="list-title">Список пользователей</div>
-        <div class="userlist">
-            <div class="user-form">
-                <div class="btn">Nickname</div>
-                <form action="#" class="s-form">
-                    <input type="radio" id="contactChoice1" name="role" value="Moderator">
+        <ul class="userlist" th:each="user : ${USERS}">
+            <li class="user-form">
+                <div class="btn" th:text="${user.login}">Nickname</div>
+                <form th:action="@{/setrole(login=${user.login})}" class="s-form" method="post">
+                    <input type="radio" id="contactChoice1" name="role" value="MODERATOR">
                     <label for="contactChoice1" class="input-helper input-helper--radio role-input">Moderator</label>
-                    <input type="radio" id="contactChoice2" name="role" value="User">
+                    <input type="radio" id="contactChoice2" name="role" value="USER">
                     <label for="contactChoice2" class="input-helper input-helper--radio role-input">User</label>
                     <input type="submit" value="НАЗНАЧИТЬ" id="submit_role" class="role-input">
                 </form>
-            </div>
+            </li>
              
         </div>
     </div>
 
     <div class="button-group">
-        <div class="btn">Nickname</div>
+        <div class="btn" th:text="login">Nickname</div>
 
-        <a href="#" class="btn link-btn">Карта</a>
+        <a href="/map" class="btn link-btn">Карта</a>
         <a href="#" class="btn link-btn">Сменить пароль</a>
         <a href="#" class="btn link-btn">Выход</a>
     </div>

@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pack.entity.UserEntity;
 import pack.repo.UserRepo;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -21,6 +23,8 @@ public class UserService {
         return userRepo.findByLogin(login);
     }
 
-
+    public List<UserEntity> findAll(){
+        return userRepo.findAll();
+    }
 
 }

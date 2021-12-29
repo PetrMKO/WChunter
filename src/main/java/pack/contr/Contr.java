@@ -62,6 +62,10 @@ public class Contr {
             model.addAttribute("toiletsadded", userEntity.getAdded());
             return "lk";
         }
+        if (userEntity.getRole().equals("ADMIN")) {
+            model.addAttribute("USERS", userService.findAll());
+            return "admin";
+        }
         List<ComplaintEntity> complaintEntities = complaintsRepo.findAll();
         for (int i = 0; i < complaintEntities.size() ; i++ ){
             ToiletEntity toiletEntity = complaintEntities.get(i).getToiletEntity();
@@ -95,7 +99,13 @@ public class Contr {
 
     }
 
-
+    @RequestMapping("/setrole")
+    public String adminLk(@RequestParam(required = false) String role, @RequestParam(required = false) String login ){
+        UserEntity userEntity = userService.findbyLogin(login);
+        userEntity.setRole(role);
+        userService.save(userEntity);
+        return "redirect:lk";
+    }
 
     @GetMapping("")
     public String first(){
