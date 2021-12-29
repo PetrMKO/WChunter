@@ -178,8 +178,8 @@ export function addPoints(map, geoCollection){
                 }
                 geoCollection.add(new ymaps.Placemark([+(point.latitude), +(point.longitude)], {
                         hintContent: point.name,
-                        balloonContentHeader: point.name
-                        // balloonContentBody: point.mark
+                        balloonContentHeader: point.name,
+                        balloonContentBody: point.blime
                         // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
                         // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
                         //     '<div class="footer2Foto"></div></div></div>'
@@ -228,8 +228,13 @@ export function updatePoints(geoCollection, point){
     geoCollection.add(point);
 }
 
-export function createMultiRoute(geoCollection){
-    var pointsArray = geoCollection.toArray();
+export function createMultiRoute(geoCollection, lat, long){
+    var pointsArray = geoCollection.toArray(),
+        coordsArr;
+
+    pointsArray.array.sort((a, b) => b.mark - a.mark);
     console.log(pointsArray);
-    // var multiRoute = 
+    pointsArray.forEach( element => {
+
+    });
 }
