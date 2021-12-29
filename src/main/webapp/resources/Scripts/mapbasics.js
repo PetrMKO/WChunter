@@ -55,7 +55,7 @@ window.addEventListener('DOMContentLoaded', function() {
         myMap = new ymaps.Map('map', {
                 center: [59.951235204009016,30.304518020247105],
                 zoom: 16,
-                controls: ['routeButtonControl', 'geolocationControl']
+                controls: ['geolocationControl']
             },
             // {
             //     // Зададим ограниченную область прямоугольником,
@@ -195,9 +195,16 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
         
-        console.log('маршруты');
-        var control = myMap.controls.get('routePanelControl');
-        console.log(control);
+        console.log('маршруты 2.0');
+
+        var routeButtonControl = new ymaps.control.RouteButton();
+        routeButtonControl.routePanel.state.set({
+            // Список всех настроек см. в справочнике.
+            // Тип маршрутизации, который будет использоваться по умолчанию.
+            type: "pedestrian", // пешком
+        });
+        
+        myMap.controls.add(routeButtonControl);
         //control.routePanel.state.set({
          // Список всех настроек см. в справочнике.
          // Тип маршрутизации, который будет использоваться по умолчанию.
