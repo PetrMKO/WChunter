@@ -185,13 +185,15 @@ window.addEventListener('DOMContentLoaded', function() {
                 iconImageSize: [24, 38],
                 iconImageOffset: [-12, -38]
             });
-            myMap.geoObjects.add(placemark);
+            myMap.geoObjects.add(geolocmark);
             // console.log(result.geoObjects._boundsAggregator._geoBounds[0]);
         });
 
         var center=[];
 
         
+
+
         
         console.log('маршруты');
         var control = myMap.controls.get('routePanelControl');
