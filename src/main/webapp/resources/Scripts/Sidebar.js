@@ -155,6 +155,8 @@ export function addPoints(map, geoCollection){
             const points = JSON.parse(request.response);
 
             console.log(points);
+            points.sort((a, b) => a.mark - b.mark);
+            console.log(points);
 
             points.forEach((point) => {
                 console.log(point);
@@ -180,6 +182,9 @@ export function addPoints(map, geoCollection){
                     })
                 );
             });
+
+            console.log(geoCollection);
+            createMultiRoute(geoCollection);
         }
 
         else{
