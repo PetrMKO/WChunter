@@ -202,7 +202,7 @@ window.addEventListener('DOMContentLoaded', function() {
             type: "pedestrian", // пешком
             fromEnabled: false,
             // Адрес или координаты пункта отправления.
-            from: geolocmark.geoObjects._boundsAggregator._geoBounds[0],
+            // from: geolocmark.geoObjects._boundsAggregator._geoBounds[0],
             toEnabled: true
         });
 
