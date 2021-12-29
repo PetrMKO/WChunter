@@ -195,6 +195,7 @@ window.addEventListener('DOMContentLoaded', function() {
         console.log(geolocmark);
         console.log('маршруты 2.1');
         var control = myMap.controls.get('routeButtonControl');
+        control.routePanel.geolocate('from');
 
         control.routePanel.state.set({
             // Список всех настроек см. в справочнике.
