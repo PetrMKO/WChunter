@@ -192,18 +192,15 @@ window.addEventListener('DOMContentLoaded', function() {
         var center=[];
 
         
-
-
-        
         console.log('маршруты 2.1');
-
+        var control = myMap.controls.get('routeButtonControl');
 
         control.routePanel.state.set({
             // Список всех настроек см. в справочнике.
             // Тип маршрутизации, который будет использоваться по умолчанию.
             type: "pedestrian", // пешком
         });
-        
+
 
         //control.routePanel.state.set({
          // Список всех настроек см. в справочнике.
@@ -435,8 +432,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
             }
         });
-
-        var control = myMap.controls.get('routeButtonControl');
+        
 
         const runButton = document.querySelector('.run_button_div');
         runButton.addEventListener('click', ()=>{
