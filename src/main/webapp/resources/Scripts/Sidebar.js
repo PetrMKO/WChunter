@@ -151,7 +151,7 @@ export function toggleMap(map, id){
 }
 
 function getcoords(array){
-    var pointsArray = array.toArray(),
+    var pointsArray = array,
         coordsArr = [];
 
     console.log(pointsArray);
