@@ -55,7 +55,7 @@ window.addEventListener('DOMContentLoaded', function() {
         myMap = new ymaps.Map('map', {
                 center: [59.951235204009016,30.304518020247105],
                 zoom: 16,
-                controls: ['geolocationControl', 'routePanelControl']
+                controls: ['geolocationControl', 'routeButtonControl']
             },
             // {
             //     // Зададим ограниченную область прямоугольником,
