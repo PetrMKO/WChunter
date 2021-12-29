@@ -214,6 +214,8 @@ export function updatePoints(geoCollection, point){
     geoCollection.add(point);
 }
 
-export function createMultiRoute(geoCollection, k){
-
+export function createMultiRoute(geoCollection){
+    var pointsArray = geoCollection.toArray();
+    console.log(pointsArray);
+    // var multiRoute = 
 }
