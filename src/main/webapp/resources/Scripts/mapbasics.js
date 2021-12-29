@@ -38,6 +38,7 @@ window.addEventListener('DOMContentLoaded', function() {
         myMap,
         coords,
         myCollection,
+        geolocmark,
         validMark = false,
         validCoords = false;
 
@@ -172,7 +173,7 @@ window.addEventListener('DOMContentLoaded', function() {
             // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
             result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
 
-            var geolocmark = new ymaps.Placemark(result.geoObjects._boundsAggregator._geoBounds[0], {
+            geolocmark = new ymaps.Placemark(result.geoObjects._boundsAggregator._geoBounds[0], {
                 hintContent: 'Тут не надо'
                 // balloonContentHeader: point.name
                 // balloonContentBody: point.comment
@@ -191,7 +192,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
         var center=[];
 
-        
+        console
         console.log('маршруты 2.1');
         var control = myMap.controls.get('routeButtonControl');
 
@@ -199,6 +200,10 @@ window.addEventListener('DOMContentLoaded', function() {
             // Список всех настроек см. в справочнике.
             // Тип маршрутизации, который будет использоваться по умолчанию.
             type: "pedestrian", // пешком
+            fromEnabled: false,
+            // Адрес или координаты пункта отправления.
+            from: geolocmark.geoObjects._boundsAggregator._geoBounds[0],
+            toEnabled: true
         });
 
 
