@@ -11,18 +11,20 @@
     <div class="title">Личный кабинет</div>
     <div class="user-list-block">
         <div class="list-title">Список пользователей</div>
-        <ul class="userlist" th:each="user : ${USERS}">
-            <li class="user-form">
-                <div class="btn" th:text="${user.login}">Nickname</div>
-                <form th:action="@{/setrole(login=${user.login})}" class="s-form" method="post">
-                    <input type="radio" id="contactChoice1" name="role" value="MODERATOR">
-                    <label for="contactChoice1" class="input-helper input-helper--radio role-input">Moderator</label>
-                    <input type="radio" id="contactChoice2" name="role" value="USER">
-                    <label for="contactChoice2" class="input-helper input-helper--radio role-input">User</label>
-                    <input type="submit" value="НАЗНАЧИТЬ" id="submit_role" class="role-input">
-                </form>
-            </li>
-        </ul>
+        <div class="userlist">
+            <ul th:each="user : ${USERS}">
+                <li class="user-form">
+                    <div class="btn" th:text="${user.login}">Nickname</div>
+                    <form th:action="@{/setrole(login=${user.login})}" class="s-form" method="post">
+                        <input type="radio" id="contactChoice1" name="role" value="MODERATOR">
+                        <label for="contactChoice1" class="input-helper input-helper--radio role-input">Moderator</label>
+                        <input type="radio" id="contactChoice2" name="role" value="USER">
+                        <label for="contactChoice2" class="input-helper input-helper--radio role-input">User</label>
+                        <input type="submit" value="НАЗНАЧИТЬ" id="submit_role" class="role-input">
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="button-group">
