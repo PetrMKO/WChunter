@@ -11,7 +11,7 @@ import {
     claimMode,
     nameError,
     comment_modal_mode,
-    createMultiRoute
+    createMultiRoute, coordsArr
 } from '/resources/Scripts/Sidebar.js';
 import {upload, preview} from '/resources/Scripts/imageUpload.js';
 
@@ -319,10 +319,12 @@ window.addEventListener('DOMContentLoaded', function() {
             hasBalloon: false
         });
 
-        geolocation = ymaps.geolocation;
+        // geolocation = ymaps.geolocation;
         addPoints(myMap, myCollection);
+        // myMap.geoObjects.add(multiRoute);
+        // createMultiRoute(myCollection, geolocation.latitude, geolocation.longitude);
 
-
+        
 
         document.querySelector('.insidebar_close').addEventListener('click', () =>{
             toggleMap(myMap, '#sidebar');

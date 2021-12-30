@@ -9,7 +9,8 @@ const modalTrigger = document.querySelector('[data-modal]'),
 export var addMode = false,
     commentMode = false,
     claimMode = false,
-    comment_modal_mode=false;
+    comment_modal_mode=false,
+    coordsArr;
 
 export const modal = document.querySelector('.comment_modal'),
              claim = document.querySelector('#claim_modal');
@@ -149,6 +150,21 @@ export function toggleMap(map, id){
 
 }
 
+function getcoords(array){
+    var pointsArray = array,
+        coordsArr = [];
+
+    console.log(pointsArray);
+
+    pointsArray.sort((a, b) => b.blime - a.blime);
+
+    pointsArray.forEach( obj => {
+        coordsArr.push([+(obj.latitude), +(obj.longitude)]);
+    });
+    return coordsArr;
+
+}
+
 export function addPoints(map, geoCollection){
     const request = new XMLHttpRequest();
     request.open('GET', 'points');
@@ -165,8 +181,8 @@ export function addPoints(map, geoCollection){
 
             console.log(points);
             // points.sort((a, b) => b.mark - a.mark || getLenthToUser(geolat, geolong, +b.latitude, +b.longitude) - getLenthToUser(geolat, geolong, +a.latitude, +a.longitude));
-            // console.log(points);
-
+            coordsArr = getcoords(points);
+            console.log(coordsArr);
             points.forEach((point) => {
                 console.log(point);
                 let imageURL = '/resources/images/ToiletIcon.png';
@@ -193,7 +209,6 @@ export function addPoints(map, geoCollection){
             });
 
             console.log(geoCollection);
-            createMultiRoute(geoCollection);
         }
 
         else{
@@ -228,15 +243,10 @@ export function updatePoints(geoCollection, point){
     geoCollection.add(point);
 }
 
-export function createMultiRoute(geoCollection, lat, long){
+export function createMultiRoute(){
     var pointsArray = geoCollection.toArray(),
-        coordsArr;
+        coordsArr = [];
 
-    console.log(pointsArray);
+    console.log(coordsArr);
 
-    // pointsArray.sort((a, b) => b.mark - a.mark);
-    console.log(pointsArray);
-    pointsArray.forEach( element => {
-
-    });
 }
