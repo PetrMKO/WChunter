@@ -6,18 +6,14 @@ const modalTrigger = document.querySelector('[data-modal]'),
     modalCloseBtn = document.querySelector('[data-close]'),
     favoriteBtn = document.querySelector('.favorite_btn');
 
-    console.log(claimTrigger);
-
 export var addMode = false,
     commentMode = false,
     claimMode = false,
-    comment_modal_mode=false;
+    comment_modal_mode=false,
+    coordsArr;
 
 export const modal = document.querySelector('.comment_modal'),
              claim = document.querySelector('#claim_modal');
-
-            console.log(claim);
-
 
 modalTrigger.addEventListener('click', () => {
     openModal(modal);
@@ -55,6 +51,12 @@ function openModal(modalT) {
     else if(modalT.classList.contains('comment_modal')){
         comment_modal_mode = true;
     }
+}
+
+function getLenthToUser(geolat, geolong, lat, long){
+    var x = geolat-lat;
+    var y = geolong-long;
+    return Math.sqrt((x**2) + (y**2));
 }
 
 modalCloseBtn.addEventListener('click', () =>{
@@ -148,6 +150,21 @@ export function toggleMap(map, id){
 
 }
 
+function getcoords(array){
+    var pointsArray = array,
+        coordsArr = [];
+
+    console.log(pointsArray);
+
+    pointsArray.sort((a, b) => b.blime - a.blime);
+
+    pointsArray.forEach( obj => {
+        coordsArr.push([+(obj.latitude), +(obj.longitude)]);
+    });
+    return coordsArr;
+
+}
+
 export function addPoints(map, geoCollection){
     const request = new XMLHttpRequest();
     request.open('GET', 'points');
@@ -159,27 +176,39 @@ export function addPoints(map, geoCollection){
         if(request.status === 200) {
             const points = JSON.parse(request.response);
 
-            console.log("succes");
-            console.log(points);
+            // var geolat = lat,
+            //     geolong = long;
 
+            console.log(points);
+            // points.sort((a, b) => b.mark - a.mark || getLenthToUser(geolat, geolong, +b.latitude, +b.longitude) - getLenthToUser(geolat, geolong, +a.latitude, +a.longitude));
+            coordsArr = getcoords(points);
+            console.log(coordsArr);
             points.forEach((point) => {
                 console.log(point);
-
+                let imageURL = '/resources/images/ToiletIcon.png';
+                if(point.mark < 4){
+                    imageURL = '/resources/images/ToiletIconPoop.png';
+                }
+                else if( point.mark > 8) {
+                    imageURL = '/resources/images/ToiletIconGold.png';
+                }
                 geoCollection.add(new ymaps.Placemark([+(point.latitude), +(point.longitude)], {
                         hintContent: point.name,
-                        balloonContentHeader: point.name
-                        // balloonContentBody: point.comment
+                        balloonContentHeader: point.name,
+                        balloonContentBody: point.blime
                         // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
                         // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
                         //     '<div class="footer2Foto"></div></div></div>'
                     }, {
                         iconLayout: 'default#image',
-                        iconImageHref: '/resources/images/ToiletIcon.png',
+                        iconImageHref: imageURL,
                         iconImageSize: [24, 38],
                         iconImageOffset: [-12, -38]
                     })
                 );
             });
+
+            console.log(geoCollection);
         }
 
         else{
@@ -212,4 +241,12 @@ export function addPoints(map, geoCollection){
 
 export function updatePoints(geoCollection, point){
     geoCollection.add(point);
+}
+
+export function createMultiRoute(){
+    var pointsArray = geoCollection.toArray(),
+        coordsArr = [];
+
+    console.log(coordsArr);
+
 }

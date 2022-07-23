@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Roboto&display=swap');
+
+
+body {
+    font-family: 'Manrope', sans-serif;
+    height: 95vh;
+    border: 22px solid #1A3CA3;
+    overflow-y: hidden;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    /* line-height: 87px; */
+    color: #1A3CA3;
+
+}
+
+.title{
+    font-size: 64px;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 55px;
+}
+
+.user-list-block{
+    margin: 0 100px 40px 100px;
+    height: 72.31%;
+    width: 65.88%;
+    min-width: 745px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+.list-title{
+    font-style: normal;
+    font-weight: normal;
+    width: 12em;
+    font-size: 36px;
+    text-align: center;
+    padding: .2em 0;
+    background-color: #1A3CA3;
+    border-radius: 7px;
+    color: white;
+    margin-bottom: .5em;
+}
+
+.button-group{
+    font-size: 36px;
+    font-weight: 700;
+    position: absolute;
+    top: 30%;
+    right: 5%;
+    text-align: center;
+}
+
+.button-group .btn{
+    background-color: #1A3CA3;
+    display: block;
+    text-decoration: none;
+    color: white;
+    margin-bottom: 1.67em;
+    padding: 0.2em .278em;
+    border-radius: 7px;
+}
+
+.button-group .link-btn{
+    font-weight: normal;
+    background-color: #C4C4C4;
+}
+
+.button-group .link-btn:hover{
+    background-color: cornflowerblue;
+}
+
+.userlist{
+    list-style: none;
+    background-color: #C4C4C4;
+    margin: 0;
+    flex: 1;
+    border-radius: 7px;
+    overflow-y: scroll;
+    min-width: 840px;
+}
+.user-form{
+    margin: 10px 27px;
+    height: 120px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding-right: 20px;
+    border-radius: 7px;
+}
+
+.user-form .btn{
+    font-size: 36px;
+    color: black;
+    background-color: #5C6DFF;
+    margin-left: 20px;
+    padding: 0.28em 2.1em;
+    border-radius: 7px;
+    display: inline-block;
+}
+
+
+.input-helper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 5px;
+    margin-right: 50px;
+}
+
+.input-helper:before {
+    content: '';
+    display: block;
+    position: absolute;
+    display: block;
+}
+ 
+.input-helper--radio {
+    padding-left: 50px;
+}
+
+.input-helper--radio:before {
+        top: 5px;
+        left: 10px;
+        width: 30px;
+        height: 30px;
+        background-color: #C4C4C4;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + label:before {
+    background: rgb(1, 154, 255);
+}
+
+.submit_role{
+    font-weight: normal;
+    padding: 8px 12px;
+    font-size: 36px;
+    color: white;
+    background-color: #1A3CA3;
+    border-radius: 7px;
+}
+
+.s-form{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+}

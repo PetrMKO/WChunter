@@ -68,10 +68,12 @@ public class RestContr {
 
     @RequestMapping("point/{name}")
     public ToiletEntity getPoint(@PathVariable String name){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity userEntity = userService.findByLogin(auth.getName());
         ToiletEntity toiletEntity = toiletService.findByName(name);
-        toiletEntity.setFavorite(userEntity.isFavorite(toiletEntity));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!auth.getName().equals("anonymousUser")) {
+            UserEntity userEntity = userService.findByLogin(auth.getName());
+            toiletEntity.setFavorite(userEntity.isFavorite(toiletEntity));
+        }
         ToiletIMGEntity toiletIMGEntity = imgRepo.findById(toiletEntity.getId()).get();
         toiletEntity.setImg("data:image/jpeg;base64," + DatatypeConverter.printBase64Binary(toiletIMGEntity.getImage()));
         return toiletEntity;
@@ -137,9 +139,13 @@ public class RestContr {
 
 
     @RequestMapping(value = "username")
-    public String getUsername(){
+    public User getUsername(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getName();
+        User user = new User();
+        user.setLogin(auth.getName());
+        user.setRole(auth.getAuthorities().toString());
+
+        return user;
     }
 
 

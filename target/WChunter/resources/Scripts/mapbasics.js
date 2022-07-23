@@ -10,7 +10,9 @@ import {
     claim,
     claimMode,
     nameError,
-    comment_modal_mode
+    comment_modal_mode,
+    createMultiRoute,
+    coordsArr
 } from '/resources/Scripts/Sidebar.js';
 import {upload, preview} from '/resources/Scripts/imageUpload.js';
 
@@ -29,21 +31,24 @@ window.addEventListener('DOMContentLoaded', function() {
     setHeiHeight();
     $(window).resize( setHeiHeight );
 
+    
     ymaps.ready(init);
-
-
+    
+    
     var username,
+        role,
         myMap,
         coords,
         myCollection,
+        geolocmark,
         validMark = false,
         validCoords = false;
 
-    $.get("username")
-        .done(function( data ) {
-            username = data;
-            console.log( "Data Loaded: " + data );
-        });
+    console.log($('.button_layout'));
+
+    //[ROLE_USER]
+    //[ROLE_MODERATOR]
+    //[ROLE_ANONYMOUS]
 
     function init() {
         const photoDiv = document.createElement('div');
@@ -53,7 +58,7 @@ window.addEventListener('DOMContentLoaded', function() {
         myMap = new ymaps.Map('map', {
                 center: [59.951235204009016,30.304518020247105],
                 zoom: 16,
-                controls: ['routeButtonControl', 'geolocationControl']
+                controls: ['geolocationControl', 'routeButtonControl']
             },
             // {
             //     // Зададим ограниченную область прямоугольником,
@@ -117,7 +122,7 @@ window.addEventListener('DOMContentLoaded', function() {
             }),
             zoomControl = new ymaps.control.ZoomControl({options: {layout: ZoomLayout,
                     position:{right: 0,
-                        top: 890/2 -120
+                        top: ($(window).height()/2)-136 + 'px'
                     }}}),
             ButtonLayout = ymaps.templateLayoutFactory.createClass([
                 '<div title="{{ data.title }}" class="my-button"',
@@ -125,7 +130,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 '{% if state.size == "medium" %}my-button_medium{% endif %}',
                 '{% if state.size == "large" %}my-button_large{% endif %}',
                 '{% if state.selected %} my-button-selected{% endif %}">',
-                '<span class="my-button__text" id="my-button__text">{{ data.content }}</span>',
+                '<span class="my-button__text">{{ data.content }}</span>',
                 '</div>'
             ].join('')),
 
@@ -160,6 +165,16 @@ window.addEventListener('DOMContentLoaded', function() {
                     layout: LKButtonLayout,
                     float: "right"
                 }
+            }),
+            multiRouteButton = new ymaps.control.Button({
+                data: {
+                    content: "Построить маршрут",
+                    title: "Построить маршрут"
+                },
+                options: {
+                    layout: ButtonLayout,
+                    float: "right"
+                }
             });
 
         geolocation.get({
@@ -170,7 +185,7 @@ window.addEventListener('DOMContentLoaded', function() {
             // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
             result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
 
-            var geolocmark = new ymaps.Placemark(result.geoObjects._boundsAggregator._geoBounds[0], {
+            geolocmark = new ymaps.Placemark(result.geoObjects._boundsAggregator._geoBounds[0], {
                 hintContent: 'Тут не надо'
                 // balloonContentHeader: point.name
                 // balloonContentBody: point.comment
@@ -183,13 +198,58 @@ window.addEventListener('DOMContentLoaded', function() {
                 iconImageSize: [24, 38],
                 iconImageOffset: [-12, -38]
             });
-            myMap.geoObjects.add(placemark);
+            myMap.geoObjects.add(geolocmark);
             // console.log(result.geoObjects._boundsAggregator._geoBounds[0]);
-        })
+        });
 
         var center=[];
 
+        console.log(geolocmark);
+        console.log('маршруты 2.1');
+        var control = myMap.controls.get('routeButtonControl');
+        control.routePanel.geolocate('from');
 
+        control.routePanel.state.set({
+            type: "pedestrian", // пешком
+            fromEnabled: false,
+            toEnabled: true
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        $.get("username")
+        .done(function( data ) {
+            username = data.login;
+            role = data.role;
+        
+        if(role !== '[ROLE_ANONYMOUS]'){
+            myMap.controls.add(button);
+        }
+
+        if(role === '[ROLE_ANONYMOUS]'){
+            console.log('anon')
+            // document.querySelector('.button_layout').innerHTML='';
+            document.querySelector('.button_layout').classList.add('hide');
+            document.querySelector('.comment_link').innerHTML='';
+        }
+            console.log( "Data Loaded: ");
+            console.log(username);
+            console.log(role);
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
 
 
@@ -248,8 +308,11 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
         myMap.controls.add(zoomControl);
-        myMap.controls.add(button);
+
         myMap.controls.add(LKbutton);
+
+        // myMap.controls.add(multiRouteButton);
+
         var mySearchControl = new ymaps.control.SearchControl({
             options: {
                 noPlacemark: false,
@@ -270,7 +333,12 @@ window.addEventListener('DOMContentLoaded', function() {
             hasBalloon: false
         });
 
+        geolocation = ymaps.geolocation;
         addPoints(myMap, myCollection);
+
+        createMultiRoute(coordsArr)
+
+
 
         document.querySelector('.insidebar_close').addEventListener('click', () =>{
             toggleMap(myMap, '#sidebar');
@@ -378,12 +446,11 @@ window.addEventListener('DOMContentLoaded', function() {
 
             }
         });
-
-        var control = myMap.controls.get('routeButtonControl');
+        
 
         const runButton = document.querySelector('.run_button_div');
         runButton.addEventListener('click', ()=>{
-            console.log('Побежали')
+            console.log('Побежали');
             // Зададим координаты пункта отправления с помощью геолокации.
             control.routePanel.geolocate('from');
             control.routePanel.state.set({
@@ -426,7 +493,7 @@ window.addEventListener('DOMContentLoaded', function() {
         });
 
 
-        document.addEventListener("click", function(e) {
+        document.addEventListener("click", function(e){
             if (e.target.className === "my-button__text") {
                 if(document.querySelector('#commentBar').classList.contains('show_bar')){
                     toggleBar('#commentBar');
@@ -481,11 +548,8 @@ window.addEventListener('DOMContentLoaded', function() {
         const openButton = document.querySelector('#image_input');
 
         postPoint(formTable);
-        console.log(formTable);
         postPoint(commentForm);
-        console.log(commentForm);
         postPoint(claimForm);
-        console.log(claimForm);
 
         function newAddPoint(point){
             updatePoints(myCollection, point);
@@ -526,7 +590,13 @@ window.addEventListener('DOMContentLoaded', function() {
 
                         const pointAded = JSON.parse(add);
                         console.log(pointAded);
-
+                        let imageURL = '/resources/images/ToiletIcon.png';
+                        if(object.mark < 4){
+                            imageURL = '/resources/images/ToiletIconPoop.png';
+                        }
+                        else if(object.mark > 8) {
+                            imageURL = '/resources/images/ToiletIconGold.png';
+                        }
                         newPoint = new ymaps.Placemark([+(pointAded.latitude), +(pointAded.longitude)], {
                             hintContent: pointAded.name,
                             balloonContentHeader: pointAded.name
@@ -536,7 +606,7 @@ window.addEventListener('DOMContentLoaded', function() {
                             //     '<div class="footer2Foto"></div></div></div>'
                         }, {
                             iconLayout: 'default#image',
-                            iconImageHref: '/resources/images/ToiletIcon.png',
+                            iconImageHref: imageURL,
                             iconImageSize: [24, 38],
                             iconImageOffset: [-12, -38]
                         });

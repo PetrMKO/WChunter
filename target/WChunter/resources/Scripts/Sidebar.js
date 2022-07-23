@@ -6,8 +6,6 @@ const modalTrigger = document.querySelector('[data-modal]'),
     modalCloseBtn = document.querySelector('[data-close]'),
     favoriteBtn = document.querySelector('.favorite_btn');
 
-    console.log(claimTrigger);
-
 export var addMode = false,
     commentMode = false,
     claimMode = false,
@@ -15,9 +13,6 @@ export var addMode = false,
 
 export const modal = document.querySelector('.comment_modal'),
              claim = document.querySelector('#claim_modal');
-
-            console.log(claim);
-
 
 modalTrigger.addEventListener('click', () => {
     openModal(modal);
@@ -55,6 +50,12 @@ function openModal(modalT) {
     else if(modalT.classList.contains('comment_modal')){
         comment_modal_mode = true;
     }
+}
+
+function getLenthToUser(geolat, geolong, lat, long){
+    var x = geolat-lat;
+    var y = geolong-long;
+    return Math.sqrt((x**2) + (y**2));
 }
 
 modalCloseBtn.addEventListener('click', () =>{
@@ -148,7 +149,8 @@ export function toggleMap(map, id){
 
 }
 
-export function addPoints(map, geoCollection){
+export let coordsArr;
+export function addPoints(map, geoCollection, geolat, geolong){
     const request = new XMLHttpRequest();
     request.open('GET', 'points');
     request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
@@ -159,27 +161,44 @@ export function addPoints(map, geoCollection){
         if(request.status === 200) {
             const points = JSON.parse(request.response);
 
-            console.log("succes");
+            // var geolat = lat,
+            //     geolong = long;
+
             console.log(points);
+            coordsArr = []
+            points.sort((a, b) => b.mark - a.mark);
+            // console.log(points);
 
             points.forEach((point) => {
-                console.log(point);
 
+                console.log(point);
+                coordsArr.push([+(point.latitude), +(point.longitude)]);
+                let imageURL = '/resources/images/ToiletIcon.png';
+                if(point.mark < 4){
+                    imageURL = '/resources/images/ToiletIconPoop.png';
+                }
+                else if( point.mark > 8) {
+                    imageURL = '/resources/images/ToiletIconGold.png';
+                }
                 geoCollection.add(new ymaps.Placemark([+(point.latitude), +(point.longitude)], {
                         hintContent: point.name,
-                        balloonContentHeader: point.name
-                        // balloonContentBody: point.comment
+                        balloonContentHeader: point.name,
+                        balloonContentBody: point.mark
                         // balloonContentFooter: '<img src="images/cinema.jpeg" height="150" width="200"> <br/> '
                         // baloonContentFooter: '<div class="baloonFooter">ЕУЧЕ<div class="footer1Foto"></div>'+
                         //     '<div class="footer2Foto"></div></div></div>'
                     }, {
                         iconLayout: 'default#image',
-                        iconImageHref: '/resources/images/ToiletIcon.png',
+                        iconImageHref: imageURL,
                         iconImageSize: [24, 38],
                         iconImageOffset: [-12, -38]
                     })
                 );
             });
+
+            console.log(geoCollection);
+            console.log(coordsArr)
+            // createMultiRoute(geoCollection);
         }
 
         else{
@@ -212,4 +231,18 @@ export function addPoints(map, geoCollection){
 
 export function updatePoints(geoCollection, point){
     geoCollection.add(point);
+}
+
+export function createMultiRoute(array){
+    console.log(array);
+    var multiRoute = new ymaps.multiRouter.MultiRoute({
+        referencePoints: array,
+        params: {
+            //Тип маршрутизации - пешеходная маршрутизация.
+            routingMode: 'pedestrian'
+        }
+    }, {
+        // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
+        boundsAutoApply: true
+    });
 }

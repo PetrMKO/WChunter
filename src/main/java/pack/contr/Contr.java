@@ -54,12 +54,17 @@ public class Contr {
     @GetMapping("lk")
     public String lk(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getAuthorities().toString());
         UserEntity userEntity = userService.findbyLogin(auth.getName());
         model.addAttribute("login", auth.getName());
         if (userEntity.getRole().equals("USER")) {
             model.addAttribute("toilets", userEntity.getFavorite());
             model.addAttribute("toiletsadded", userEntity.getAdded());
             return "lk";
+        }
+        if (userEntity.getRole().equals("ADMIN")) {
+            model.addAttribute("USERS", userService.findAll());
+            return "admin";
         }
         List<ComplaintEntity> complaintEntities = complaintsRepo.findAll();
         for (int i = 0; i < complaintEntities.size() ; i++ ){
@@ -72,14 +77,15 @@ public class Contr {
 
     @PostMapping("complaints")
     public String complaintsLk(@RequestParam(required = false) Long id, @RequestParam(required = false) String action,
-                               @RequestParam(required = false) Long pointId, Model model){
+                               @RequestParam(required = false) Long pointId,
+                               @RequestParam(required = false) String username, Model model){
         if (action != null) {
             if (action.equals("del")) {
                 complaintsRepo.deleteById(id);
             }
             if (action.equals("delPoint")) {
                 complaintsRepo.deleteById(id);
-                toiletService.deletePoint(pointId);
+                toiletService.deletePoint(pointId, username);
             }
         }
         System.out.println(action);
@@ -93,7 +99,13 @@ public class Contr {
 
     }
 
-
+    @RequestMapping("/setrole")
+    public String adminLk(@RequestParam(required = false) String role, @RequestParam(required = false) String login ){
+        UserEntity userEntity = userService.findbyLogin(login);
+        userEntity.setRole(role);
+        userService.save(userEntity);
+        return "redirect:lk";
+    }
 
     @GetMapping("")
     public String first(){

@@ -52,6 +52,17 @@ public class UserEntity {
         if (i > -1) favorite.remove(i);
     }
 
+    public void deleteAdd(ToiletEntity toiletEntity){
+        Set<ToiletEntity> tmp = new HashSet<>();
+        for(ToiletEntity temp : added){
+            if(temp.getId().equals(toiletEntity.getId())){
+                tmp.add(temp);
+            }
+        }
+        added.removeAll(tmp);
+    }
+
+
     public boolean isFavorite(ToiletEntity toiletEntity){
         for (ToiletEntity t : favorite){
             if (t.getName().equals(toiletEntity.getName())) {
